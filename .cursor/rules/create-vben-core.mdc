@@ -1,0 +1,75 @@
+---
+description: create-vben 项目级规范（架构、工程门禁、Git、开发流程）
+alwaysApply: true
+---
+
+# create-vben — 项目 Core 规范
+
+> **里程碑分步计划**见 [`docs/versions/`](../../docs/versions/)（当前 [`v1.0.0/dev-guide.md`](../../docs/versions/v1.0.0/dev-guide.md)）；**Agent 入口**见 [`AGENTS.md`](../../AGENTS.md)。
+
+## 开发流程（强制）
+
+**有不清楚的先询问 → 设计/规划 → 分步开发 → 验证/修复 → 下一步。**
+
+| 阶段 | 要求 |
+|------|------|
+| **询问** | upstream 结构、模板列表、npm 发布、缓存策略等 **必须先问**；禁止臆造 vben 目录 |
+| **设计/规划** | 对照当前里程碑 dev-guide 步骤；更新该文档 §进度表 |
+| **分步开发** | **最小正确 diff**；**一步一主题**；**先** extract/resolve **再** CLI 交互 |
+| **验证/修复** | `pnpm format:check` · `pnpm typecheck` · `pnpm lint` · `pnpm test` · `pnpm build` |
+| **提交** | **禁止** Agent 自行 `git commit`；负责人验证通过后再提交 |
+
+## 项目与技术栈
+
+- 包名：`create-vben` · **Node ESM CLI** · TypeScript · tsup
+- 上游真源：**[vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)** — 提取逻辑须与其 **main / tag** 同步
+- Node **>= 20.11**；本仓库包管理 **pnpm**；生成物默认 **pnpm**（与 upstream 一致）
+- 测试：**Vitest**；lint：**ESLint flat** + **Prettier**
+
+## 架构硬约束
+
+| # | 约束 |
+|---|------|
+| A1 | **单一职责分层**：`cli` → `generate` → `extract` → `core`；禁止 CLI 内嵌数百行提取逻辑 |
+| A2 | 模板列表与 upstream `apps/*` **可配置/constants 集中**；新增模板须更新 constants + dev-guide + 测试 |
+| A3 | 依赖解析 **基于** `pnpm-workspace.yaml` + 各 `package.json` workspace 协议；禁止手写死文件列表为主路径 |
+| A4 | upstream 拉取须 **可缓存、可 offline、可 pin ref**（tag/commit） |
+| A5 | 生成目录须 **可重复**（同 ref + 同 template → 同输出）；transform 须有测试 |
+| A6 | **禁止** 在 extract 层依赖用户项目 node_modules |
+
+## CLI 与用户输出
+
+| # | 约束 |
+|---|------|
+| C1 | 支持 `npx create-vben` 与全局 `create-vben`；`bin` 指向构建后 `dist/index.js` |
+| C2 | 非交互：`--template` · `--ref` · `--force` · `--dry-run` · `--offline` |
+| C3 | 交互默认 **@clack/prompts**；取消须 exit 0 且友好提示 |
+| C4 | 生成物 **不含** upstream 未选中的其他 `apps/web-*` |
+| C5 | 生成后 README 说明来源 ref 与模板；**不** 冒充官方 vben 发行版 |
+
+## 工程与 Git
+
+| # | 约束 |
+|---|------|
+| E1 | 合并前：**pnpm verify** 全通过 |
+| E2 | `engines.node` 与 CI Node 版本一致 |
+| E3 | import 使用 `.js` 扩展名（Node ESM 约定） |
+| G1 | 禁止向 **`main` / `dev`** 日常 commit |
+| G2 | 版本开发分支：**`vX.Y.Z(-*)(_*)`**，自 **`dev`** 切出 → 合并 **`dev`** |
+| G3 | Commit：[Conventional Commits](https://www.conventionalcommits.org/) |
+| G4 | **一步一 commit**：对应 dev-guide **单步** |
+| G5 | **禁止** Agent 未经负责人验证自行 `git commit` / `push` |
+
+详情：[`docs/decisions/git-workflow.md`](../../docs/decisions/git-workflow.md)
+
+## 文档
+
+- 不新增平行计划文档（`DEV_PLAN` 等）
+- **当前里程碑进度只在该里程碑 dev-guide §进度表维护**
+- upstream 同步策略见 [`docs/decisions/vben-source-sync.md`](../../docs/decisions/vben-source-sync.md)
+- **文档真源（D1）**：只写**当下有效**与**未来需跟进**的事实；**禁止**保留已废弃模板 ID、upstream 路径或「遗留方案」叙述
+- **upstream 同步（D2）**：constants 中模板 ID 与 `apps/` 目录 **须与 upstream 当前 main 一致**；变更时同 MR 更新 decisions + 测试 fixture
+
+## 禁止
+
+- 未读 upstream 结构就硬编码拷贝路径 · 跳过测试的 MR · Agent 自行 commit/push

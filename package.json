@@ -1,0 +1,73 @@
+{
+  "name": "create-vben",
+  "version": "0.0.0",
+  "description": "Generate a standalone vben-admin scaffold from the upstream monorepo — pick one UI library, skip the rest.",
+  "type": "module",
+  "license": "MIT",
+  "author": "H-Zone",
+  "keywords": [
+    "vben",
+    "vben-admin",
+    "vue-vben-admin",
+    "scaffold",
+    "cli",
+    "monorepo",
+    "vue3",
+    "vite",
+    "typescript"
+  ],
+  "bin": {
+    "create-vben": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm test && pnpm build",
+    "prepublishOnly": "pnpm verify"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.10.1",
+    "commander": "^13.1.0",
+    "execa": "^9.5.2",
+    "fs-extra": "^11.3.0",
+    "globby": "^14.1.0",
+    "kolorist": "^1.8.0",
+    "minimatch": "^10.0.1",
+    "semver": "^7.7.1",
+    "tar": "^7.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.13.10",
+    "@types/semver": "^7.5.8",
+    "typescript-eslint": "^8.26.1",
+    "eslint": "^9.22.0",
+    "prettier": "^3.5.3",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/H-Zone/create-vben"
+  },
+  "bugs": {
+    "url": "https://github.com/H-Zone/create-vben/issues"
+  },
+  "homepage": "https://github.com/H-Zone/create-vben#readme"
+}

@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+
+# cache
+.create-vben-cache/
+*.tsbuildinfo
+
+# test / fixture artifacts
+test/fixtures/**/node_modules/
+coverage/
+
+# env
+.env
+.env.*
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# temp
+tmp/
+.temp/

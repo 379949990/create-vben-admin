@@ -1,0 +1,40 @@
+---
+description: create-vben 当前里程碑架构摘要（CLI 提取管线）
+alwaysApply: true
+---
+
+# 当前里程碑 — v1.0.0 create-vben CLI
+
+**共享规范：** [create-vben-core.mdc](./create-vben-core.mdc)
+
+## 权威文档
+
+| 文档 | 用途 |
+|------|------|
+| [`docs/versions/v1.0.0/dev-guide.md`](../../docs/versions/v1.0.0/dev-guide.md) | **分步计划与进度表（CV1-*）** |
+| [`docs/versions/v1.0.0/product/PRD_create-vben.md`](../../docs/versions/v1.0.0/product/PRD_create-vben.md) | 产品行为真源 |
+| [`docs/decisions/vben-source-sync.md`](../../docs/decisions/vben-source-sync.md) | upstream 拉取与缓存 |
+| [`docs/decisions/architecture.md`](../../docs/decisions/architecture.md) | 提取管线设计 |
+| [vben 官方 — 目录说明](https://doc.vben.pro/guide/project/dir.html) | upstream 结构真源（只读参考） |
+
+## 分支
+
+- **工作分支：** **`v1.0.0`**
+- **集成目标：** **`dev`**
+
+## 本里程碑范围
+
+- 从 **vue-vben-admin** 提取 **单一** `apps/web-*` 模板及 transitive workspace 依赖
+- 输出 **独立单包/扁平 monorepo-lite** 项目（具体形态见 architecture ADR，CV1-05 定稿）
+- CLI：`npx create-vben` / 全局安装 · 交互 + 非交互
+- 单元测试 + 小型 fixture；**不含** npm 公开发布（可留 CV1-12）
+
+## 维护命令
+
+```bash
+pnpm install
+pnpm verify    # format:check · typecheck · lint · test · build
+pnpm dev       # tsx 本地调试 CLI
+```
+
+MR 门禁：`pnpm verify`。
