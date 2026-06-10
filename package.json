@@ -4,7 +4,7 @@
   "description": "Generate a standalone vben-admin scaffold from the upstream monorepo — pick one UI library, skip the rest.",
   "type": "module",
   "license": "MIT",
-  "author": "H-Zone",
+  "author": "379949990",
   "keywords": [
     "vben",
     "vben-admin",
@@ -64,10 +64,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/H-Zone/create-vben"
+    "url": "https://github.com/379949990/create-vben"
   },
   "bugs": {
-    "url": "https://github.com/H-Zone/create-vben/issues"
+    "url": "https://github.com/379949990/create-vben/issues"
   },
-  "homepage": "https://github.com/H-Zone/create-vben#readme"
+  "homepage": "https://github.com/379949990/create-vben#readme"
 }

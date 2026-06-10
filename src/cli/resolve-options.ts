@@ -1,18 +1,21 @@
 import * as p from '@clack/prompts';
 import { isCancel } from '@clack/prompts';
 import { VbenTemplateId, isVbenTemplateId } from '../core/constants.js';
+import { resolveUpstreamRef } from '../extract/resolve-ref.js';
+import { getDefaultProjectTargetPath, resolveProjectTarget } from '../utils/project-path.js';
 
 export interface CliFlags {
-  projectName?: string;
+  projectPath?: string;
   template?: string;
-  ref: string;
+  ref?: string;
   offline: boolean;
   force: boolean;
   dryRun: boolean;
 }
 
 export interface ResolvedCliOptions {
-  projectName: string;
+  targetDir: string;
+  packageName: string;
   template: VbenTemplateId;
   ref: string;
   offline: boolean;
@@ -31,19 +34,23 @@ const TEMPLATE_CHOICES = [
 export async function resolveOptions(flags: CliFlags): Promise<ResolvedCliOptions> {
   p.intro('create-vben');
 
-  let projectName = flags.projectName;
-  if (!projectName) {
+  let projectPath = flags.projectPath;
+  if (!projectPath) {
+    const defaultPath = getDefaultProjectTargetPath();
     const input = await p.text({
-      message: 'Project name',
-      placeholder: 'my-vben-app',
-      validate: (value) => (value?.trim() ? undefined : 'Project name is required'),
+      message: 'Project path',
+      placeholder: defaultPath,
+      initialValue: defaultPath,
+      validate: (value) => (value?.trim() ? undefined : 'Project path is required'),
     });
     if (isCancel(input)) {
       p.cancel('Operation cancelled.');
       process.exit(0);
     }
-    projectName = input;
+    projectPath = input;
   }
+
+  const { targetDir, packageName } = resolveProjectTarget(projectPath);
 
   let template: VbenTemplateId;
   if (flags.template) {
@@ -67,10 +74,13 @@ export async function resolveOptions(flags: CliFlags): Promise<ResolvedCliOption
 
   p.outro('Ready to generate');
 
+  const ref = await resolveUpstreamRef(flags.ref);
+
   return {
-    projectName: projectName.trim(),
+    targetDir,
+    packageName,
     template,
-    ref: flags.ref,
+    ref,
     offline: flags.offline,
     force: flags.force,
     dryRun: flags.dryRun,

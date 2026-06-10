@@ -1,0 +1,8 @@
+{
+  "name": "vben-admin-monorepo",
+  "private": true,
+  "scripts": {
+    "postinstall": "pnpm -r run stub --if-present"
+  },
+  "packageManager": "pnpm@10.0.0"
+}

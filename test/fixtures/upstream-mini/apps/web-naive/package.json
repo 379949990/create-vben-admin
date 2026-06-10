@@ -1,0 +1,7 @@
+{
+  "name": "@vben/web-naive",
+  "dependencies": {
+    "@vben/utils": "workspace:*",
+    "vue": "catalog:"
+  }
+}

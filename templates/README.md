@@ -1,8 +1,10 @@
-# 生成物补丁（可选）
+# templates/
 
-本目录用于存放 **生成后** 注入目标项目的静态片段，例如：
+Patches and static fragments copied or rendered into generated projects.
 
-- `README.snippet.md` — 注明 upstream ref 与 create-vben 版本
-- `.npmrc` — 与 upstream 对齐的 pnpm 配置
+| Path                        | Purpose                    |
+| --------------------------- | -------------------------- |
+| `generated/README.zh-CN.md` | 生成物默认中文 README 模板 |
+| `generated/README.en.md`    | 生成物英文 README 模板     |
 
-**v1.0.0：** 可为空；CV1-10 再补充。
+Variables use `{{name}}` placeholders; rendered by `src/generate/write-readme.ts`.

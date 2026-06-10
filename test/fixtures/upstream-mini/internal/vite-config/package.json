@@ -1,0 +1,4 @@
+{
+  "name": "@vben/vite-config",
+  "main": "./dist/index.mjs"
+}

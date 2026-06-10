@@ -76,11 +76,11 @@ src/
 ├── extract/
 │   ├── fetch-upstream.ts    # tarball / 缓存
 │   ├── parse-workspace.ts   # pnpm-workspace.yaml
-│   ├── resolve-deps.ts      # workspace 依赖图（待建）
-│   └── flatten.ts           # 路径映射（待建）
+│   ├── resolve-deps.ts      # workspace 依赖图
+│   └── flatten.ts           # 扁平输出路径规划
 ├── generate/
 │   ├── create-project.ts    # 编排
-│   ├── write-files.ts       # 磁盘写入（待建）
+│   ├── write-files.ts       # 磁盘写入
 │   └── transform-package-json.ts
 └── utils/
 ```
@@ -119,33 +119,33 @@ flowchart LR
 
 ## 4. 进度表
 
-| 步骤   | 状态 | 备注                        |
-| ------ | ---- | --------------------------- |
-| CV1-01 | ✅   | 2026-06-09 脚手架与规范文档 |
-| CV1-02 | ⬜   |                             |
-| CV1-03 | ⬜   |                             |
-| CV1-04 | ⬜   |                             |
-| CV1-05 | ⬜   |                             |
-| CV1-06 | ⬜   |                             |
-| CV1-07 | ⬜   |                             |
-| CV1-08 | ⬜   |                             |
-| CV1-09 | ⬜   |                             |
-| CV1-10 | ⬜   |                             |
-| CV1-11 | ⬜   | 阻塞：PRD Q1–Q3             |
-| CV1-12 | ⬜   | 阻塞：npm 组织与包名确认    |
+| 步骤   | 状态 | 备注                                      |
+| ------ | ---- | ----------------------------------------- |
+| CV1-01 | ✅   | 2026-06-09 脚手架与规范文档               |
+| CV1-02 | ✅   | 2026-06-09 Q2/Q6 定稿 vben-source-sync    |
+| CV1-03 | ✅   | 2026-06-09 fetch-upstream + 缓存          |
+| CV1-04 | ✅   | 2026-06-09 parse-workspace + fixture      |
+| CV1-05 | ✅   | 2026-06-09 Q1 扁平输出 + resolve-deps     |
+| CV1-06 | ✅   | 2026-06-09 flatten + transform            |
+| CV1-07 | ✅   | 2026-06-09 create-project + pnpm install  |
+| CV1-08 | ⬜   | 错误边界与 --force 测试补强               |
+| CV1-09 | ⬜   | 端到端集成测试（真实 ref）                |
+| CV1-10 | ✅   | 2026-06-09 生成 README 片段               |
+| CV1-11 | ⬜   | 不含 backend-mock（Q3 已确认，无需 flag） |
+| CV1-12 | ⬜   | npm 包名 create-vben 已确认；发布 CI 待定 |
 
 ---
 
 ## 5. 待确认项（Agent 勿臆造）
 
-| #   | 项                                                                     | 影响步骤 | 状态 |
-| --- | ---------------------------------------------------------------------- | -------- | ---- |
-| Q1  | 生成物结构：**单 package 扁平** vs **mini-monorepo（packages/ 保留）** | CV1-05   | ⬜   |
-| Q2  | 默认 upstream ref：`main` vs **最新 release tag**                      | CV1-02   | ⬜   |
-| Q3  | 是否默认包含 `backend-mock`                                            | CV1-11   | ⬜   |
-| Q4  | npm 发布：`create-vben` 包名与 scope（`@h-zone/create-vben`?）         | CV1-12   | ⬜   |
-| Q5  | 生成后是否自动 `pnpm install`                                          | CV1-08   | ⬜   |
-| Q6  | GitHub API rate limit：是否支持 `GITHUB_TOKEN`                         | CV1-03   | ⬜   |
+| #   | 项                                                              | 影响步骤 | 状态 |
+| --- | --------------------------------------------------------------- | -------- | ---- |
+| Q1  | 生成物结构：**单 package 扁平**                                 | CV1-05   | ✅   |
+| Q2  | 默认 upstream ref：**最新 release tag**                         | CV1-02   | ✅   |
+| Q3  | 是否默认包含 `backend-mock`：**否**                             | CV1-11   | ✅   |
+| Q4  | npm 发布：**create-vben**（无 scope）                           | CV1-12   | ✅   |
+| Q5  | 生成后 **自动 pnpm install**                                    | CV1-07   | ✅   |
+| Q6  | GitHub token：**v1.0.0 默认不用**；后续支持用户配置（长期计划） | CV1-03   | ✅   |
 
 ---
 
@@ -154,21 +154,23 @@ flowchart LR
 ```bash
 pnpm install
 pnpm verify
-pnpm dev -- --dry-run my-test-app --template web-antd
+pnpm dev -- --dry-run my-vben-admin --template web-antd
+# 手动/测试生成物写入 .temp/generated/（已 gitignore）
+pnpm dev -- .temp/generated/e2e-app --template web-naive --ref v5.7.0 --force
 ```
 
 ---
 
 ## 7. 下一步（§7.8 等价）
 
-**→ CV1-02：** 与负责人确认 Q1–Q2，定稿 [`vben-source-sync.md`](../../decisions/vben-source-sync.md)，实现缓存目录约定。
+**→ CV1-08 / CV1-09：** CLI 边界测试与真实 ref 端到端集成测试。
 
 新开 Agent 时复制：
 
 ```
 项目：/Users/wb_hc/H-Zone/DEV/create-vben
-读：AGENTS.md → create-vben-core.mdc → 本文 CV1-02
-阻塞：Q1 输出形态、Q2 默认 ref
+读：AGENTS.md → create-vben-core.mdc → 本文 CV1-08
+已决：Q1 扁平 · Q2 latest tag · Q3 无 mock · Q4 create-vben · Q5 auto install · Q6 token 后续
 ```
 
 ---

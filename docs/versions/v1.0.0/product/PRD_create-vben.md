@@ -45,7 +45,7 @@
 
 ### 3.1 安装与入口
 
-- npm 包名：**create-vben**（待 Q4 确认 scope）
+- npm 包名：**create-vben**（无 scope）
 - `bin`: `create-vben`
 - 支持：`npm i -g create-vben`、`npx create-vben`
 
@@ -96,7 +96,7 @@
 
 ## 6. 开放问题
 
-见 dev-guide §5（Q1–Q6）。
+Q1–Q6 已于 2026-06-09 确认，见 dev-guide §5。
 
 ---
 
