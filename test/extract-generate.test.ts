@@ -53,7 +53,7 @@ describe('transformPackageJson', () => {
     expect(transformed.dependencies?.['@vben/utils']).toBe('workspace:*');
   });
 
-  it('merges stub tooling devDependencies for flat root package.json', () => {
+  it('merges hoisted devDependencies for flat root package.json', () => {
     const transformed = transformPackageJson(
       { name: '@vben/web-naive', devDependencies: { '@vben/vite-config': 'workspace:*' } },
       {

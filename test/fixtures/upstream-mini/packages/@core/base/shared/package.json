@@ -1,3 +1,7 @@
 {
-  "name": "@vben-core/shared"
+  "name": "@vben-core/shared",
+  "scripts": {
+    "build": "pnpm exec tsdown",
+    "stub": "pnpm run build"
+  }
 }

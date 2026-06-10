@@ -130,7 +130,7 @@ flowchart LR
 | CV1-06  | ✅   | 2026-06-09 flatten + transform            |
 | CV1-07  | ✅   | 2026-06-09 create-project + pnpm install  |
 | CV1-07b | ✅   | 2026-06-09 vendor stub 门禁 + dist 校验   |
-| CV1-08  | ⬜   | 根 devDeps 推导 + --force 测试补强        |
+| CV1-08  | ✅   | 2026-06-09 根 devDeps 推导 + 边界测试     |
 | CV1-09  | ⬜   | 端到端集成测试（真实 ref）                |
 | CV1-10  | ✅   | 2026-06-09 生成 README 片段               |
 | CV1-11  | ⬜   | 不含 backend-mock（Q3 已确认，无需 flag） |
@@ -165,14 +165,14 @@ pnpm dev -- .temp/generated/e2e-app --template web-naive --ref v5.7.0 --force
 
 ## 7. 下一步（§7.8 等价）
 
-**→ CV1-08：** 根 devDependencies 系统化推导 + CLI 边界测试。
+**→ CV1-09：** 真实 ref 端到端集成测试（`.temp/generated/`，可选 CI）。
 
 新开 Agent 时复制：
 
 ```
 项目：/Users/wb_hc/H-Zone/DEV/create-vben
-读：AGENTS.md → create-vben-core.mdc → 本文 CV1-08
-已决：P0 vendor stub 门禁 · Q1 扁平 · Q2 latest tag
+读：AGENTS.md → create-vben-core.mdc → 本文 CV1-09
+已决：P0 vendor stub · CV1-08 根 devDeps 推导
 ```
 
 ---

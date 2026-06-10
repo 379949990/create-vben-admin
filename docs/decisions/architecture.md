@@ -28,6 +28,7 @@
    - 排除 backend-mock
 4. planFlatOutput(closure) → FilePlan[]
 5. transformPackageJson(each) → catalog: → semver；保留 workspace:*
+   - 根 devDependencies：从闭包 scripts + upstream 根 devDeps **推导 hoist**（`derive-root-dev-deps.ts`）
 6. writeFiles(targetDir, plan) → pnpm install
 7. runWorkspaceStub → assertVendorBuildArtifacts（失败则生成失败）
 ```
@@ -66,6 +67,7 @@ my-app/
 3. 始终并入：`@vben/vite-config`、`@vben/tsconfig`、`@vben/tailwind-config`
 4. 跳过：`@vben/backend-mock` 及未选中的其他 app
 5. `catalog:` → 从 `pnpm-workspace.yaml` 的 `catalog` 段解析为具体 semver
+6. **根 devDependencies hoist：** 扫描闭包内 `stub` / `build` / app scripts 与 workspace 包 devDeps 中的外部工具名，与 upstream 根 `devDependencies` 取交集后写入生成物根 `package.json`（见 `derive-root-dev-deps.ts`）
 
 ---
 

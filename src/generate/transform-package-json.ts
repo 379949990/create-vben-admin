@@ -3,23 +3,7 @@ import { dirname, join } from 'node:path';
 import type { PackageJson } from '../extract/types.js';
 import type { GenerationPlan } from '../extract/types.js';
 import type { WorkspaceManifest } from '../extract/types.js';
-
-/** Hoisted from upstream monorepo root for flat layout (stub / tsc). */
-const STUB_ROOT_DEV_DEPENDENCIES = [
-  'tsdown',
-  '@tsdown/css',
-  'typescript',
-  '@types/node',
-] as const;
-
-/** App scripts use `pnpm vite` / `vue-tsc` — hoisted from upstream root in monorepo. */
-const APP_ROOT_DEV_DEPENDENCIES = [
-  'vite',
-  '@vitejs/plugin-vue',
-  '@vitejs/plugin-vue-jsx',
-  'vue-tsc',
-  'tailwindcss',
-] as const;
+import { pickHoistedRootDevDependencies } from './derive-root-dev-deps.js';
 
 export async function transformGeneratedPackageJsons(options: {
   plan: GenerationPlan;
@@ -32,16 +16,22 @@ export async function transformGeneratedPackageJsons(options: {
     await readFile(join(options.plan.upstreamRoot, 'package.json'), 'utf8'),
   ) as PackageJson;
 
-  const stubDevDependencies = pickResolvedDevDependencies(
-    upstreamRootPackageJson.devDependencies,
-    options.manifest.catalog,
-    STUB_ROOT_DEV_DEPENDENCIES,
+  const templatePackage = options.plan.closure.packages.find(
+    (pkg) => pkg.name === options.plan.templatePackageName,
   );
-  const appDevDependencies = pickResolvedDevDependencies(
-    upstreamRootPackageJson.devDependencies,
-    options.manifest.catalog,
-    APP_ROOT_DEV_DEPENDENCIES,
-  );
+
+  if (!templatePackage) {
+    throw new Error(`Template package "${options.plan.templatePackageName}" missing from closure.`);
+  }
+
+  const hoistedDevDependencies = pickHoistedRootDevDependencies({
+    closure: options.plan.closure,
+    templatePackage,
+    upstreamRootDevDependencies: upstreamRootPackageJson.devDependencies,
+    catalog: options.manifest.catalog,
+    resolveSpec: (dependencyName, spec) =>
+      resolveDependencySpec(dependencyName, spec, options.manifest.catalog),
+  });
 
   const transformedRoot = transformPackageJson(rootPackageJson, options.manifest.catalog, {
     name: options.packageName,
@@ -54,8 +44,7 @@ export async function transformGeneratedPackageJsons(options: {
       : undefined,
     devDependencies: {
       ...rootPackageJson.devDependencies,
-      ...stubDevDependencies,
-      ...appDevDependencies,
+      ...hoistedDevDependencies,
       '@vben/vite-config': 'workspace:*',
       '@vben/tsconfig': 'workspace:*',
       '@vben/tailwind-config': 'workspace:*',
@@ -118,27 +107,7 @@ function transformDependencyBlock(
   return next;
 }
 
-function pickResolvedDevDependencies(
-  upstreamDevDependencies: Record<string, string> | undefined,
-  catalog: Record<string, string>,
-  names: readonly string[],
-): Record<string, string> {
-  if (!upstreamDevDependencies) {
-    return {};
-  }
-
-  const picked: Record<string, string> = {};
-  for (const name of names) {
-    const spec = upstreamDevDependencies[name];
-    if (!spec) {
-      continue;
-    }
-    picked[name] = resolveDependencySpec(name, spec, catalog);
-  }
-  return picked;
-}
-
-function resolveDependencySpec(
+export function resolveDependencySpec(
   dependencyName: string,
   spec: string,
   catalog: Record<string, string>,
