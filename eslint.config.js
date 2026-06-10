@@ -3,5 +3,12 @@ import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(eslint.configs.recommended, ...tseslint.configs.recommended, {
-  ignores: ['dist/', 'node_modules/', 'coverage/', '.temp/', 'my-vben-app/', 'templates/generated/scripts/'],
+  ignores: [
+    'dist/',
+    'node_modules/',
+    'coverage/',
+    '.temp/',
+    'my-vben-app/',
+    'templates/generated/scripts/',
+  ],
 });

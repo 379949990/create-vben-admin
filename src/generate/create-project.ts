@@ -14,10 +14,10 @@ import {
   patchDevelopmentEnv,
   readDevelopmentPort,
   writeMockOpenApiFromUpstream,
-  writeThinProjectScript,
+  writeRemoveMockScript,
 } from './project-extras.js';
 import { transformGeneratedPackageJsons } from './transform-package-json.js';
-import { appendThinScriptToPackageJson, writeGeneratedReadme } from './write-readme.js';
+import { appendRemoveMockScriptToPackageJson, writeGeneratedReadme } from './write-readme.js';
 import { assertVendorBuildArtifacts, runWorkspaceStub } from './vendor-stub.js';
 import { summarizeGenerationPlan, writeGenerationPlan } from './write-files.js';
 
@@ -99,8 +99,8 @@ export async function createProject(options: ResolvedCliOptions): Promise<void> 
         : undefined;
     }
 
-    await writeThinProjectScript({ templatesDir, targetDir: options.targetDir });
-    await appendThinScriptToPackageJson(options.targetDir);
+    await writeRemoveMockScript({ templatesDir, targetDir: options.targetDir });
+    await appendRemoveMockScriptToPackageJson(options.targetDir);
 
     const devPort = await readDevelopmentPort(options.targetDir);
 

@@ -9,7 +9,7 @@
 | 类型                 | **Node.js CLI**（ESM · TypeScript · tsup）                             |
 | **上游真源**         | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)      |
 | **工具链**           | Node **>= 20.11** · pnpm · TypeScript 5.x · Vitest                     |
-| 应用版本             | `0.0.0`（`package.json`）                                              |
+| 应用版本             | `1.0.0`（`package.json`）                                              |
 | **集成分支**         | **`dev`**                                                              |
 | **当前工作分支**     | **`v1.0.0`**                                                           |
 | **版本开发分支命名** | **`vX.Y.Z(-*)(_*)`**                                                   |

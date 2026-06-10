@@ -25,29 +25,28 @@ pnpm dev
 
 ## Scripts
 
-| Command                     | Description                    |
-| --------------------------- | ------------------------------ |
-| `pnpm dev`                  | Development server             |
-| `pnpm build`                | Production build               |
-| `pnpm preview`              | Preview production build       |
-| `pnpm typecheck`            | TypeScript check               |
-| `pnpm run thin:remove-mock` | Remove mock server (see below) |
+| Command          | Description              |
+| ---------------- | ------------------------ |
+| `pnpm dev`       | Development server       |
+| `pnpm build`     | Production build         |
+| `pnpm preview`   | Preview production build |
+| `pnpm typecheck` | TypeScript check         |
+
+{{mockCommandRowEn}}
 
 {{mockSectionEn}}
 
 {{apiSectionEn}}
 
-{{thinSectionEn}}
-
 ## Notes
 
 - Other `apps/web-*` templates from upstream are not copied.
 - To refresh the vben baseline, re-run create-vben with a newer upstream ref or merge upstream changes manually.
+- For further upstream slimming, see the [official Vben thin guide](https://doc.vben.pro/guide/introduction/thin.html) (unrelated to mock removal).
 
 ## Links
 
 - [Vben Admin docs](https://doc.vben.pro/)
-- [Vben thin guide](https://doc.vben.pro/guide/introduction/thin.html)
 - [vue-vben-admin]({{upstreamRepo}})
 - [create-vben]({{createVbenRepo}})
 

@@ -25,29 +25,28 @@ pnpm dev
 
 ## 常用命令
 
-| 命令                        | 说明                     |
-| --------------------------- | ------------------------ |
-| `pnpm dev`                  | 开发模式                 |
-| `pnpm build`                | 生产构建                 |
-| `pnpm preview`              | 预览构建产物             |
-| `pnpm typecheck`            | TypeScript 类型检查      |
-| `pnpm run thin:remove-mock` | 移除 Mock 服务（见下文） |
+| 命令             | 说明                |
+| ---------------- | ------------------- |
+| `pnpm dev`       | 开发模式            |
+| `pnpm build`     | 生产构建            |
+| `pnpm preview`   | 预览构建产物        |
+| `pnpm typecheck` | TypeScript 类型检查 |
+
+{{mockCommandRowZh}}
 
 {{mockSectionZh}}
 
 {{apiSectionZh}}
 
-{{thinSectionZh}}
-
 ## 其他说明
 
 - 未选中的其他 `apps/web-*` 模板不会出现在本仓库。
 - 需要更新 vben 基线时，可使用 create-vben 指定新的 upstream ref 重新生成，或手动合并 upstream 变更。
+- 若需进一步裁剪 upstream 能力，可参考 [Vben 官方项目精简说明](https://doc.vben.pro/guide/introduction/thin.html)（与 Mock 移除无关）。
 
 ## 链接
 
 - [Vben Admin 文档](https://doc.vben.pro/)
-- [Vben 精简指南](https://doc.vben.pro/guide/introduction/thin.html)
 - [vue-vben-admin]({{upstreamRepo}})
 - [create-vben]({{createVbenRepo}})
 

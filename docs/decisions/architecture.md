@@ -29,7 +29,7 @@
 4. planFlatOutput(closure) → FilePlan[]
 5. transformPackageJson(each) → catalog: → semver；保留 workspace:*
    - 根 devDependencies：从闭包 scripts + upstream 根 devDeps **推导 hoist**（`derive-root-dev-deps.ts`）
-6. writeFiles(targetDir, plan) → patch `.env.development` · 可选 OpenAPI · thin 脚本 · README
+6. writeFiles(targetDir, plan) → patch `.env.development` · 可选 OpenAPI · remove-mock 脚本 · README
 7. pnpm install → runWorkspaceStub → assertVendorBuildArtifacts（失败则生成失败）
 ```
 
@@ -58,7 +58,8 @@ my-app/
 - `packages/` / `internal/` 为构建所需 vendor，非第二套业务 app
 - 不复制其他 `apps/web-*`
 - `backend-mock` 默认不复制；用户选择 `--mock` 时复制至 `apps/backend-mock/`
-- 生成物附带 `scripts/thin-project.mjs`（参考 [Vben 精简指南](https://doc.vben.pro/guide/introduction/thin.html)）及 README 说明
+- 生成物附带 `scripts/remove-mock.mjs`（`pnpm run remove-mock`）及 README 说明
+- 官方 Monorepo 项目精简见 [Vben 精简指南](https://doc.vben.pro/guide/introduction/thin.html)（与 Mock 移除无关）
 
 ---
 

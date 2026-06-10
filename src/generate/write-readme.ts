@@ -47,12 +47,12 @@ export async function writeGeneratedReadme(options: {
     devPort,
     devServerNoteZh: sections.devServerNoteZh,
     devServerNoteEn: sections.devServerNoteEn,
+    mockCommandRowZh: sections.mockCommandRowZh,
+    mockCommandRowEn: sections.mockCommandRowEn,
     mockSectionZh: sections.mockSectionZh,
     mockSectionEn: sections.mockSectionEn,
     apiSectionZh: sections.apiSectionZh,
     apiSectionEn: sections.apiSectionEn,
-    thinSectionZh: sections.thinSectionZh,
-    thinSectionEn: sections.thinSectionEn,
   };
 
   const [zh, en] = await Promise.all([
@@ -74,30 +74,17 @@ function buildReadmeSections(options: {
   const devServerNoteZh = `开发服务器端口由根目录 \`.env.development\` 中的 \`VITE_PORT\` 控制（当前为 **${options.devPort}**）。请以终端实际输出为准。`;
   const devServerNoteEn = `The dev server port is controlled by \`VITE_PORT\` in \`.env.development\` (currently **${options.devPort}**). Always follow the URL printed in your terminal.`;
 
-  const thinSectionZh = `## 项目精简
-
-本仓库附带 [\`scripts/thin-project.mjs\`](./scripts/thin-project.mjs)，参考 [Vben 官方精简说明](https://doc.vben.pro/guide/introduction/thin.html)（适配 create-vben 扁平布局）。
-
-| 命令 | 作用 |
-| --- | --- |
-| \`node scripts/thin-project.mjs --remove-mock\` | 删除 \`apps/backend-mock/\` 并设置 \`VITE_NITRO_MOCK=false\` |
-
-若你**不需要**该脚本，可直接删除 \`scripts/thin-project.mjs\`，不影响日常开发。`;
-
-  const thinSectionEn = `## Project slimming
-
-This repo includes [\`scripts/thin-project.mjs\`](./scripts/thin-project.mjs), adapted from the [official Vben thin guide](https://doc.vben.pro/guide/introduction/thin.html) for create-vben flat layout.
-
-| Command | Purpose |
-| --- | --- |
-| \`node scripts/thin-project.mjs --remove-mock\` | Remove \`apps/backend-mock/\` and set \`VITE_NITRO_MOCK=false\` |
-
-If you do not need the helper, delete \`scripts/thin-project.mjs\` — it is optional.`;
+  const mockCommandRowZh = options.includeMock ? '| `pnpm run remove-mock` | 移除 Mock 服务 |' : '';
+  const mockCommandRowEn = options.includeMock
+    ? '| `pnpm run remove-mock` | Remove mock server |'
+    : '';
 
   if (options.includeMock) {
     return {
       devServerNoteZh,
       devServerNoteEn,
+      mockCommandRowZh,
+      mockCommandRowEn,
       mockSectionZh: `## Mock 服务（已包含）
 
 本仓库 **已包含** \`apps/backend-mock\`（Nitro Mock）。\`pnpm dev\` 时会随 Vite 插件启动 Mock API：
@@ -105,11 +92,16 @@ If you do not need the helper, delete \`scripts/thin-project.mjs\` — it is opt
 - Mock 基址：**http://localhost:5320/api**
 - 开关：根目录 \`.env.development\` → \`VITE_NITRO_MOCK=true\`
 
-### 不再需要 Mock 时
+### 移除 Mock 服务
 
-1. 运行 \`node scripts/thin-project.mjs --remove-mock\`
-2. 或在 \`.env.development\` 设置 \`VITE_NITRO_MOCK=false\` 并手动删除 \`apps/backend-mock/\`
-3. 执行 \`pnpm install\` 后重新 \`pnpm dev\`，对接你的真实后端（修改 \`VITE_GLOB_API_URL\` 等）`,
+本仓库附带 [\`scripts/remove-mock.mjs\`](./scripts/remove-mock.mjs)。不再需要 Mock 时：
+
+1. 运行 \`pnpm run remove-mock\`（或 \`node scripts/remove-mock.mjs\`）
+2. 执行 \`pnpm install\` 后 \`pnpm dev\`，对接真实后端（修改 \`VITE_GLOB_API_URL\` 等）
+
+也可手动：在 \`.env.development\` 设置 \`VITE_NITRO_MOCK=false\` 并删除 \`apps/backend-mock/\`。
+
+若不再需要该脚本，删除 \`scripts/remove-mock.mjs\` 并从 \`package.json\` 移除 \`remove-mock\` 命令即可。`,
       mockSectionEn: `## Mock server (included)
 
 This repo **includes** \`apps/backend-mock\` (Nitro Mock). Running \`pnpm dev\` starts the mock API via the Vite plugin:
@@ -117,15 +109,18 @@ This repo **includes** \`apps/backend-mock\` (Nitro Mock). Running \`pnpm dev\` 
 - Mock base URL: **http://localhost:5320/api**
 - Toggle: \`.env.development\` → \`VITE_NITRO_MOCK=true\`
 
-### When you no longer need mock
+### Remove mock server
 
-1. Run \`node scripts/thin-project.mjs --remove-mock\`
-2. Or set \`VITE_NITRO_MOCK=false\` and delete \`apps/backend-mock/\` manually
-3. Run \`pnpm install\`, then \`pnpm dev\`, and point \`VITE_GLOB_API_URL\` to your real API`,
+This repo includes [\`scripts/remove-mock.mjs\`](./scripts/remove-mock.mjs). When you no longer need mock:
+
+1. Run \`pnpm run remove-mock\` (or \`node scripts/remove-mock.mjs\`)
+2. Run \`pnpm install\`, then \`pnpm dev\`, and point \`VITE_GLOB_API_URL\` to your real API
+
+Or manually: set \`VITE_NITRO_MOCK=false\` and delete \`apps/backend-mock/\`.
+
+If you no longer need the helper, delete \`scripts/remove-mock.mjs\` and remove the \`remove-mock\` script from \`package.json\`.`,
       apiSectionZh: '',
       apiSectionEn: '',
-      thinSectionZh,
-      thinSectionEn,
     };
   }
 
@@ -134,6 +129,8 @@ This repo **includes** \`apps/backend-mock\` (Nitro Mock). Running \`pnpm dev\` 
   return {
     devServerNoteZh,
     devServerNoteEn,
+    mockCommandRowZh,
+    mockCommandRowEn,
     mockSectionZh: `## Mock 服务（未包含）
 
 生成时 **未包含** \`apps/backend-mock\`。本地开发请对接真实后端，或使用 Apifox / Postman 等导入下方 OpenAPI 参考文档自建 Mock。
@@ -162,8 +159,6 @@ An **OpenAPI 3.0** route inventory was generated from upstream \`backend-mock\` 
 - Default mock base if you host one: \`http://localhost:5320/api\`
 
 Import into Apifox: Project settings → Import → OpenAPI → select the JSON file.`,
-    thinSectionZh,
-    thinSectionEn,
   };
 }
 
@@ -175,7 +170,7 @@ async function renderTemplate(filename: string, vars: Record<string, string>): P
   return content;
 }
 
-export async function appendThinScriptToPackageJson(targetDir: string): Promise<void> {
+export async function appendRemoveMockScriptToPackageJson(targetDir: string): Promise<void> {
   const packageJsonPath = join(targetDir, 'package.json');
   const pkg = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as {
     scripts?: Record<string, string>;
@@ -183,7 +178,7 @@ export async function appendThinScriptToPackageJson(targetDir: string): Promise<
 
   pkg.scripts = {
     ...pkg.scripts,
-    'thin:remove-mock': 'node scripts/thin-project.mjs --remove-mock',
+    'remove-mock': 'node scripts/remove-mock.mjs',
   };
 
   await writeFile(packageJsonPath, `${JSON.stringify(pkg, null, 2)}\n`, 'utf8');

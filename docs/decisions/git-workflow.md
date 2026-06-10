@@ -1,7 +1,7 @@
 # Git 与版本分支 — create-vben
 
 > 遵循全局 Cursor 规则 **git-version-management**（`~/.cursor/rules/git-version-management.mdc`）  
-> 应用版本：`0.0.0`（`package.json`）
+> 应用版本：`1.0.0`（`package.json`）
 
 ## 版本开发分支命名
 

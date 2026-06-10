@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 /**
- * Flat-layout project slimming helper.
- * Adapted from https://doc.vben.pro/guide/introduction/thin.html
+ * Remove Nitro mock server from a create-vben generated project.
  *
  * Usage:
- *   node scripts/thin-project.mjs --remove-mock    Remove apps/backend-mock + disable VITE_NITRO_MOCK
- *   node scripts/thin-project.mjs --help
+ *   pnpm run remove-mock
+ *   node scripts/remove-mock.mjs
  */
 import { existsSync } from 'node:fs';
 import { readFile, rm, writeFile } from 'node:fs/promises';
@@ -15,13 +14,17 @@ const root = process.cwd();
 const args = process.argv.slice(2);
 
 function printHelp() {
-  console.log(`thin-project.mjs — slim a create-vben flat scaffold
+  console.log(`remove-mock.mjs — remove apps/backend-mock from this project
 
-Options:
-  --remove-mock   Delete apps/backend-mock and set VITE_NITRO_MOCK=false in .env.development
-  --help          Show this help
+Usage:
+  pnpm run remove-mock
+  node scripts/remove-mock.mjs
 
-Reference: https://doc.vben.pro/guide/introduction/thin.html
+What it does:
+  - Delete apps/backend-mock/
+  - Set VITE_NITRO_MOCK=false in .env.development
+
+Then run: pnpm install && pnpm dev
 `);
 }
 
@@ -59,18 +62,12 @@ async function removeMock() {
 }
 
 async function main() {
-  if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+  if (args.includes('--help') || args.includes('-h')) {
     printHelp();
     return;
   }
 
-  if (args.includes('--remove-mock')) {
-    await removeMock();
-    return;
-  }
-
-  console.error('Unknown option. Run with --help');
-  process.exit(1);
+  await removeMock();
 }
 
 main().catch((error) => {

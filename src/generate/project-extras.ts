@@ -113,13 +113,13 @@ export async function readDevelopmentPort(targetDir: string): Promise<string | u
   }
 }
 
-/** Copy thin-project script and ensure docs/ exists. */
-export async function writeThinProjectScript(options: {
+/** Copy remove-mock script into the generated project. */
+export async function writeRemoveMockScript(options: {
   templatesDir: string;
   targetDir: string;
 }): Promise<void> {
-  const source = join(options.templatesDir, 'generated/scripts/thin-project.mjs');
-  const destination = join(options.targetDir, 'scripts/thin-project.mjs');
+  const source = join(options.templatesDir, 'generated/scripts/remove-mock.mjs');
+  const destination = join(options.targetDir, 'scripts/remove-mock.mjs');
   const script = await readFile(source, 'utf8');
   const { mkdir } = await import('node:fs/promises');
   await mkdir(dirname(destination), { recursive: true });

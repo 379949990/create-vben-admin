@@ -1,6 +1,6 @@
 {
   "name": "create-vben",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Generate a standalone vben-admin scaffold from the upstream monorepo — pick one UI library, skip the rest.",
   "type": "module",
   "license": "MIT",
