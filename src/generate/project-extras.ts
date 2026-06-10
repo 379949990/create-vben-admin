@@ -39,7 +39,7 @@ export async function writeMockOpenApiFromUpstream(options: {
     info: {
       title: 'Vben Admin Mock API (reference)',
       description:
-        'Route inventory extracted from upstream apps/backend-mock for local mock tools (Apifox, Postman, etc.). Not included in this project when mock server is disabled.',
+        'Route inventory extracted from upstream apps/backend-mock. Import into Apifox, Postman, or similar tools.',
       version: '1.0.0',
     },
     servers: [{ url: 'http://localhost:5320', description: 'Nitro mock (upstream default)' }],
@@ -47,6 +47,8 @@ export async function writeMockOpenApiFromUpstream(options: {
   };
 
   const outputPath = join(options.targetDir, 'docs/mock-api.openapi.json');
+  const { mkdir } = await import('node:fs/promises');
+  await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(document, null, 2)}\n`, 'utf8');
   return outputPath;
 }

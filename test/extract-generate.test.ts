@@ -34,11 +34,11 @@ describe('resolveDependencyClosure', () => {
     expect(closure.packageNames.has('@vben/backend-mock')).toBe(false);
   });
 
-  it('does not fail when includeMock is true but mock package is absent in fixture', async () => {
+  it('includes backend-mock when includeMock is true', async () => {
     const manifest = await parseWorkspaceManifest(fixtureRoot);
     const closure = resolveDependencyClosure(manifest, 'web-naive', { includeMock: true });
 
-    expect(closure.packageNames.has('@vben/backend-mock')).toBe(false);
+    expect(closure.packageNames.has('@vben/backend-mock')).toBe(true);
     expect(closure.packageNames.has('@vben/web-naive')).toBe(true);
   });
 });

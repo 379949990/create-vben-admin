@@ -89,15 +89,11 @@ export async function createProject(options: ResolvedCliOptions): Promise<void> 
       includeMock: options.includeMock,
     });
 
-    if (!options.includeMock) {
-      const openApiPath = await writeMockOpenApiFromUpstream({
-        upstreamRoot,
-        targetDir: options.targetDir,
-      });
-      openApiRelativePath = openApiPath
-        ? openApiPath.slice(options.targetDir.length + 1)
-        : undefined;
-    }
+    const openApiPath = await writeMockOpenApiFromUpstream({
+      upstreamRoot,
+      targetDir: options.targetDir,
+    });
+    openApiRelativePath = openApiPath ? openApiPath.slice(options.targetDir.length + 1) : undefined;
 
     await writeRemoveMockScript({ templatesDir, targetDir: options.targetDir });
     await appendRemoveMockScriptToPackageJson(options.targetDir);

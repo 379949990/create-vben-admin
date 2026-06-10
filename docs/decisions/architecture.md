@@ -29,7 +29,7 @@
 4. planFlatOutput(closure) → FilePlan[]
 5. transformPackageJson(each) → catalog: → semver；保留 workspace:*
    - 根 devDependencies：从闭包 scripts + upstream 根 devDeps **推导 hoist**（`derive-root-dev-deps.ts`）
-6. writeFiles(targetDir, plan) → patch `.env.development` · 可选 OpenAPI · remove-mock 脚本 · README
+6. writeFiles(targetDir, plan) → patch `.env.development` · OpenAPI · remove-mock 脚本 · README
 7. pnpm install → runWorkspaceStub → assertVendorBuildArtifacts（失败则生成失败）
 ```
 

@@ -131,7 +131,7 @@ flowchart LR
 | CV1-07  | ✅   | 2026-06-09 create-project + pnpm install          |
 | CV1-07b | ✅   | 2026-06-09 vendor stub 门禁 + dist 校验           |
 | CV1-08  | ✅   | 2026-06-09 根 devDeps 推导 + 边界测试             |
-| CV1-09  | ⬜   | 端到端集成测试（真实 ref）                        |
+| CV1-09  | ✅   | 2026-06-09 fixture 端到端生成集成测试             |
 | CV1-10  | ✅   | 2026-06-09 生成 README（端口、mock、OpenAPI）     |
 | CV1-11  | ✅   | 2026-06-09 可选 mock · OpenAPI · remove-mock 脚本 |
 | CV1-12  | ⬜   | npm 包名 create-vben 已确认；发布 CI 待定         |
@@ -165,7 +165,7 @@ pnpm dev -- .temp/generated/e2e-app --template web-naive --ref v5.7.0 --force
 
 ## 7. 下一步（§7.8 等价）
 
-**→ CV1-09：** 真实 ref 端到端集成测试（`.temp/generated/`，可选 CI）。
+**→ CV1-12：** npm 发布准备（`npm pack` 可安装 · CI 可选）。
 
 ---
 

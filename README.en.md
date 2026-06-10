@@ -58,13 +58,13 @@ pnpm dev
 
 ## Defaults
 
-| Topic          | Behavior                                                                                     |
-| -------------- | -------------------------------------------------------------------------------------------- |
-| Layout         | Flat app at repo root; `packages/` / `internal/` kept for build                              |
-| upstream ref   | Latest release tag (`--ref` to override)                                                     |
-| backend-mock   | **Excluded by default**; use `--mock` or confirm in prompts; OpenAPI reference when excluded |
-| After generate | Auto `pnpm install`                                                                          |
-| Cache          | `~/.create-vben-cache/` (`CREATE_VBEN_CACHE` to override)                                    |
+| Topic          | Behavior                                                                                        |
+| -------------- | ----------------------------------------------------------------------------------------------- |
+| Layout         | Flat app at repo root; `packages/` / `internal/` kept for build                                 |
+| upstream ref   | Latest release tag (`--ref` to override)                                                        |
+| backend-mock   | **Excluded by default**; use `--mock` or confirm in prompts; OpenAPI reference always generated |
+| After generate | Auto `pnpm install`                                                                             |
+| Cache          | `~/.create-vben-cache/` (`CREATE_VBEN_CACHE` to override)                                       |
 
 ## Develop this repo
 

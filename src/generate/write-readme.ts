@@ -79,6 +79,8 @@ function buildReadmeSections(options: {
     ? '| `pnpm run remove-mock` | Remove mock server |'
     : '';
 
+  const { apiSectionZh, apiSectionEn } = buildApiSections(options.openApiRelativePath);
+
   if (options.includeMock) {
     return {
       devServerNoteZh,
@@ -119,12 +121,10 @@ This repo includes [\`scripts/remove-mock.mjs\`](./scripts/remove-mock.mjs). Whe
 Or manually: set \`VITE_NITRO_MOCK=false\` and delete \`apps/backend-mock/\`.
 
 If you no longer need the helper, delete \`scripts/remove-mock.mjs\` and remove the \`remove-mock\` script from \`package.json\`.`,
-      apiSectionZh: '',
-      apiSectionEn: '',
+      apiSectionZh,
+      apiSectionEn,
     };
   }
-
-  const openApiPath = options.openApiRelativePath ?? 'docs/mock-api.openapi.json';
 
   return {
     devServerNoteZh,
@@ -143,20 +143,29 @@ If you no longer need the helper, delete \`scripts/remove-mock.mjs\` and remove 
 
 - \`VITE_NITRO_MOCK=false\` in \`.env.development\` (already set)
 - API prefix: \`VITE_GLOB_API_URL\` (default \`/api\`) — point Vite proxy or your gateway to your service`,
+    apiSectionZh,
+    apiSectionEn,
+  };
+}
+
+function buildApiSections(openApiRelativePath?: string) {
+  const openApiPath = openApiRelativePath ?? 'docs/mock-api.openapi.json';
+
+  return {
     apiSectionZh: `## API 参考（OpenAPI）
 
-已从 upstream \`backend-mock\` 路由生成 **OpenAPI 3.0** 清单（仅作接口参考，不含实现）：
+已从 upstream \`backend-mock\` 路由生成 **OpenAPI 3.0** 清单（仅作接口参考，不含 handler 实现）：
 
 - 文件：[\`${openApiPath}\`](./${openApiPath})
-- 默认 Mock 基址（若自建）：\`http://localhost:5320/api\`
+- 默认 Mock 基址：**http://localhost:5320/api**
 
 导入 Apifox：项目设置 → 导入 → OpenAPI → 选择上述 JSON 文件。`,
     apiSectionEn: `## API reference (OpenAPI)
 
-An **OpenAPI 3.0** route inventory was generated from upstream \`backend-mock\` (reference only, no server):
+An **OpenAPI 3.0** route inventory was generated from upstream \`backend-mock\` (reference only, no handler code):
 
 - File: [\`${openApiPath}\`](./${openApiPath})
-- Default mock base if you host one: \`http://localhost:5320/api\`
+- Default mock base URL: **http://localhost:5320/api**
 
 Import into Apifox: Project settings → Import → OpenAPI → select the JSON file.`,
   };

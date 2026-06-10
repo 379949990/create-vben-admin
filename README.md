@@ -71,13 +71,13 @@ pnpm dev
 
 ## 默认行为
 
-| 项           | 说明                                                                     |
-| ------------ | ------------------------------------------------------------------------ |
-| 输出布局     | 单 package 扁平（app 在根，`packages/` / `internal/` 保留）              |
-| upstream ref | 最新 release tag（可用 `--ref` 覆盖）                                    |
-| backend-mock | **默认不包含**；`--mock` 或交互确认时包含；不含 mock 时生成 OpenAPI 参考 |
-| 生成后       | 自动执行 `pnpm install`                                                  |
-| 缓存         | `~/.create-vben-cache/`（`CREATE_VBEN_CACHE` 可覆盖）                    |
+| 项           | 说明                                                                 |
+| ------------ | -------------------------------------------------------------------- |
+| 输出布局     | 单 package 扁平（app 在根，`packages/` / `internal/` 保留）          |
+| upstream ref | 最新 release tag（可用 `--ref` 覆盖）                                |
+| backend-mock | **默认不包含**；`--mock` 或交互确认时包含；始终生成 OpenAPI 接口参考 |
+| 生成后       | 自动执行 `pnpm install`                                              |
+| 缓存         | `~/.create-vben-cache/`（`CREATE_VBEN_CACHE` 可覆盖）                |
 
 ## 本仓库开发
 
