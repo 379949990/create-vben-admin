@@ -31,6 +31,15 @@ describe('resolveDependencyClosure', () => {
     expect(closure.packageNames.has('@vben/vite-config')).toBe(true);
     expect(closure.packageNames.has('@vben/tsconfig')).toBe(true);
     expect(closure.packageNames.has('@vben/tailwind-config')).toBe(true);
+    expect(closure.packageNames.has('@vben/backend-mock')).toBe(false);
+  });
+
+  it('does not fail when includeMock is true but mock package is absent in fixture', async () => {
+    const manifest = await parseWorkspaceManifest(fixtureRoot);
+    const closure = resolveDependencyClosure(manifest, 'web-naive', { includeMock: true });
+
+    expect(closure.packageNames.has('@vben/backend-mock')).toBe(false);
+    expect(closure.packageNames.has('@vben/web-naive')).toBe(true);
   });
 });
 

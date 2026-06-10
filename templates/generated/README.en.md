@@ -17,29 +17,37 @@ This repo uses a **flat layout**: application code lives at the repository root;
 ## Quick start
 
 ```bash
+pnpm install   # skip if already done during create-vben
 pnpm dev
 ```
 
-Open the local URL printed in the terminal (typically `http://localhost:5173`).
+{{devServerNoteEn}}
 
 ## Scripts
 
-| Command          | Description              |
-| ---------------- | ------------------------ |
-| `pnpm dev`       | Development server       |
-| `pnpm build`     | Production build         |
-| `pnpm preview`   | Preview production build |
-| `pnpm typecheck` | TypeScript check         |
+| Command                     | Description                    |
+| --------------------------- | ------------------------------ |
+| `pnpm dev`                  | Development server             |
+| `pnpm build`                | Production build               |
+| `pnpm preview`              | Preview production build       |
+| `pnpm typecheck`            | TypeScript check               |
+| `pnpm run thin:remove-mock` | Remove mock server (see below) |
+
+{{mockSectionEn}}
+
+{{apiSectionEn}}
+
+{{thinSectionEn}}
 
 ## Notes
 
-- **`backend-mock` is not included** by default; wire your own API in Vite config / env when needed.
 - Other `apps/web-*` templates from upstream are not copied.
 - To refresh the vben baseline, re-run create-vben with a newer upstream ref or merge upstream changes manually.
 
 ## Links
 
 - [Vben Admin docs](https://doc.vben.pro/)
+- [Vben thin guide](https://doc.vben.pro/guide/introduction/thin.html)
 - [vue-vben-admin]({{upstreamRepo}})
 - [create-vben]({{createVbenRepo}})
 

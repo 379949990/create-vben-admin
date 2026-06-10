@@ -16,6 +16,7 @@ export async function planFlatGeneration(options: {
   targetDir: string;
   templateId: VbenTemplateId;
   ref: string;
+  includeMock: boolean;
   closure: DependencyClosure;
   manifest: WorkspaceManifest;
 }): Promise<GenerationPlan> {
@@ -64,6 +65,7 @@ export async function planFlatGeneration(options: {
     templateId: options.templateId,
     templatePackageName,
     ref: options.ref,
+    includeMock: options.includeMock,
     files,
     closure: options.closure,
   };

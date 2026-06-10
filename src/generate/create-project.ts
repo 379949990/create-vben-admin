@@ -10,12 +10,19 @@ import { resolveDependencyClosure } from '../extract/resolve-deps.js';
 import { assertSafeProjectTarget } from '../utils/project-path.js';
 import { assertWritableTargetDirectory } from '../utils/fs.js';
 import { planFlatGeneration } from './flatten.js';
+import {
+  patchDevelopmentEnv,
+  readDevelopmentPort,
+  writeMockOpenApiFromUpstream,
+  writeThinProjectScript,
+} from './project-extras.js';
 import { transformGeneratedPackageJsons } from './transform-package-json.js';
-import { writeGeneratedReadme } from './write-readme.js';
+import { appendThinScriptToPackageJson, writeGeneratedReadme } from './write-readme.js';
 import { assertVendorBuildArtifacts, runWorkspaceStub } from './vendor-stub.js';
 import { summarizeGenerationPlan, writeGenerationPlan } from './write-files.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const templatesDir = join(__dirname, '../../templates');
 const createVbenVersion = JSON.parse(
   readFileSync(join(__dirname, '../../package.json'), 'utf8'),
 ) as { version: string };
@@ -47,12 +54,15 @@ export async function createProject(options: ResolvedCliOptions): Promise<void> 
   }
 
   const manifest = await parseWorkspaceManifest(upstreamRoot);
-  const closure = resolveDependencyClosure(manifest, options.template);
+  const closure = resolveDependencyClosure(manifest, options.template, {
+    includeMock: options.includeMock,
+  });
   const plan = await planFlatGeneration({
     upstreamRoot,
     targetDir: options.targetDir,
     templateId: options.template,
     ref: resolvedRef,
+    includeMock: options.includeMock,
     closure,
     manifest,
   });
@@ -65,6 +75,8 @@ export async function createProject(options: ResolvedCliOptions): Promise<void> 
   const writeSpinner = p.spinner();
   writeSpinner.start('Writing project files…');
 
+  let openApiRelativePath: string | undefined;
+
   try {
     await writeGenerationPlan(plan);
     await transformGeneratedPackageJsons({
@@ -72,12 +84,35 @@ export async function createProject(options: ResolvedCliOptions): Promise<void> 
       manifest,
       packageName: options.packageName,
     });
+    await patchDevelopmentEnv({
+      targetDir: options.targetDir,
+      includeMock: options.includeMock,
+    });
+
+    if (!options.includeMock) {
+      const openApiPath = await writeMockOpenApiFromUpstream({
+        upstreamRoot,
+        targetDir: options.targetDir,
+      });
+      openApiRelativePath = openApiPath
+        ? openApiPath.slice(options.targetDir.length + 1)
+        : undefined;
+    }
+
+    await writeThinProjectScript({ templatesDir, targetDir: options.targetDir });
+    await appendThinScriptToPackageJson(options.targetDir);
+
+    const devPort = await readDevelopmentPort(options.targetDir);
+
     await writeGeneratedReadme({
       targetDir: options.targetDir,
       packageName: options.packageName,
       templateId: options.template,
       ref: resolvedRef,
       createVbenVersion: createVbenVersion.version,
+      includeMock: options.includeMock,
+      devPort,
+      openApiRelativePath,
     });
     writeSpinner.stop('Project files written');
   } catch (error) {

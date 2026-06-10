@@ -51,18 +51,20 @@ pnpm dev
 | `-t, --template` | Template ID                                                  |
 | `-r, --ref`      | upstream ref; default **latest GitHub release tag**          |
 | `--offline`      | Use cache only                                               |
+| `--mock`         | Include `apps/backend-mock` (Nitro Mock)                     |
+| `--no-mock`      | Exclude mock (default; skips prompt in non-interactive mode) |
 | `--force`        | Overwrite non-empty target                                   |
 | `--dry-run`      | Plan only, no writes                                         |
 
 ## Defaults
 
-| Topic          | Behavior                                                        |
-| -------------- | --------------------------------------------------------------- |
-| Layout         | Flat app at repo root; `packages/` / `internal/` kept for build |
-| upstream ref   | Latest release tag (`--ref` to override)                        |
-| backend-mock   | **Not included**                                                |
-| After generate | Auto `pnpm install`                                             |
-| Cache          | `~/.create-vben-cache/` (`CREATE_VBEN_CACHE` to override)       |
+| Topic          | Behavior                                                                                     |
+| -------------- | -------------------------------------------------------------------------------------------- |
+| Layout         | Flat app at repo root; `packages/` / `internal/` kept for build                              |
+| upstream ref   | Latest release tag (`--ref` to override)                                                     |
+| backend-mock   | **Excluded by default**; use `--mock` or confirm in prompts; OpenAPI reference when excluded |
+| After generate | Auto `pnpm install`                                                                          |
+| Cache          | `~/.create-vben-cache/` (`CREATE_VBEN_CACHE` to override)                                    |
 
 ## Develop this repo
 

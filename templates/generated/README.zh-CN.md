@@ -17,29 +17,37 @@
 ## 快速开始
 
 ```bash
+pnpm install   # 若生成时已完成可跳过
 pnpm dev
 ```
 
-浏览器访问终端输出的本地地址（通常为 `http://localhost:5173`）。
+{{devServerNoteZh}}
 
 ## 常用命令
 
-| 命令             | 说明                |
-| ---------------- | ------------------- |
-| `pnpm dev`       | 开发模式            |
-| `pnpm build`     | 生产构建            |
-| `pnpm preview`   | 预览构建产物        |
-| `pnpm typecheck` | TypeScript 类型检查 |
+| 命令                        | 说明                     |
+| --------------------------- | ------------------------ |
+| `pnpm dev`                  | 开发模式                 |
+| `pnpm build`                | 生产构建                 |
+| `pnpm preview`              | 预览构建产物             |
+| `pnpm typecheck`            | TypeScript 类型检查      |
+| `pnpm run thin:remove-mock` | 移除 Mock 服务（见下文） |
 
-## 说明
+{{mockSectionZh}}
 
-- 默认 **不包含** `backend-mock`；需对接真实 API 时请自行配置 `vite.config` / 环境变量。
+{{apiSectionZh}}
+
+{{thinSectionZh}}
+
+## 其他说明
+
 - 未选中的其他 `apps/web-*` 模板不会出现在本仓库。
 - 需要更新 vben 基线时，可使用 create-vben 指定新的 upstream ref 重新生成，或手动合并 upstream 变更。
 
-## 上游与工具
+## 链接
 
 - [Vben Admin 文档](https://doc.vben.pro/)
+- [Vben 精简指南](https://doc.vben.pro/guide/introduction/thin.html)
 - [vue-vben-admin]({{upstreamRepo}})
 - [create-vben]({{createVbenRepo}})
 

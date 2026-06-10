@@ -62,7 +62,7 @@ cd my-app && pnpm install && pnpm dev
 - 修改 upstream 源码或 fork 长期维护
 - 生成物与官方 Monorepo **行为完全一致**（允许 sensible 简化，须文档说明）
 - 多模板同时生成
-- `backend-mock` 默认打包（可选 flag，CV1-11 再议）
+- `backend-mock` 默认不包含；生成时可交互选择或 `--mock` / `--no-mock`
 
 ---
 
@@ -120,21 +120,21 @@ flowchart LR
 
 ## 4. 进度表
 
-| 步骤    | 状态 | 备注                                      |
-| ------- | ---- | ----------------------------------------- |
-| CV1-01  | ✅   | 2026-06-09 脚手架与规范文档               |
-| CV1-02  | ✅   | 2026-06-09 Q2/Q6 定稿 vben-source-sync    |
-| CV1-03  | ✅   | 2026-06-09 fetch-upstream + 缓存          |
-| CV1-04  | ✅   | 2026-06-09 parse-workspace + fixture      |
-| CV1-05  | ✅   | 2026-06-09 Q1 扁平输出 + resolve-deps     |
-| CV1-06  | ✅   | 2026-06-09 flatten + transform            |
-| CV1-07  | ✅   | 2026-06-09 create-project + pnpm install  |
-| CV1-07b | ✅   | 2026-06-09 vendor stub 门禁 + dist 校验   |
-| CV1-08  | ✅   | 2026-06-09 根 devDeps 推导 + 边界测试     |
-| CV1-09  | ⬜   | 端到端集成测试（真实 ref）                |
-| CV1-10  | ✅   | 2026-06-09 生成 README 片段               |
-| CV1-11  | ⬜   | 不含 backend-mock（Q3 已确认，无需 flag） |
-| CV1-12  | ⬜   | npm 包名 create-vben 已确认；发布 CI 待定 |
+| 步骤    | 状态 | 备注                                                    |
+| ------- | ---- | ------------------------------------------------------- |
+| CV1-01  | ✅   | 2026-06-09 脚手架与规范文档                             |
+| CV1-02  | ✅   | 2026-06-09 Q2/Q6 定稿 vben-source-sync                  |
+| CV1-03  | ✅   | 2026-06-09 fetch-upstream + 缓存                        |
+| CV1-04  | ✅   | 2026-06-09 parse-workspace + fixture                    |
+| CV1-05  | ✅   | 2026-06-09 Q1 扁平输出 + resolve-deps                   |
+| CV1-06  | ✅   | 2026-06-09 flatten + transform                          |
+| CV1-07  | ✅   | 2026-06-09 create-project + pnpm install                |
+| CV1-07b | ✅   | 2026-06-09 vendor stub 门禁 + dist 校验                 |
+| CV1-08  | ✅   | 2026-06-09 根 devDeps 推导 + 边界测试                   |
+| CV1-09  | ⬜   | 端到端集成测试（真实 ref）                              |
+| CV1-10  | ✅   | 2026-06-09 生成 README（端口、mock、OpenAPI、精简脚本） |
+| CV1-11  | ✅   | 2026-06-09 可选 mock · OpenAPI · thin-project 脚本      |
+| CV1-12  | ⬜   | npm 包名 create-vben 已确认；发布 CI 待定               |
 
 ---
 
@@ -144,7 +144,7 @@ flowchart LR
 | --- | --------------------------------------------------------------- | -------- | ---- |
 | Q1  | 生成物结构：**单 package 扁平**                                 | CV1-05   | ✅   |
 | Q2  | 默认 upstream ref：**最新 release tag**                         | CV1-02   | ✅   |
-| Q3  | 是否默认包含 `backend-mock`：**否**                             | CV1-11   | ✅   |
+| Q3  | 是否默认包含 `backend-mock`：**否**（生成时可选 `--mock`）      | CV1-11   | ✅   |
 | Q4  | npm 发布：**create-vben**（无 scope）                           | CV1-12   | ✅   |
 | Q5  | 生成后 **自动 pnpm install**                                    | CV1-07   | ✅   |
 | Q6  | GitHub token：**v1.0.0 默认不用**；后续支持用户配置（长期计划） | CV1-03   | ✅   |
@@ -166,14 +166,6 @@ pnpm dev -- .temp/generated/e2e-app --template web-naive --ref v5.7.0 --force
 ## 7. 下一步（§7.8 等价）
 
 **→ CV1-09：** 真实 ref 端到端集成测试（`.temp/generated/`，可选 CI）。
-
-新开 Agent 时复制：
-
-```
-项目：/Users/wb_hc/H-Zone/DEV/create-vben
-读：AGENTS.md → create-vben-core.mdc → 本文 CV1-09
-已决：P0 vendor stub · CV1-08 根 devDeps 推导
-```
 
 ---
 

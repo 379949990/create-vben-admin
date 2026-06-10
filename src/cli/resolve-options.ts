@@ -8,6 +8,8 @@ export interface CliFlags {
   projectPath?: string;
   template?: string;
   ref?: string;
+  mock?: boolean;
+  noMock?: boolean;
   offline: boolean;
   force: boolean;
   dryRun: boolean;
@@ -18,6 +20,7 @@ export interface ResolvedCliOptions {
   packageName: string;
   template: VbenTemplateId;
   ref: string;
+  includeMock: boolean;
   offline: boolean;
   force: boolean;
   dryRun: boolean;
@@ -72,6 +75,8 @@ export async function resolveOptions(flags: CliFlags): Promise<ResolvedCliOption
     template = selected;
   }
 
+  const includeMock = await resolveIncludeMock(flags);
+
   p.outro('Ready to generate');
 
   const ref = await resolveUpstreamRef(flags.ref);
@@ -81,8 +86,35 @@ export async function resolveOptions(flags: CliFlags): Promise<ResolvedCliOption
     packageName,
     template,
     ref,
+    includeMock,
     offline: flags.offline,
     force: flags.force,
     dryRun: flags.dryRun,
   };
+}
+
+async function resolveIncludeMock(flags: CliFlags): Promise<boolean> {
+  if (flags.mock && flags.noMock) {
+    throw new Error('Use either --mock or --no-mock, not both.');
+  }
+
+  if (flags.mock) {
+    return true;
+  }
+
+  if (flags.noMock) {
+    return false;
+  }
+
+  const selected = await p.confirm({
+    message: 'Include Nitro mock server (apps/backend-mock)?',
+    initialValue: false,
+  });
+
+  if (isCancel(selected)) {
+    p.cancel('Operation cancelled.');
+    process.exit(0);
+  }
+
+  return selected;
 }

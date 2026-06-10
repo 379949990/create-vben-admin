@@ -40,7 +40,10 @@ export const VBEN_BUILD_TOOL_PACKAGES = [
   '@vben/tailwind-config',
 ] as const;
 
-/** Never included in generated projects (Q3). */
-export const VBEN_EXCLUDED_PACKAGE_NAMES = ['@vben/backend-mock'] as const;
+/** Optional Nitro mock workspace app (user choice at generate time). */
+export const VBEN_BACKEND_MOCK_PACKAGE = '@vben/backend-mock';
+
+/** Excluded unless user opts in via --mock / interactive prompt. */
+export const VBEN_OPT_IN_PACKAGE_NAMES = [VBEN_BACKEND_MOCK_PACKAGE] as const;
 
 export const CLI_CACHE_DIR = '.create-vben-cache';

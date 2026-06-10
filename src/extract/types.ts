@@ -42,6 +42,7 @@ export interface GenerationPlan {
   templateId: string;
   templatePackageName: string;
   ref: string;
+  includeMock: boolean;
   files: FileCopyEntry[];
   closure: DependencyClosure;
 }

@@ -25,12 +25,12 @@
 3. resolveDependencyClosure(templateApp) → Set<packageName>
    - 递归 workspace 包
    - 附加 @vben/vite-config / @vben/tsconfig / @vben/tailwind-config
-   - 排除 backend-mock
+   - `@vben/backend-mock`：默认排除；`--mock` 或交互确认时纳入
 4. planFlatOutput(closure) → FilePlan[]
 5. transformPackageJson(each) → catalog: → semver；保留 workspace:*
    - 根 devDependencies：从闭包 scripts + upstream 根 devDeps **推导 hoist**（`derive-root-dev-deps.ts`）
-6. writeFiles(targetDir, plan) → pnpm install
-7. runWorkspaceStub → assertVendorBuildArtifacts（失败则生成失败）
+6. writeFiles(targetDir, plan) → patch `.env.development` · 可选 OpenAPI · thin 脚本 · README
+7. pnpm install → runWorkspaceStub → assertVendorBuildArtifacts（失败则生成失败）
 ```
 
 ---
@@ -56,7 +56,9 @@ my-app/
 
 - 用户感知为 **单应用仓库**（根目录即 app）
 - `packages/` / `internal/` 为构建所需 vendor，非第二套业务 app
-- 不复制其他 `apps/web-*`、不复制 `backend-mock`
+- 不复制其他 `apps/web-*`
+- `backend-mock` 默认不复制；用户选择 `--mock` 时复制至 `apps/backend-mock/`
+- 生成物附带 `scripts/thin-project.mjs`（参考 [Vben 精简指南](https://doc.vben.pro/guide/introduction/thin.html)）及 README 说明
 
 ---
 
@@ -65,9 +67,10 @@ my-app/
 1. 起点：`apps/{template}/package.json`（`@vben/web-*`）
 2. 遍历 `dependencies` / `devDependencies` / `peerDependencies` / `optionalDependencies` 中 `workspace:*`
 3. 始终并入：`@vben/vite-config`、`@vben/tsconfig`、`@vben/tailwind-config`
-4. 跳过：`@vben/backend-mock` 及未选中的其他 app
-5. `catalog:` → 从 `pnpm-workspace.yaml` 的 `catalog` 段解析为具体 semver
-6. **根 devDependencies hoist：** 扫描闭包内 `stub` / `build` / app scripts 与 workspace 包 devDeps 中的外部工具名，与 upstream 根 `devDependencies` 取交集后写入生成物根 `package.json`（见 `derive-root-dev-deps.ts`）
+4. `@vben/backend-mock`：默认跳过；`includeMock: true` 时作为 seed 纳入闭包
+5. 跳过未选中的其他 app
+6. `catalog:` → 从 `pnpm-workspace.yaml` 的 `catalog` 段解析为具体 semver
+7. **根 devDependencies hoist：** 扫描闭包内 `stub` / `build` / app scripts 与 workspace 包 devDeps 中的外部工具名，与 upstream 根 `devDependencies` 取交集后写入生成物根 `package.json`（见 `derive-root-dev-deps.ts`）
 
 ---
 

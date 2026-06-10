@@ -64,18 +64,20 @@ pnpm dev
 | `-t, --template` | UI 模板 ID                                             |
 | `-r, --ref`      | upstream ref；默认 **最新 GitHub release tag**         |
 | `--offline`      | 仅使用本地缓存                                         |
+| `--mock`         | 包含 `apps/backend-mock`（Nitro Mock）                 |
+| `--no-mock`      | 不包含 mock（默认；非交互时跳过询问）                  |
 | `--force`        | 覆盖非空目标目录                                       |
 | `--dry-run`      | 只解析计划，不写文件                                   |
 
 ## 默认行为
 
-| 项           | 说明                                                        |
-| ------------ | ----------------------------------------------------------- |
-| 输出布局     | 单 package 扁平（app 在根，`packages/` / `internal/` 保留） |
-| upstream ref | 最新 release tag（可用 `--ref` 覆盖）                       |
-| backend-mock | **不包含**                                                  |
-| 生成后       | 自动执行 `pnpm install`                                     |
-| 缓存         | `~/.create-vben-cache/`（`CREATE_VBEN_CACHE` 可覆盖）       |
+| 项           | 说明                                                                     |
+| ------------ | ------------------------------------------------------------------------ |
+| 输出布局     | 单 package 扁平（app 在根，`packages/` / `internal/` 保留）              |
+| upstream ref | 最新 release tag（可用 `--ref` 覆盖）                                    |
+| backend-mock | **默认不包含**；`--mock` 或交互确认时包含；不含 mock 时生成 OpenAPI 参考 |
+| 生成后       | 自动执行 `pnpm install`                                                  |
+| 缓存         | `~/.create-vben-cache/`（`CREATE_VBEN_CACHE` 可覆盖）                    |
 
 ## 本仓库开发
 

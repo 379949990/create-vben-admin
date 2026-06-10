@@ -1,6 +1,7 @@
 import {
+  VBEN_BACKEND_MOCK_PACKAGE,
   VBEN_BUILD_TOOL_PACKAGES,
-  VBEN_EXCLUDED_PACKAGE_NAMES,
+  VBEN_OPT_IN_PACKAGE_NAMES,
   VBEN_TEMPLATE_PACKAGE_NAME,
   type VbenTemplateId,
 } from '../core/constants.js';
@@ -13,9 +14,14 @@ const DEPENDENCY_FIELDS = [
   'optionalDependencies',
 ] as const;
 
+export interface ResolveDependencyClosureOptions {
+  includeMock?: boolean;
+}
+
 export function resolveDependencyClosure(
   manifest: WorkspaceManifest,
   templateId: VbenTemplateId,
+  options: ResolveDependencyClosureOptions = {},
 ): DependencyClosure {
   const startName = VBEN_TEMPLATE_PACKAGE_NAME[templateId];
   const startPackage = manifest.packageByName.get(startName);
@@ -25,14 +31,20 @@ export function resolveDependencyClosure(
   }
 
   const packageNames = new Set<string>();
-  const queue = [startPackage.name, ...VBEN_BUILD_TOOL_PACKAGES];
+  const seeds = [startPackage.name, ...VBEN_BUILD_TOOL_PACKAGES];
 
-  for (const seed of queue) {
+  if (options.includeMock) {
+    seeds.push(VBEN_BACKEND_MOCK_PACKAGE);
+  }
+
+  for (const seed of seeds) {
     collectWorkspaceDependencies(seed, manifest, packageNames);
   }
 
-  for (const excluded of VBEN_EXCLUDED_PACKAGE_NAMES) {
-    packageNames.delete(excluded);
+  if (!options.includeMock) {
+    for (const excluded of VBEN_OPT_IN_PACKAGE_NAMES) {
+      packageNames.delete(excluded);
+    }
   }
 
   const packages = [...packageNames]

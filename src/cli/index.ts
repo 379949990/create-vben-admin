@@ -28,6 +28,8 @@ export async function runCli(argv: string[]): Promise<void> {
       '-r, --ref <ref>',
       'Upstream git ref (tag / branch / commit); default: latest release tag',
     )
+    .option('--mock', 'Include apps/backend-mock (Nitro mock server)')
+    .option('--no-mock', 'Do not include backend-mock (default)')
     .option('--offline', 'Use cached upstream snapshot only')
     .option('--force', 'Overwrite non-empty target directory')
     .option('--dry-run', 'Resolve and print plan without writing files')
@@ -36,6 +38,8 @@ export async function runCli(argv: string[]): Promise<void> {
         projectPath,
         template: flags.template,
         ref: flags.ref,
+        mock: flags.mock ?? false,
+        noMock: flags.noMock ?? false,
         offline: flags.offline ?? false,
         force: flags.force ?? false,
         dryRun: flags.dryRun ?? false,

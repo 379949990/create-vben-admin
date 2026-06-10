@@ -36,6 +36,7 @@ export function summarizeGenerationPlan(plan: GenerationPlan): string {
     `Template: ${plan.templateId}`,
     `Upstream ref: ${plan.ref}`,
     `Target: ${plan.targetDir}`,
+    `Mock server: ${plan.includeMock ? 'included' : 'excluded'}`,
     `Packages: ${plan.closure.packages.length}`,
     `Files: ${plan.files.length}`,
     '',
