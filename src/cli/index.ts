@@ -1,13 +1,11 @@
 import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { Command } from 'commander';
 import { cyan, dim } from 'kolorist';
+import { getPackagePath } from '../core/package-root.js';
 import { createProject } from '../generate/create-project.js';
 import { resolveOptions } from './resolve-options.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const pkg = JSON.parse(readFileSync(join(__dirname, '../../package.json'), 'utf8')) as {
+const pkg = JSON.parse(readFileSync(getPackagePath('package.json'), 'utf8')) as {
   version: string;
 };
 

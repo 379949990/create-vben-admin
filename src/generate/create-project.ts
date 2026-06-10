@@ -1,9 +1,8 @@
 import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import * as p from '@clack/prompts';
 import { execa } from 'execa';
 import type { ResolvedCliOptions } from '../cli/resolve-options.js';
+import { getPackagePath } from '../core/package-root.js';
 import { fetchUpstreamSnapshot } from '../extract/fetch-upstream.js';
 import { parseWorkspaceManifest } from '../extract/parse-workspace.js';
 import { resolveDependencyClosure } from '../extract/resolve-deps.js';
@@ -21,11 +20,10 @@ import { appendRemoveMockScriptToPackageJson, writeGeneratedReadme } from './wri
 import { assertVendorBuildArtifacts, runWorkspaceStub } from './vendor-stub.js';
 import { summarizeGenerationPlan, writeGenerationPlan } from './write-files.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const templatesDir = join(__dirname, '../../templates');
-const createVbenVersion = JSON.parse(
-  readFileSync(join(__dirname, '../../package.json'), 'utf8'),
-) as { version: string };
+const templatesDir = getPackagePath('templates');
+const createVbenVersion = JSON.parse(readFileSync(getPackagePath('package.json'), 'utf8')) as {
+  version: string;
+};
 
 export async function createProject(options: ResolvedCliOptions): Promise<void> {
   assertSafeProjectTarget(options.targetDir);

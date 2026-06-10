@@ -1,12 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 import { CREATE_VBEN_META } from '../core/meta.js';
+import { getPackagePath } from '../core/package-root.js';
 import { type VbenTemplateId } from '../core/constants.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const GENERATED_DIR = join(__dirname, '../../templates/generated');
+const GENERATED_DIR = getPackagePath('templates/generated');
 
 const TEMPLATE_LABELS: Record<VbenTemplateId, { zh: string; en: string }> = {
   'web-antd': { zh: 'Ant Design Vue', en: 'Ant Design Vue' },
