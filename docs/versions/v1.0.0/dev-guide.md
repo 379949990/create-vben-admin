@@ -9,6 +9,7 @@
 | ------------ | ----------------------------------------------------------------- |
 | 版本         | 1.0                                                               |
 | **工作分支** | **`v1.0.0`**                                                      |
+| **发版 Tag** | **`Version_1.0.0`**（格式 `Version_X.Y.Z`）                       |
 | **集成分支** | **`dev`**                                                         |
 | 产品 PRD     | [`product/PRD_create-vben.md`](product/PRD_create-vben.md)        |
 | upstream     | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin) |
@@ -165,7 +166,7 @@ pnpm dev -- .temp/generated/e2e-app --template web-naive --ref v5.7.0 --force
 
 ## 7. 下一步（§7.8 等价）
 
-**→ 发版：** 合并 `v1.0.0` → `dev` → squash `main` → 打 tag `v1.0.0` 并 push → CI 发布 npm + GitHub Release。见 [`npm-publish.md`](../../decisions/npm-publish.md)。
+**→ 发版：** 合并 `v1.0.0` → `dev` → 打 tag `Version_1.0.0` 并 push → CI 发布 npm + squash `main`。见 [`npm-publish.md`](../../decisions/npm-publish.md)。
 
 ---
 

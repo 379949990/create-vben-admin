@@ -12,6 +12,7 @@
 | 应用版本             | `1.0.0`（`package.json`）                                              |
 | **集成分支**         | **`dev`**                                                              |
 | **当前工作分支**     | **`v1.0.0`**                                                           |
+| **发版 Tag 命名**    | **`Version_X.Y.Z`**（如 `Version_1.0.0`）                              |
 | **版本开发分支命名** | **`vX.Y.Z(-*)(_*)`**                                                   |
 | 锚点分支             | `main` · `dev`（**禁止**日常 commit）                                  |
 | Git 规范             | [`docs/decisions/git-workflow.md`](docs/decisions/git-workflow.md)     |
@@ -93,12 +94,12 @@ templates/                      # 生成后补丁（.gitignore、README 片段�
 
 遵循 Cursor 全局规则 **git-version-management**。
 
-| 规则        | 说明                                                            |
-| ----------- | --------------------------------------------------------------- |
-| 日常 commit | 在 **`dev` 切出的 `vX.Y.Z(-*)(_*)` 分支**（当前：**`v1.0.0`**） |
-| 禁止        | 向 **`main`** / **`dev`** 直接提交                              |
-| 合并        | 版本开发分支 → **`dev`** → Tag → squash → **`main`**            |
-| Commit 格式 | [Conventional Commits](https://www.conventionalcommits.org/)    |
+| 规则        | 说明                                                                                       |
+| ----------- | ------------------------------------------------------------------------------------------ |
+| 日常 commit | 在 **`dev` 切出的 `vX.Y.Z(-*)(_*)` 分支**（当前：**`v1.0.0`**；发版 tag：`Version_X.Y.Z`） |
+| 禁止        | 向 **`main`** / **`dev`** 直接提交                                                         |
+| 合并        | 版本开发分支 → **`dev`** → Tag → squash → **`main`**                                       |
+| Commit 格式 | [Conventional Commits](https://www.conventionalcommits.org/)                               |
 
 ---
 
@@ -135,7 +136,7 @@ templates/                      # 生成后补丁（.gitignore、README 片段�
 
 ```
 项目：create-vben（Node CLI · 从 vue-vben-admin 提取单模板脚手架）。
-分支：v1.0.0 → 合并 dev；规范：Core rule + docs/versions/v1.0.0/dev-guide.md。
+分支：v1.0.0 → 合并 dev；发版 tag：Version_1.0.0；规范：Core rule + docs/versions/v1.0.0/dev-guide.md。
 当前：CV1-01 脚手架就绪；下一步 CV1-02 upstream 同步策略。
 上游：https://github.com/vbenjs/vue-vben-admin
 ```

@@ -7,27 +7,35 @@
 
 **格式：** `vX.Y.Z(-*)(_*)`
 
-| 段       | 必填 | 说明                               |
-| -------- | ---- | ---------------------------------- |
-| `vX.Y.Z` | ✅   | 语义化版本，与 npm 发版 / Tag 对齐 |
-| `(-*)`   | 可选 | 连字符 + **自定义**描述            |
-| `(_*)`   | 可选 | 下划线 + **专题** id               |
+| 段       | 必填 | 说明                              |
+| -------- | ---- | --------------------------------- |
+| `vX.Y.Z` | ✅   | 语义化版本，与 npm 发版版本号对齐 |
+| `(-*)`   | 可选 | 连字符 + **自定义**描述           |
+| `(_*)`   | 可选 | 下划线 + **专题** id              |
 
 **合法示例：** `v1.0.0` · `v1.0.0-extract` · `v1.0.1-rc_publish`
 
 **禁止：** `dev/` 前缀（与 ref `dev` 冲突）。
 
+## 发版 Tag 命名
+
+**格式：** `Version_X.Y.Z`（如 `Version_1.0.0`）
+
+- 与分支 `vX.Y.Z` 区分，避免 ref 同名冲突
+- `X.Y.Z` 须与 `package.json` 的 `version` 一致
+- Release workflow 监听 `Version_*` tag push
+
 ## 本仓库分支角色
 
-| 分支 / Tag           | 用途                             |
-| -------------------- | -------------------------------- |
-| `main`               | 对外发布基线；仅 **squash** 增长 |
-| `dev`                | 版本开发分支切出锚点；集成目标   |
-| **`v1.0.0`**         | 当前工作分支：首个可用 CLI       |
-| **`vX.Y.Z(-*)(_*)`** | 自 **`dev`** 切出的日常开发分支  |
-| Tag `v1.0.0`         | 首个正式 CLI 发版锚点            |
+| 分支 / Tag              | 用途                                           |
+| ----------------------- | ---------------------------------------------- |
+| `main`                  | 对外发布基线；仅 **squash** 增长               |
+| `dev`                   | 版本开发分支切出锚点；集成目标                 |
+| **`v1.0.0`**            | 当前工作分支                                   |
+| **`vX.Y.Z(-*)(_*)`**    | 自 **`dev`** 切出的日常开发分支                |
+| Tag **`Version_1.0.0`** | 发版锚点（触发 npm + GitHub Release + squash） |
 
-**合并流向：** `vX.Y.Z(-*)(_*)` → **`dev`** → Tag on **`dev`** → Release workflow（npm + squash **`main`**）
+**合并流向：** `vX.Y.Z(-*)(_*)` → **`dev`** → Tag `Version_X.Y.Z` on **`dev`** → Release workflow（npm + squash **`main`**）
 
 ## 硬约束（Agent / 协作者）
 
@@ -63,8 +71,8 @@ git checkout -b v1.0.0_extract
 
 ```bash
 git checkout dev && git pull origin dev
-git tag -a v1.0.0 -m "Release v1.0.0"
-git push origin refs/tags/v1.0.0
+git tag -a Version_1.0.0 -m "Release 1.0.0"
+git push origin refs/tags/Version_1.0.0
 # Release workflow：npm publish → 自动 squash dev → main
 ```
 

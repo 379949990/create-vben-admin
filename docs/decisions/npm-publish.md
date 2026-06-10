@@ -6,16 +6,16 @@
 
 ## 1. 触发方式
 
-| 事件                         | Workflow                                                               | 行为                                                                 |
-| ---------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| PR → `dev`、push `v*` 分支   | [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml)           | `pnpm verify`                                                        |
-| push tag `v*`（如 `v1.0.0`） | [`.github/workflows/release.yml`](../../.github/workflows/release.yml) | 校验 tag → verify → npm publish → GitHub Release → **squash `main`** |
+| 事件                                       | Workflow                                                               | 行为                                                                 |
+| ------------------------------------------ | ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| PR → `dev`、push `v*` 分支                 | [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml)           | `pnpm verify`                                                        |
+| push tag `Version_*`（如 `Version_1.0.0`） | [`.github/workflows/release.yml`](../../.github/workflows/release.yml) | 校验 tag → verify → npm publish → GitHub Release → **squash `main`** |
 
 **新 tag 判定：** 以 tag 指向的 commit SHA（`tag^{commit}`）为标识。同名 tag 删除后重打、或 `--force` 推送 tag，只要 commit 变就会重新触发；workflow 要求 tag **必须指向当前 `origin/dev` HEAD**。
 
 Tag 推送后 Release workflow 会：
 
-1. 校验 tag 在 `dev` 上且与 `package.json` 版本一致
+1. 校验 tag 格式 `Version_X.Y.Z`、在 `dev` 上且与 `package.json` 版本一致
 2. 跑 `pnpm verify`
 3. `pnpm pack` 生成 `create-vben-admin-<version>.tgz`（附到 Release 资产）
 4. `pnpm publish` 到 [npmjs.com/package/create-vben-admin](https://www.npmjs.com/package/create-vben-admin)（若该版本已在 npm 则跳过，便于重跑 workflow）
@@ -32,8 +32,8 @@ Tag 推送后 Release workflow 会：
 
 在 GitHub → **Settings → Secrets and variables → Actions** 新增：
 
-| Secret      | 说明                                                                                              |
-| ----------- | ------------------------------------------------------------------------------------------------- |
+| Secret      | 说明                                                                                                                                                    |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `NPM_TOKEN` | [npm Access Token](https://www.npmjs.com/settings/fluoxetine_/tokens)（**Automation** 或 Granular **Read and write**；开启 2FA 时勿用 Classic Publish） |
 
 `NODE_AUTH_TOKEN` 须在 **`actions/setup-node` 执行前** 可用（workflow 已设为 job 级 env），否则 `.npmrc` 无 token 会导致 publish **403**。
@@ -50,24 +50,24 @@ git checkout dev && git pull origin dev
 git merge v1.0.0 --no-edit   # 示例
 git push origin dev
 
-# 2. 在 dev HEAD 打 tag（版本与 package.json 一致）
-git tag -a v1.0.0 -m "Release v1.0.0"
+# 2. 在 dev HEAD 打 tag（Version_ 前缀 + package.json 版本）
+git tag -a Version_1.0.0 -m "Release 1.0.0"
 
 # 3. 只 push tag（不要手工 squash main）
-git push origin refs/tags/v1.0.0
+git push origin refs/tags/Version_1.0.0
 ```
 
 **同名 tag 重发（如修正包名后重试）：**
 
 ```bash
 git checkout dev && git pull origin dev
-git tag -d v1.0.0
-git tag -a v1.0.0 -m "Release v1.0.0 (retry)"
-git push origin :refs/tags/v1.0.0
-git push origin refs/tags/v1.0.0
+git tag -d Version_1.0.0
+git tag -a Version_1.0.0 -m "Release 1.0.0 (retry)"
+git push origin :refs/tags/Version_1.0.0
+git push origin refs/tags/Version_1.0.0
 ```
 
-**注意：** 分支 `v1.0.0` 与 tag `v1.0.0` 同名时，push tag 须写 `refs/tags/v1.0.0`。
+**注意：** 开发分支 `v1.0.0` 与发版 tag `Version_1.0.0` 不同名，避免 ref 冲突。push 分支用 `git push origin refs/heads/v1.0.0`，push tag 用 `git push origin refs/tags/Version_1.0.0`。
 
 ---
 
@@ -76,7 +76,7 @@ git push origin refs/tags/v1.0.0
 ```
 release(<version>): publish <package> CLI
 
-Tag: v<version> @ <commit-sha>
+Tag: Version_<version> @ <commit-sha>
 npm: https://www.npmjs.com/package/<package>
 dev: squash merged after successful Release workflow
 ```
