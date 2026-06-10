@@ -8,7 +8,7 @@
 
 | 事件                                       | Workflow                                                               | 行为                                                                 |
 | ------------------------------------------ | ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| PR → `dev`、push `v*` 分支                 | [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml)           | `pnpm verify`                                                        |
+| PR → `dev`、**push `dev`**、push `v*` 分支 | [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml)           | `pnpm verify`                                                        |
 | push tag `Version_*`（如 `Version_1.0.0`） | [`.github/workflows/release.yml`](../../.github/workflows/release.yml) | 校验 tag → verify → npm publish → GitHub Release → **squash `main`** |
 
 **新 tag 判定：** 以 tag 指向的 commit SHA（`tag^{commit}`）为标识。同名 tag 删除后重打、或 `--force` 推送 tag，只要 commit 变就会重新触发；workflow 要求 tag **必须指向当前 `origin/dev` HEAD**。
@@ -45,9 +45,9 @@ Tag 推送后 Release workflow 会：
 ## 3. 发版流程（负责人手动部分）
 
 ```bash
-# 1. 版本分支合并到 dev（PR + CI 通过）
+# 1. 版本分支合并到 dev 并 push（触发 CI）
 git checkout dev && git pull origin dev
-git merge v1.0.0 --no-edit   # 示例
+git merge v1.0.0 --no-edit   # 在 v1.0.0 上开发，勿在 dev 直接改
 git push origin dev
 
 # 2. 在 dev HEAD 打 tag（Version_ 前缀 + package.json 版本）

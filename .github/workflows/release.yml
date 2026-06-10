@@ -83,8 +83,12 @@ jobs:
             echo "::error::NPM_TOKEN secret is missing or empty"
             exit 1
           fi
+          {
+            echo "registry=https://registry.npmjs.org/"
+            echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
+            echo "always-auth=true"
+          } > .npmrc
           npm whoami --registry=https://registry.npmjs.org
-          grep -q '_authToken' .npmrc
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
