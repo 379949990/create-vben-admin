@@ -2,6 +2,7 @@ import * as p from '@clack/prompts';
 import { isCancel } from '@clack/prompts';
 import { VbenTemplateId, isVbenTemplateId } from '../core/constants.js';
 import { resolveUpstreamRef } from '../extract/resolve-ref.js';
+import { directoryIsEmpty } from '../utils/fs.js';
 import { getDefaultProjectTargetPath, resolveProjectTarget } from '../utils/project-path.js';
 
 export interface CliFlags {
@@ -54,6 +55,7 @@ export async function resolveOptions(flags: CliFlags): Promise<ResolvedCliOption
   }
 
   const { targetDir, packageName } = resolveProjectTarget(projectPath);
+  const force = await resolveForce(flags, targetDir);
 
   let template: VbenTemplateId;
   if (flags.template) {
@@ -88,9 +90,40 @@ export async function resolveOptions(flags: CliFlags): Promise<ResolvedCliOption
     ref,
     includeMock,
     offline: flags.offline,
-    force: flags.force,
+    force,
     dryRun: flags.dryRun,
   };
+}
+
+async function resolveForce(flags: CliFlags, targetDir: string): Promise<boolean> {
+  if (flags.force || flags.dryRun) {
+    return flags.force;
+  }
+
+  if (await directoryIsEmpty(targetDir)) {
+    return false;
+  }
+
+  if (!process.stdin.isTTY) {
+    return false;
+  }
+
+  const selected = await p.confirm({
+    message: `Directory "${targetDir}" is not empty. Overwrite existing files?`,
+    initialValue: false,
+  });
+
+  if (isCancel(selected)) {
+    p.cancel('Operation cancelled.');
+    process.exit(0);
+  }
+
+  if (!selected) {
+    p.cancel('Target directory is not empty. Use --force or choose another path.');
+    process.exit(0);
+  }
+
+  return true;
 }
 
 async function resolveIncludeMock(flags: CliFlags): Promise<boolean> {
