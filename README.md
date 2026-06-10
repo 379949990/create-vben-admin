@@ -4,12 +4,12 @@
 
 **English:** [README.en.md](./README.en.md)
 
-| 项目     | 说明                                                              |
-| -------- | ----------------------------------------------------------------- |
-| npm 包名 | [`create-vben`](https://www.npmjs.com/package/create-vben)        |
-| 上游真源 | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin) |
-| 适用框架 | Vue 3 · Vite · TypeScript · pnpm workspace                        |
-| Node     | >= 20.11                                                          |
+| 项目     | 说明                                                                   |
+| -------- | ---------------------------------------------------------------------- |
+| npm 包名 | [`create-vben-admin`](https://www.npmjs.com/package/create-vben-admin) |
+| 上游真源 | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)      |
+| 适用框架 | Vue 3 · Vite · TypeScript · pnpm workspace                             |
+| Node     | >= 20.11                                                               |
 
 ---
 
@@ -61,18 +61,17 @@ internal/*                           internal/
 
 ```bash
 # 推荐：零安装（需 Node >= 20.11）
-npx create-vben
-pnpm dlx create-vben
+pnpm dlx create-vben-admin
 
 # 非交互（目录名 → ~/Downloads/<name>）
-npx create-vben my-vben-admin --template web-naive --no-mock
+pnpm dlx create-vben-admin my-vben-admin --template web-naive --no-mock
 
 # 指定完整路径与 upstream 版本
-npx create-vben ~/Downloads/my-vben-admin --template web-antd --ref v5.7.0 --force
+pnpm dlx create-vben-admin ~/Downloads/my-vben-admin --template web-antd --ref v5.7.0 --force
 
 # 全局安装
-pnpm add -g create-vben
-create-vben --help
+pnpm add -g create-vben-admin
+create-vben-admin --help
 ```
 
 交互时 **项目路径** 默认：`~/Downloads/my-vben-admin`（可改为任意绝对/相对路径）。
@@ -128,7 +127,7 @@ clone 会得到 **完整 Monorepo**（所有 UI 模板与工具链）；create-v
 
 ### 支持哪些包管理器安装本 CLI？
 
-发布在 npm 上，可用 `npx`、`pnpm dlx`、`pnpm add -g` 或 `npm i -g create-vben`。生成物默认使用 **pnpm**（与 upstream 一致）。
+发布在 npm 上，可用 `pnpm dlx`、`pnpm add -g` 或 `npm i -g create-vben-admin`。生成物默认使用 **pnpm**（与 upstream 一致）。
 
 ### 默认 development 端口是多少？
 

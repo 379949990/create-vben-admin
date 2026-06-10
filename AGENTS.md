@@ -5,7 +5,7 @@
 
 | 字段                 | 值                                                                     |
 | -------------------- | ---------------------------------------------------------------------- |
-| 包名                 | `create-vben`（npm）                                                   |
+| 包名                 | `create-vben-admin`（npm）                                             |
 | 类型                 | **Node.js CLI**（ESM · TypeScript · tsup）                             |
 | **上游真源**         | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)      |
 | **工具链**           | Node **>= 20.11** · pnpm · TypeScript 5.x · Vitest                     |

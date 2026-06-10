@@ -145,7 +145,7 @@ flowchart LR
 | Q1  | 生成物结构：**单 package 扁平**                                 | CV1-05   | ✅   |
 | Q2  | 默认 upstream ref：**最新 release tag**                         | CV1-02   | ✅   |
 | Q3  | 是否默认包含 `backend-mock`：**否**（生成时可选 `--mock`）      | CV1-11   | ✅   |
-| Q4  | npm 发布：**create-vben**（无 scope）                           | CV1-12   | ✅   |
+| Q4  | npm 发布：**create-vben-admin**（裸名 `create-vben` 已被占用）  | CV1-12   | ✅   |
 | Q5  | 生成后 **自动 pnpm install**                                    | CV1-07   | ✅   |
 | Q6  | GitHub token：**v1.0.0 默认不用**；后续支持用户配置（长期计划） | CV1-03   | ✅   |
 

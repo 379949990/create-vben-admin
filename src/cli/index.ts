@@ -11,7 +11,7 @@ const pkg = JSON.parse(readFileSync(getPackagePath('package.json'), 'utf8')) as 
 
 export async function runCli(argv: string[]): Promise<void> {
   const program = new Command()
-    .name('create-vben')
+    .name('create-vben-admin')
     .description('Generate a standalone vben-admin project from upstream monorepo')
     .version(pkg.version)
     .argument(
@@ -43,7 +43,7 @@ export async function runCli(argv: string[]): Promise<void> {
         dryRun: flags.dryRun ?? false,
       });
 
-      console.log(dim(`create-vben v${pkg.version}`));
+      console.log(dim(`create-vben-admin v${pkg.version}`));
       console.log(cyan('Resolved options:'), options);
 
       if (options.dryRun) {

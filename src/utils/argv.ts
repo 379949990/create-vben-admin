@@ -4,7 +4,7 @@ export function normalizeCliArgv(argv: string[]): string[] {
   const separatorIndex = args.indexOf('--');
 
   if (separatorIndex >= 0) {
-    return ['node', 'create-vben', ...args.slice(separatorIndex + 1)];
+    return ['node', 'create-vben-admin', ...args.slice(separatorIndex + 1)];
   }
 
   return argv;

@@ -8,13 +8,15 @@ describe('getPackageRoot', () => {
     const pkg = JSON.parse(readFileSync(getPackagePath('package.json'), 'utf8')) as {
       name: string;
     };
-    expect(pkg.name).toBe('create-vben');
+    expect(pkg.name).toBe('create-vben-admin');
   });
 
   it('resolves dist layout like a published bundle', () => {
     const fakeDistIndex = join(getPackageRoot(), 'dist/index.js');
     const root = getPackageRoot(`file://${fakeDistIndex}`);
-    expect(readFileSync(join(root, 'package.json'), 'utf8')).toContain('"name": "create-vben"');
+    expect(readFileSync(join(root, 'package.json'), 'utf8')).toContain(
+      '"name": "create-vben-admin"',
+    );
   });
 
   it('resolves templates directory', () => {

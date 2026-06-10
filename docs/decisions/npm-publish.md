@@ -1,6 +1,6 @@
 # npm 发布与 GitHub Release
 
-> **状态：** v1.0.0 · 包名 `create-vben` · CI 自动发版
+> **状态：** v1.0.0 · 包名 `create-vben-admin` · CI 自动发版
 
 ---
 
@@ -14,9 +14,11 @@
 Tag 推送后 Release workflow 会：
 
 1. 跑 `pnpm verify`
-2. `pnpm pack` 生成 `create-vben-<version>.tgz`（附到 Release 资产）
-3. `pnpm publish --access public` 发布到 [npmjs.com/package/create-vben](https://www.npmjs.com/package/create-vben)
+2. `pnpm pack` 生成 `create-vben-admin-<version>.tgz`（附到 Release 资产）
+3. `pnpm publish --access public` 发布到 [npmjs.com/package/create-vben-admin](https://www.npmjs.com/package/create-vben-admin)
 4. 用 [`softprops/action-gh-release`](https://github.com/softprops/action-gh-release) 创建 **GitHub Releases** 页面（`generate_release_notes: true` 自动生成变更摘要）
+
+> **说明：** 裸名 `create-vben` 在 npm 上已被他人占用且 unpublish，本仓库发布 **`create-vben-admin`**（账号 `fluoxetine_`）。
 
 ---
 
@@ -48,12 +50,12 @@ git commit -m "release(v1.0.0): first public CLI"
 
 # 4. 推送 main 与 tag（tag push 触发 Release workflow）
 git push origin main
-git push origin v1.0.0
+git push origin refs/tags/v1.0.0
 ```
 
-**注意：** Release workflow 监听 **tag push**，不是 main 上的普通 commit。必须先打 tag 并 `git push origin v1.0.0`。
+**注意：** 分支 `v1.0.0` 与 tag `v1.0.0` 同名时，push tag 须写 `refs/tags/v1.0.0`。
 
-发版后可在 GitHub 仓库 **Releases** 页看到自动生成的 Release；npm 上可 `pnpm dlx create-vben` / `pnpm add -g create-vben`。
+发版后可在 GitHub 仓库 **Releases** 页看到自动生成的 Release；npm 上可 `pnpm dlx create-vben-admin` / `pnpm add -g create-vben-admin`。
 
 ---
 
@@ -82,8 +84,8 @@ pnpm publish --dry-run --access public
 ```bash
 pnpm build
 pnpm pack
-pnpm add ./create-vben-1.0.0.tgz -g
-create-vben --help
+pnpm add ./create-vben-admin-1.0.0.tgz -g
+create-vben-admin --help
 ```
 
 ---
@@ -91,9 +93,9 @@ create-vben --help
 ## 5. 用户安装方式
 
 ```bash
-pnpm dlx create-vben
-pnpm add -g create-vben
-# 或（有 npm 时）npx create-vben
+pnpm dlx create-vben-admin
+pnpm add -g create-vben-admin
+# 或（有 npm 时）npx create-vben-admin
 ```
 
 ---

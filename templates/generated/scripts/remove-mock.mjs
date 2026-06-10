@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Remove Nitro mock server from a create-vben generated project.
+ * Remove Nitro mock server from a create-vben-admin generated project.
  *
  * Usage:
  *   pnpm run remove-mock

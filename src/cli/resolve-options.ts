@@ -36,7 +36,7 @@ const TEMPLATE_CHOICES = [
 ];
 
 export async function resolveOptions(flags: CliFlags): Promise<ResolvedCliOptions> {
-  p.intro('create-vben');
+  p.intro('create-vben-admin');
 
   let projectPath = flags.projectPath;
   if (!projectPath) {

@@ -4,12 +4,12 @@
 
 **中文：** [README.md](./README.md)
 
-| Field       | Value                                                             |
-| ----------- | ----------------------------------------------------------------- |
-| npm package | [`create-vben`](https://www.npmjs.com/package/create-vben)        |
-| Upstream    | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin) |
-| Stack       | Vue 3 · Vite · TypeScript · pnpm workspace                        |
-| Node        | >= 20.11                                                          |
+| Field       | Value                                                                  |
+| ----------- | ---------------------------------------------------------------------- |
+| npm package | [`create-vben-admin`](https://www.npmjs.com/package/create-vben-admin) |
+| Upstream    | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)      |
+| Stack       | Vue 3 · Vite · TypeScript · pnpm workspace                             |
+| Node        | >= 20.11                                                               |
 
 ---
 
@@ -53,18 +53,17 @@
 
 ```bash
 # Zero install (Node >= 20.11)
-npx create-vben
-pnpm dlx create-vben
+pnpm dlx create-vben-admin
 
 # Non-interactive (name → ~/Downloads/<name>)
-npx create-vben my-vben-admin --template web-naive --no-mock
+pnpm dlx create-vben-admin my-vben-admin --template web-naive --no-mock
 
 # Full path + upstream ref
-npx create-vben ~/Downloads/my-vben-admin --template web-antd --ref v5.7.0 --force
+pnpm dlx create-vben-admin ~/Downloads/my-vben-admin --template web-antd --ref v5.7.0 --force
 
 # Global install
-pnpm add -g create-vben
-create-vben --help
+pnpm add -g create-vben-admin
+create-vben-admin --help
 ```
 
 Interactive **project path** defaults to `~/Downloads/my-vben-admin`.
@@ -120,7 +119,7 @@ Cloning gives you the **full monorepo**. create-vben extracts **one** `apps/web-
 
 ### Which package managers can install the CLI?
 
-Published on npm: `npx`, `pnpm dlx`, `pnpm add -g`, or `npm i -g create-vben`. Generated projects default to **pnpm**.
+Published on npm: `pnpm dlx`, `pnpm add -g`, or `npm i -g create-vben-admin`. Generated projects default to **pnpm**.
 
 ### What is the default dev server port?
 
