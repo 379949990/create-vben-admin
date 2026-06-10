@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: write
   id-token: write
@@ -13,7 +17,44 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify tag is on dev tip
+        id: tag
+        run: |
+          git fetch origin dev
+          TAG="${GITHUB_REF_NAME}"
+          TAG_COMMIT="$(git rev-parse "${TAG}^{commit}")"
+          DEV_HEAD="$(git rev-parse origin/dev)"
+
+          if ! git merge-base --is-ancestor "$TAG_COMMIT" origin/dev; then
+            echo "::error::Tag ${TAG} (${TAG_COMMIT}) is not reachable from origin/dev"
+            exit 1
+          fi
+
+          if [ "$DEV_HEAD" != "$TAG_COMMIT" ]; then
+            echo "::error::Release tag ${TAG} must point to origin/dev HEAD"
+            echo "  dev HEAD: ${DEV_HEAD}"
+            echo "  tag commit: ${TAG_COMMIT}"
+            exit 1
+          fi
+
+          PKG="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).name")"
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          TAG_VERSION="${TAG#v}"
+
+          if [ "$TAG_VERSION" != "$VERSION" ]; then
+            echo "::error::Tag ${TAG} must match package.json version (${VERSION})"
+            exit 1
+          fi
+
+          echo "tag_name=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "tag_commit=${TAG_COMMIT}" >> "$GITHUB_OUTPUT"
+          echo "package_name=${PKG}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - uses: pnpm/action-setup@v4
         with:
@@ -35,7 +76,22 @@ jobs:
       - name: Pack tarball
         run: pnpm pack
 
+      - name: Check npm registry
+        id: npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          PKG="${{ steps.tag.outputs.package_name }}"
+          VERSION="${{ steps.tag.outputs.version }}"
+          if npm view "${PKG}@${VERSION}" version >/dev/null 2>&1; then
+            echo "already_published=true" >> "$GITHUB_OUTPUT"
+            echo "npm ${PKG}@${VERSION} already exists; skip publish"
+          else
+            echo "already_published=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Publish to npm
+        if: steps.npm.outputs.already_published != 'true'
         run: pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -43,5 +99,34 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.tag.outputs.tag_name }}
+          target_commitish: ${{ steps.tag.outputs.tag_commit }}
           generate_release_notes: true
+          overwrite: true
           files: create-vben-admin-*.tgz
+
+      - name: Squash merge dev to main
+        env:
+          TAG: ${{ steps.tag.outputs.tag_name }}
+          TAG_COMMIT: ${{ steps.tag.outputs.tag_commit }}
+          PKG: ${{ steps.tag.outputs.package_name }}
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          git fetch origin dev main
+
+          if git diff --quiet origin/main origin/dev; then
+            echo "origin/main already matches origin/dev; skip squash merge"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git checkout -B main origin/main
+          git merge --squash origin/dev
+          git commit \
+            -m "release(${VERSION}): publish ${PKG} CLI" \
+            -m "Tag: ${TAG} @ ${TAG_COMMIT}" \
+            -m "npm: https://www.npmjs.com/package/${PKG}" \
+            -m "dev: squash merged after successful Release workflow"
+          git push origin main

@@ -27,7 +27,7 @@
 | **`vX.Y.Z(-*)(_*)`** | 自 **`dev`** 切出的日常开发分支  |
 | Tag `v1.0.0`         | 首个正式 CLI 发版锚点            |
 
-**合并流向：** `vX.Y.Z(-*)(_*)` → **`dev`** → Tag → squash → **`main`**
+**合并流向：** `vX.Y.Z(-*)(_*)` → **`dev`** → Tag on **`dev`** → Release workflow（npm + squash **`main`**）
 
 ## 硬约束（Agent / 协作者）
 
@@ -35,6 +35,7 @@
 - 日常开发在自 **`dev` 切出的版本开发分支** 上进行（当前：**`v1.0.0`**）
 - Conventional Commits · **一步一 commit**（对应 dev-guide 单步）
 - Agent **禁止** 未经确认 `git commit` / `push`
+- **`main` squash 由 Release workflow 自动完成**，发版前勿手工 merge dev → main
 
 ## 标准操作
 
@@ -61,10 +62,13 @@ git checkout -b v1.0.0_extract
 ### 发版（就绪后）
 
 ```bash
-git checkout dev
+git checkout dev && git pull origin dev
 git tag -a v1.0.0 -m "Release v1.0.0"
-# npm publish 流程见 CV1-12
+git push origin refs/tags/v1.0.0
+# Release workflow：npm publish → 自动 squash dev → main
 ```
+
+详见 [`npm-publish.md`](npm-publish.md)。
 
 ---
 

@@ -1,24 +1,30 @@
 # npm 发布与 GitHub Release
 
-> **状态：** v1.0.0 · 包名 `create-vben-admin` · CI 自动发版
+> **状态：** v1.0.0 · 包名 `create-vben-admin` · CI 自动发版 + 自动 squash `main`
 
 ---
 
 ## 1. 触发方式
 
-| 事件                         | Workflow                                                               | 行为                                                 |
-| ---------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------- |
-| PR → `dev`、push `v*` 分支   | [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml)           | `pnpm verify`                                        |
-| push tag `v*`（如 `v1.0.0`） | [`.github/workflows/release.yml`](../../.github/workflows/release.yml) | verify → pack → **npm publish** → **GitHub Release** |
+| 事件                         | Workflow                                                               | 行为                                                                 |
+| ---------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| PR → `dev`、push `v*` 分支   | [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml)           | `pnpm verify`                                                        |
+| push tag `v*`（如 `v1.0.0`） | [`.github/workflows/release.yml`](../../.github/workflows/release.yml) | 校验 tag → verify → npm publish → GitHub Release → **squash `main`** |
+
+**新 tag 判定：** 以 tag 指向的 commit SHA（`tag^{commit}`）为标识。同名 tag 删除后重打、或 `--force` 推送 tag，只要 commit 变就会重新触发；workflow 要求 tag **必须指向当前 `origin/dev` HEAD**。
 
 Tag 推送后 Release workflow 会：
 
-1. 跑 `pnpm verify`
-2. `pnpm pack` 生成 `create-vben-admin-<version>.tgz`（附到 Release 资产）
-3. `pnpm publish --access public` 发布到 [npmjs.com/package/create-vben-admin](https://www.npmjs.com/package/create-vben-admin)
-4. 用 [`softprops/action-gh-release`](https://github.com/softprops/action-gh-release) 创建 **GitHub Releases** 页面（`generate_release_notes: true` 自动生成变更摘要）
+1. 校验 tag 在 `dev` 上且与 `package.json` 版本一致
+2. 跑 `pnpm verify`
+3. `pnpm pack` 生成 `create-vben-admin-<version>.tgz`（附到 Release 资产）
+4. `pnpm publish` 到 [npmjs.com/package/create-vben-admin](https://www.npmjs.com/package/create-vben-admin)（若该版本已在 npm 则跳过，便于重跑 workflow）
+5. 创建/更新 GitHub Release
+6. **`git merge --squash origin/dev` → `main` 并 push**（预设 squash 提交信息模板）
 
 > **说明：** 裸名 `create-vben` 在 npm 上已被他人占用且 unpublish，本仓库发布 **`create-vben-admin`**（账号 `fluoxetine_`）。
+
+**`main` 不再手工 squash。** 发版前 `main` 可保持在上一发版基线；npm 发布成功后由 workflow 自动 squash。
 
 ---
 
@@ -30,48 +36,60 @@ Tag 推送后 Release workflow 会：
 | ----------- | ------------------------------------------------------------------------------------------------- |
 | `NPM_TOKEN` | [npm Access Token](https://www.npmjs.com/settings/~youruser/tokens)（Automation 或 Publish 类型） |
 
-无需在 workflow 里单独配置 `GITHUB_TOKEN`；`action-gh-release` 使用默认 `GITHUB_TOKEN`（workflow 已声明 `contents: write`）。
+`GITHUB_TOKEN` 用于 GitHub Release 与 push `main`；若 `main` 有分支保护，须允许 **GitHub Actions** 绕过或写入。
 
 ---
 
-## 3. 发版流程（与 git-workflow 对齐）
+## 3. 发版流程（负责人手动部分）
 
 ```bash
 # 1. 版本分支合并到 dev（PR + CI 通过）
-git checkout dev && git pull
+git checkout dev && git pull origin dev
+git merge v1.0.0 --no-edit   # 示例
+git push origin dev
 
-# 2. 在 dev 上打 tag（版本号与 package.json 一致，tag 带 v 前缀）
+# 2. 在 dev HEAD 打 tag（版本与 package.json 一致）
 git tag -a v1.0.0 -m "Release v1.0.0"
 
-# 3. squash 合并 dev → main（发版提交）
-git checkout main && git pull
-git merge --squash dev
-git commit -m "release(v1.0.0): first public CLI"
+# 3. 只 push tag（不要手工 squash main）
+git push origin refs/tags/v1.0.0
+```
 
-# 4. 推送 main 与 tag（tag push 触发 Release workflow）
-git push origin main
+**同名 tag 重发（如修正包名后重试）：**
+
+```bash
+git checkout dev && git pull origin dev
+git tag -d v1.0.0
+git tag -a v1.0.0 -m "Release v1.0.0 (retry)"
+git push origin :refs/tags/v1.0.0
 git push origin refs/tags/v1.0.0
 ```
 
 **注意：** 分支 `v1.0.0` 与 tag `v1.0.0` 同名时，push tag 须写 `refs/tags/v1.0.0`。
 
-发版后可在 GitHub 仓库 **Releases** 页看到自动生成的 Release；npm 上可 `pnpm dlx create-vben-admin` / `pnpm add -g create-vben-admin`。
+---
+
+## 4. squash 提交信息模板（workflow 自动生成）
+
+```
+release(<version>): publish <package> CLI
+
+Tag: v<version> @ <commit-sha>
+npm: https://www.npmjs.com/package/<package>
+dev: squash merged after successful Release workflow
+```
 
 ---
 
-## 4. 本地 npm 登录（仅用 pnpm 时）
-
-无法使用 `npm login` / `npx` 时，可用 **pnpm** 对接同一 registry：
+## 5. 本地 npm 登录（仅用 pnpm 时）
 
 ```bash
-# 交互登录（写入 ~/.npmrc）
 pnpm login
-
-# 或手动 token（npmjs.com → Access Tokens → Generate）
+# 或
 pnpm config set //registry.npmjs.org/:_authToken=npm_xxxxxxxx
 ```
 
-本地试发布（勿在 CI 前误发正式版，可用 dry-run）：
+本地试发布：
 
 ```bash
 pnpm verify
@@ -79,23 +97,22 @@ pnpm pack
 pnpm publish --dry-run --access public
 ```
 
-全局安装自测（你当前方式）：
+全局安装自测：
 
 ```bash
 pnpm build
 pnpm pack
-pnpm add ./create-vben-admin-1.0.0.tgz -g
+pnpm add -g ./create-vben-admin-1.0.0.tgz
 create-vben-admin --help
 ```
 
 ---
 
-## 5. 用户安装方式
+## 6. 用户安装方式
 
 ```bash
 pnpm dlx create-vben-admin
 pnpm add -g create-vben-admin
-# 或（有 npm 时）npx create-vben-admin
 ```
 
 ---
