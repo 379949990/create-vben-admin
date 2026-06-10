@@ -5,13 +5,14 @@
 
 | 字段                 | 值                                                                     |
 | -------------------- | ---------------------------------------------------------------------- |
-| 包名                 | `create-vben`（npm）                                                   |
+| 包名                 | `create-vben-admin`（npm）                                             |
 | 类型                 | **Node.js CLI**（ESM · TypeScript · tsup）                             |
 | **上游真源**         | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)      |
 | **工具链**           | Node **>= 20.11** · pnpm · TypeScript 5.x · Vitest                     |
-| 应用版本             | `0.0.0`（`package.json`）                                              |
+| 应用版本             | `1.0.0`（`package.json`）                                              |
 | **集成分支**         | **`dev`**                                                              |
 | **当前工作分支**     | **`v1.0.0`**                                                           |
+| **发版 Tag 命名**    | **`Version_X.Y.Z`**（如 `Version_1.0.0`）                              |
 | **版本开发分支命名** | **`vX.Y.Z(-*)(_*)`**                                                   |
 | 锚点分支             | `main` · `dev`（**禁止**日常 commit）                                  |
 | Git 规范             | [`docs/decisions/git-workflow.md`](docs/decisions/git-workflow.md)     |
@@ -24,23 +25,25 @@
 
 **有不清楚的先询问 → 设计/规划 → 分步开发 → 验证/修复 → 下一步**（详见 Core 规范）。
 
-| 阶段            | 动作                                                                                      |
-| --------------- | ----------------------------------------------------------------------------------------- |
-| **询问**        | upstream 目录变更、模板列表、发布策略、npm 包名等 **未确认必须先问**                      |
-| **设计/规划**   | 对照 [`docs/versions/v1.0.0/dev-guide.md`](docs/versions/v1.0.0/dev-guide.md) CV1-\* 步骤 |
-| **分步开发**    | 最小 diff；一步一主题；**先** 提取/解析核心 **再** CLI 交互 polish                        |
-| **验证/修复**   | `pnpm format:check` · `pnpm typecheck` · `pnpm lint` · `pnpm test` · `pnpm build`         |
-| **提交**        | **仅负责人验证后** commit；一步一 commit；**禁止** Agent 自行提交                         |
-| **Commit 信息** | **禁止** `Co-authored-by: Cursor <cursoragent@cursor.com>`                                |
+| 阶段            | 动作                                                                                           |
+| --------------- | ---------------------------------------------------------------------------------------------- |
+| **询问**        | upstream 目录变更、模板列表、发布策略、npm 包名等 **未确认必须先问**                           |
+| **设计/规划**   | 对照 [`docs/versions/v1.0.0/dev-guide.md`](docs/versions/v1.0.0/dev-guide.md) CV1-\* 步骤      |
+| **分步开发**    | 最小 diff；一步一主题；**仅在版本分支**（如 **`v1.0.0`**）开发，**禁止**在 `dev`/`main` 改代码 |
+| **集成**        | merge 版本分支 → **`dev`** → **`git push origin dev`** 触发 CI                                 |
+| **验证/修复**   | `pnpm format:check` · `pnpm typecheck` · `pnpm lint` · `pnpm test` · `pnpm build`              |
+| **提交**        | **仅负责人验证后** commit；一步一 commit；**禁止** Agent 自行提交                              |
+| **Commit 信息** | **禁止** `Co-authored-by: Cursor <cursoragent@cursor.com>`                                     |
 
 ---
 
 ## 1. Agent 启动（~60s）
 
 1. **读：** 本文 → Core 规范 → dev-guide §0–§4、§7（下一步）。
-2. **跑：** `pnpm install` → `pnpm verify`。
-3. **改：** 涉及 upstream 结构时 **先** 读 [`docs/decisions/vben-source-sync.md`](docs/decisions/vben-source-sync.md) 与官方 [目录说明](https://doc.vben.pro/guide/project/dir.html)。
-4. **交：** verify 全通过；更新 dev-guide 进度表。
+2. **确认分支：** `git branch --show-current` 须为 **版本分支**（当前 **`v1.0.0`** 或下级 `v1.0.0_*`），**非** `dev` / `main`。
+3. **跑：** `pnpm install` → `pnpm verify`。
+4. **改：** 涉及 upstream 结构时 **先** 读 [`docs/decisions/vben-source-sync.md`](docs/decisions/vben-source-sync.md) 与官方 [目录说明](https://doc.vben.pro/guide/project/dir.html)。
+5. **交：** verify 全通过；更新 dev-guide 进度表。
 
 ---
 
@@ -93,12 +96,13 @@ templates/                      # 生成后补丁（.gitignore、README 片段�
 
 遵循 Cursor 全局规则 **git-version-management**。
 
-| 规则        | 说明                                                            |
-| ----------- | --------------------------------------------------------------- |
-| 日常 commit | 在 **`dev` 切出的 `vX.Y.Z(-*)(_*)` 分支**（当前：**`v1.0.0`**） |
-| 禁止        | 向 **`main`** / **`dev`** 直接提交                              |
-| 合并        | 版本开发分支 → **`dev`** → Tag → squash → **`main`**            |
-| Commit 格式 | [Conventional Commits](https://www.conventionalcommits.org/)    |
+| 规则        | 说明                                                                                         |
+| ----------- | -------------------------------------------------------------------------------------------- |
+| 日常 commit | 在 **版本分支**（当前：**`v1.0.0`** 或下级 `v1.0.0_*`）；**禁止**在 `dev`/`main` 直接 commit |
+| 触发 CI     | merge 版本分支 → **`dev`** 后 **`git push origin dev`**                                      |
+| 禁止        | 向 **`main`** / **`dev`** 直接提交                                                           |
+| 合并        | 版本开发分支 → **`dev`** → Tag → squash → **`main`**                                         |
+| Commit 格式 | [Conventional Commits](https://www.conventionalcommits.org/)                                 |
 
 ---
 
@@ -135,7 +139,7 @@ templates/                      # 生成后补丁（.gitignore、README 片段�
 
 ```
 项目：create-vben（Node CLI · 从 vue-vben-admin 提取单模板脚手架）。
-分支：v1.0.0 → 合并 dev；规范：Core rule + docs/versions/v1.0.0/dev-guide.md。
+分支：v1.0.0（仅在此开发）→ merge dev → push dev（CI）→ tag Version_1.0.0（Release）。
 当前：CV1-01 脚手架就绪；下一步 CV1-02 upstream 同步策略。
 上游：https://github.com/vbenjs/vue-vben-admin
 ```

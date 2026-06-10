@@ -9,6 +9,7 @@
 | ------------ | ----------------------------------------------------------------- |
 | 版本         | 1.0                                                               |
 | **工作分支** | **`v1.0.0`**                                                      |
+| **发版 Tag** | **`Version_1.0.0`**（格式 `Version_X.Y.Z`）                       |
 | **集成分支** | **`dev`**                                                         |
 | 产品 PRD     | [`product/PRD_create-vben.md`](product/PRD_create-vben.md)        |
 | upstream     | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin) |
@@ -62,7 +63,7 @@ cd my-app && pnpm install && pnpm dev
 - 修改 upstream 源码或 fork 长期维护
 - 生成物与官方 Monorepo **行为完全一致**（允许 sensible 简化，须文档说明）
 - 多模板同时生成
-- `backend-mock` 默认打包（可选 flag，CV1-11 再议）
+- `backend-mock` 默认不包含；生成时可交互选择或 `--mock` / `--no-mock`
 
 ---
 
@@ -76,11 +77,11 @@ src/
 ├── extract/
 │   ├── fetch-upstream.ts    # tarball / 缓存
 │   ├── parse-workspace.ts   # pnpm-workspace.yaml
-│   ├── resolve-deps.ts      # workspace 依赖图（待建）
-│   └── flatten.ts           # 路径映射（待建）
+│   ├── resolve-deps.ts      # workspace 依赖图
+│   └── flatten.ts           # 扁平输出路径规划
 ├── generate/
 │   ├── create-project.ts    # 编排
-│   ├── write-files.ts       # 磁盘写入（待建）
+│   ├── write-files.ts       # 磁盘写入
 │   └── transform-package-json.ts
 └── utils/
 ```
@@ -100,52 +101,54 @@ flowchart LR
 
 ## 3. 分步计划（CV1-\*）
 
-| 步骤       | 主题                  | 交付物                                                              | 验收                                        |
-| ---------- | --------------------- | ------------------------------------------------------------------- | ------------------------------------------- |
-| **CV1-01** | 仓库脚手架            | package.json · tsconfig · tsup · vitest · AGENTS · rules · 占位 CLI | `pnpm verify` 通过；`pnpm dev` 可进入交互   |
-| **CV1-02** | upstream 同步策略 ADR | `vben-source-sync.md` 定稿                                          | 缓存目录、ref 策略、网络失败行为已文档化    |
-| **CV1-03** | 拉取 upstream         | `fetch-upstream.ts` + 测试（mock fetch）                            | 指定 ref 解压到 cache；`--offline` 读 cache |
-| **CV1-04** | 解析 workspace        | `parse-workspace.ts` + fixture                                      | 从 fixture 读出 apps/packages 列表          |
-| **CV1-05** | 依赖图 + 输出形态 ADR | `architecture.md` 更新 · `resolve-deps.ts`                          | 给定 template，返回须拷贝的包集合           |
-| **CV1-06** | 扁平化与 transform    | `flatten.ts` · `transform-package-json.ts`                          | workspace 协议正确改写；有快照测试          |
-| **CV1-07** | 生成编排              | `create-project.ts` · `write-files.ts`                              | 非 dry-run 写出可 install 的项目            |
-| **CV1-08** | CLI 完善              | 错误处理 · `--force` · 日志                                         | 边界用例有测试或文档                        |
-| **CV1-09** | 集成测试              | `test/integration/*.test.ts` + 精简 fixture                         | 至少 1 个 template 端到端                   |
-| **CV1-10** | 生成物文档            | 模板 README 片段                                                    | 用户知悉 upstream ref 与差异                |
-| **CV1-11** | 可选能力              | `--mock` / `--git` 等待定                                           | 按 PRD Q\* 确认后做                         |
-| **CV1-12** | 发布准备              | changesets 或 manual version · CI                                   | `npm pack` 可安装；是否发 npm 待负责人确认  |
+| 步骤        | 主题                  | 交付物                                                              | 验收                                        |
+| ----------- | --------------------- | ------------------------------------------------------------------- | ------------------------------------------- |
+| **CV1-01**  | 仓库脚手架            | package.json · tsconfig · tsup · vitest · AGENTS · rules · 占位 CLI | `pnpm verify` 通过；`pnpm dev` 可进入交互   |
+| **CV1-02**  | upstream 同步策略 ADR | `vben-source-sync.md` 定稿                                          | 缓存目录、ref 策略、网络失败行为已文档化    |
+| **CV1-03**  | 拉取 upstream         | `fetch-upstream.ts` + 测试（mock fetch）                            | 指定 ref 解压到 cache；`--offline` 读 cache |
+| **CV1-04**  | 解析 workspace        | `parse-workspace.ts` + fixture                                      | 从 fixture 读出 apps/packages 列表          |
+| **CV1-05**  | 依赖图 + 输出形态 ADR | `architecture.md` 更新 · `resolve-deps.ts`                          | 给定 template，返回须拷贝的包集合           |
+| **CV1-06**  | 扁平化与 transform    | `flatten.ts` · `transform-package-json.ts`                          | workspace 协议正确改写；有快照测试          |
+| **CV1-07**  | 生成编排              | `create-project.ts` · `write-files.ts`                              | 非 dry-run 写出可 install 的项目            |
+| **CV1-07b** | vendor 预构建门禁     | `vendor-stub.ts` · install/stub 失败即失败                          | 生成后 `internal/vite-config/dist` 存在     |
+| **CV1-08**  | CLI 完善              | 错误处理 · `--force` · 日志                                         | 边界用例有测试或文档                        |
+| **CV1-09**  | 集成测试              | `test/integration/*.test.ts` + 精简 fixture                         | 至少 1 个 template 端到端                   |
+| **CV1-10**  | 生成物文档            | 模板 README 片段                                                    | 用户知悉 upstream ref 与差异                |
+| **CV1-11**  | 可选能力              | `--mock` / `--git` 等待定                                           | 按 PRD Q\* 确认后做                         |
+| **CV1-12**  | 发布准备              | changesets 或 manual version · CI                                   | `npm pack` 可安装；是否发 npm 待负责人确认  |
 
 ---
 
 ## 4. 进度表
 
-| 步骤   | 状态 | 备注                        |
-| ------ | ---- | --------------------------- |
-| CV1-01 | ✅   | 2026-06-09 脚手架与规范文档 |
-| CV1-02 | ⬜   |                             |
-| CV1-03 | ⬜   |                             |
-| CV1-04 | ⬜   |                             |
-| CV1-05 | ⬜   |                             |
-| CV1-06 | ⬜   |                             |
-| CV1-07 | ⬜   |                             |
-| CV1-08 | ⬜   |                             |
-| CV1-09 | ⬜   |                             |
-| CV1-10 | ⬜   |                             |
-| CV1-11 | ⬜   | 阻塞：PRD Q1–Q3             |
-| CV1-12 | ⬜   | 阻塞：npm 组织与包名确认    |
+| 步骤    | 状态 | 备注                                               |
+| ------- | ---- | -------------------------------------------------- |
+| CV1-01  | ✅   | 2026-06-09 脚手架与规范文档                        |
+| CV1-02  | ✅   | 2026-06-09 Q2/Q6 定稿 vben-source-sync             |
+| CV1-03  | ✅   | 2026-06-09 fetch-upstream + 缓存                   |
+| CV1-04  | ✅   | 2026-06-09 parse-workspace + fixture               |
+| CV1-05  | ✅   | 2026-06-09 Q1 扁平输出 + resolve-deps              |
+| CV1-06  | ✅   | 2026-06-09 flatten + transform                     |
+| CV1-07  | ✅   | 2026-06-09 create-project + pnpm install           |
+| CV1-07b | ✅   | 2026-06-09 vendor stub 门禁 + dist 校验            |
+| CV1-08  | ✅   | 2026-06-09 根 devDeps 推导 + 边界测试              |
+| CV1-09  | ✅   | 2026-06-09 fixture 端到端生成集成测试              |
+| CV1-10  | ✅   | 2026-06-09 生成 README（端口、mock、OpenAPI）      |
+| CV1-11  | ✅   | 2026-06-09 可选 mock · OpenAPI · remove-mock 脚本  |
+| CV1-12  | ✅   | 2026-06-09 npm publish · GitHub Actions CI/Release |
 
 ---
 
 ## 5. 待确认项（Agent 勿臆造）
 
-| #   | 项                                                                     | 影响步骤 | 状态 |
-| --- | ---------------------------------------------------------------------- | -------- | ---- |
-| Q1  | 生成物结构：**单 package 扁平** vs **mini-monorepo（packages/ 保留）** | CV1-05   | ⬜   |
-| Q2  | 默认 upstream ref：`main` vs **最新 release tag**                      | CV1-02   | ⬜   |
-| Q3  | 是否默认包含 `backend-mock`                                            | CV1-11   | ⬜   |
-| Q4  | npm 发布：`create-vben` 包名与 scope（`@h-zone/create-vben`?）         | CV1-12   | ⬜   |
-| Q5  | 生成后是否自动 `pnpm install`                                          | CV1-08   | ⬜   |
-| Q6  | GitHub API rate limit：是否支持 `GITHUB_TOKEN`                         | CV1-03   | ⬜   |
+| #   | 项                                                              | 影响步骤 | 状态 |
+| --- | --------------------------------------------------------------- | -------- | ---- |
+| Q1  | 生成物结构：**单 package 扁平**                                 | CV1-05   | ✅   |
+| Q2  | 默认 upstream ref：**最新 release tag**                         | CV1-02   | ✅   |
+| Q3  | 是否默认包含 `backend-mock`：**否**（生成时可选 `--mock`）      | CV1-11   | ✅   |
+| Q4  | npm 发布：**create-vben-admin**（裸名 `create-vben` 已被占用）  | CV1-12   | ✅   |
+| Q5  | 生成后 **自动 pnpm install**                                    | CV1-07   | ✅   |
+| Q6  | GitHub token：**v1.0.0 默认不用**；后续支持用户配置（长期计划） | CV1-03   | ✅   |
 
 ---
 
@@ -154,22 +157,16 @@ flowchart LR
 ```bash
 pnpm install
 pnpm verify
-pnpm dev -- --dry-run my-test-app --template web-antd
+pnpm dev -- --dry-run my-vben-admin --template web-antd
+# 手动/测试生成物写入 .temp/generated/（已 gitignore）
+pnpm dev -- .temp/generated/e2e-app --template web-naive --ref v5.7.0 --force
 ```
 
 ---
 
 ## 7. 下一步（§7.8 等价）
 
-**→ CV1-02：** 与负责人确认 Q1–Q2，定稿 [`vben-source-sync.md`](../../decisions/vben-source-sync.md)，实现缓存目录约定。
-
-新开 Agent 时复制：
-
-```
-项目：/Users/wb_hc/H-Zone/DEV/create-vben
-读：AGENTS.md → create-vben-core.mdc → 本文 CV1-02
-阻塞：Q1 输出形态、Q2 默认 ref
-```
+**→ 发版：** 合并 `v1.0.0` → `dev` → 打 tag `Version_1.0.0` 并 push → CI 发布 npm + squash `main`。见 [`npm-publish.md`](../../decisions/npm-publish.md)。
 
 ---
 

@@ -1,0 +1,19 @@
+{
+  "name": "vben-admin-monorepo",
+  "private": true,
+  "scripts": {
+    "postinstall": "pnpm -r run stub --if-present"
+  },
+  "devDependencies": {
+    "tsdown": "^0.12.0",
+    "@tsdown/css": "^0.1.0",
+    "typescript": "^5.8.2",
+    "@types/node": "^22.0.0",
+    "vite": "^7.0.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vitejs/plugin-vue-jsx": "^5.0.0",
+    "vue-tsc": "^3.0.0",
+    "tailwindcss": "^4.0.0"
+  },
+  "packageManager": "pnpm@10.0.0"
+}

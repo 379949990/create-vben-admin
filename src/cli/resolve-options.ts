@@ -1,20 +1,27 @@
 import * as p from '@clack/prompts';
 import { isCancel } from '@clack/prompts';
 import { VbenTemplateId, isVbenTemplateId } from '../core/constants.js';
+import { resolveUpstreamRef } from '../extract/resolve-ref.js';
+import { directoryIsEmpty } from '../utils/fs.js';
+import { getDefaultProjectTargetPath, resolveProjectTarget } from '../utils/project-path.js';
 
 export interface CliFlags {
-  projectName?: string;
+  projectPath?: string;
   template?: string;
-  ref: string;
+  ref?: string;
+  mock?: boolean;
+  noMock?: boolean;
   offline: boolean;
   force: boolean;
   dryRun: boolean;
 }
 
 export interface ResolvedCliOptions {
-  projectName: string;
+  targetDir: string;
+  packageName: string;
   template: VbenTemplateId;
   ref: string;
+  includeMock: boolean;
   offline: boolean;
   force: boolean;
   dryRun: boolean;
@@ -29,21 +36,26 @@ const TEMPLATE_CHOICES = [
 ];
 
 export async function resolveOptions(flags: CliFlags): Promise<ResolvedCliOptions> {
-  p.intro('create-vben');
+  p.intro('create-vben-admin');
 
-  let projectName = flags.projectName;
-  if (!projectName) {
+  let projectPath = flags.projectPath;
+  if (!projectPath) {
+    const defaultPath = getDefaultProjectTargetPath();
     const input = await p.text({
-      message: 'Project name',
-      placeholder: 'my-vben-app',
-      validate: (value) => (value?.trim() ? undefined : 'Project name is required'),
+      message: 'Project path',
+      placeholder: defaultPath,
+      initialValue: defaultPath,
+      validate: (value) => (value?.trim() ? undefined : 'Project path is required'),
     });
     if (isCancel(input)) {
       p.cancel('Operation cancelled.');
       process.exit(0);
     }
-    projectName = input;
+    projectPath = input;
   }
+
+  const { targetDir, packageName } = resolveProjectTarget(projectPath);
+  const force = await resolveForce(flags, targetDir);
 
   let template: VbenTemplateId;
   if (flags.template) {
@@ -65,14 +77,77 @@ export async function resolveOptions(flags: CliFlags): Promise<ResolvedCliOption
     template = selected;
   }
 
+  const includeMock = await resolveIncludeMock(flags);
+
   p.outro('Ready to generate');
 
+  const ref = await resolveUpstreamRef(flags.ref);
+
   return {
-    projectName: projectName.trim(),
+    targetDir,
+    packageName,
     template,
-    ref: flags.ref,
+    ref,
+    includeMock,
     offline: flags.offline,
-    force: flags.force,
+    force,
     dryRun: flags.dryRun,
   };
+}
+
+async function resolveForce(flags: CliFlags, targetDir: string): Promise<boolean> {
+  if (flags.force || flags.dryRun) {
+    return flags.force;
+  }
+
+  if (await directoryIsEmpty(targetDir)) {
+    return false;
+  }
+
+  if (!process.stdin.isTTY) {
+    return false;
+  }
+
+  const selected = await p.confirm({
+    message: `Directory "${targetDir}" is not empty. Overwrite existing files?`,
+    initialValue: false,
+  });
+
+  if (isCancel(selected)) {
+    p.cancel('Operation cancelled.');
+    process.exit(0);
+  }
+
+  if (!selected) {
+    p.cancel('Target directory is not empty. Use --force or choose another path.');
+    process.exit(0);
+  }
+
+  return true;
+}
+
+async function resolveIncludeMock(flags: CliFlags): Promise<boolean> {
+  if (flags.mock && flags.noMock) {
+    throw new Error('Use either --mock or --no-mock, not both.');
+  }
+
+  if (flags.mock) {
+    return true;
+  }
+
+  if (flags.noMock) {
+    return false;
+  }
+
+  const selected = await p.confirm({
+    message: 'Include Nitro mock server (apps/backend-mock)?',
+    initialValue: false,
+  });
+
+  if (isCancel(selected)) {
+    p.cancel('Operation cancelled.');
+    process.exit(0);
+  }
+
+  return selected;
 }

@@ -1,23 +1,35 @@
 {
-  "name": "create-vben",
-  "version": "0.0.0",
-  "description": "Generate a standalone vben-admin scaffold from the upstream monorepo — pick one UI library, skip the rest.",
+  "name": "create-vben-admin",
+  "version": "1.0.0",
+  "description": "CLI scaffold generator for vue-vben-admin — extract one UI template (Ant Design Vue, Element Plus, Naive UI, TDesign) into a standalone Vue 3 + Vite project.",
   "type": "module",
   "license": "MIT",
-  "author": "H-Zone",
+  "author": "379949990",
   "keywords": [
+    "create-vben-admin",
     "vben",
     "vben-admin",
     "vue-vben-admin",
+    "vben-admin",
     "scaffold",
+    "scaffolding",
     "cli",
+    "generator",
     "monorepo",
     "vue3",
+    "vue",
     "vite",
-    "typescript"
+    "typescript",
+    "admin",
+    "dashboard",
+    "naive-ui",
+    "ant-design-vue",
+    "element-plus",
+    "tdesign",
+    "pnpm"
   ],
   "bin": {
-    "create-vben": "./dist/index.js"
+    "create-vben-admin": "./dist/index.js"
   },
   "files": [
     "dist",
@@ -26,9 +38,14 @@
   "engines": {
     "node": ">=20.11.0"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsup",
+    "postbuild": "node --input-type=module -e \"import fs from 'node:fs'; const c=fs.readFileSync('dist/index.js','utf8'); if (!c.startsWith('#!/usr/bin/env node\\\\n') || c.indexOf('#!/usr/bin/env node', 1) !== -1) { console.error('dist/index.js must have exactly one shebang on line 1'); process.exit(1); }\"",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -64,10 +81,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/H-Zone/create-vben"
+    "url": "https://github.com/379949990/create-vben"
   },
   "bugs": {
-    "url": "https://github.com/H-Zone/create-vben/issues"
+    "url": "https://github.com/379949990/create-vben/issues"
   },
-  "homepage": "https://github.com/H-Zone/create-vben#readme"
+  "homepage": "https://github.com/379949990/create-vben#readme"
 }

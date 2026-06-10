@@ -27,6 +27,11 @@ coverage/
 npm-debug.log*
 pnpm-debug.log*
 
-# temp
+# temp / local generation output
 tmp/
 .temp/
+.temp/generated/
+my-vben-app/
+
+# npm pack
+*.tgz

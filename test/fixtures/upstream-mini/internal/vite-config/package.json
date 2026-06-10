@@ -1,0 +1,11 @@
+{
+  "name": "@vben/vite-config",
+  "main": "./dist/index.mjs",
+  "scripts": {
+    "stub": "pnpm exec tsdown"
+  },
+  "devDependencies": {
+    "vite": "catalog:",
+    "@vitejs/plugin-vue": "catalog:"
+  }
+}

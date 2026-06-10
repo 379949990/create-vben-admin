@@ -1,0 +1,11 @@
+{
+  "name": "@vben/web-naive",
+  "scripts": {
+    "dev": "pnpm vite --mode development",
+    "typecheck": "vue-tsc --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "@vben/utils": "workspace:*",
+    "vue": "catalog:"
+  }
+}

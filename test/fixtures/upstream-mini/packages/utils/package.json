@@ -1,0 +1,6 @@
+{
+  "name": "@vben/utils",
+  "dependencies": {
+    "@vben-core/shared": "workspace:*"
+  }
+}
