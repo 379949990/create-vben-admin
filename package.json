@@ -26,9 +26,14 @@
   "engines": {
     "node": ">=20.11.0"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsup",
+    "postbuild": "node --input-type=module -e \"import fs from 'node:fs'; const c=fs.readFileSync('dist/index.js','utf8'); if (!c.startsWith('#!/usr/bin/env node\\\\n') || c.indexOf('#!/usr/bin/env node', 1) !== -1) { console.error('dist/index.js must have exactly one shebang on line 1'); process.exit(1); }\"",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
