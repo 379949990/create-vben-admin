@@ -34,7 +34,9 @@ Tag 推送后 Release workflow 会：
 
 | Secret      | 说明                                                                                              |
 | ----------- | ------------------------------------------------------------------------------------------------- |
-| `NPM_TOKEN` | [npm Access Token](https://www.npmjs.com/settings/~youruser/tokens)（Automation 或 Publish 类型） |
+| `NPM_TOKEN` | [npm Access Token](https://www.npmjs.com/settings/fluoxetine_/tokens)（**Automation** 或 Granular **Read and write**；开启 2FA 时勿用 Classic Publish） |
+
+`NODE_AUTH_TOKEN` 须在 **`actions/setup-node` 执行前** 可用（workflow 已设为 job 级 env），否则 `.npmrc` 无 token 会导致 publish **403**。
 
 `GITHUB_TOKEN` 用于 GitHub Release 与 push `main`；若 `main` 有分支保护，须允许 **GitHub Actions** 绕过或写入。
 

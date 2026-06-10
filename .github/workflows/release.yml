@@ -16,6 +16,9 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      # Must be set before actions/setup-node so .npmrc gets the auth token.
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - name: Checkout tag
         uses: actions/checkout@v4
@@ -67,6 +70,11 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
           registry-url: https://registry.npmjs.org
 
+      - name: Verify npm authentication
+        run: |
+          npm whoami --registry=https://registry.npmjs.org
+          grep -q '_authToken' .npmrc
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -78,8 +86,6 @@ jobs:
 
       - name: Check npm registry
         id: npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           PKG="${{ steps.tag.outputs.package_name }}"
           VERSION="${{ steps.tag.outputs.version }}"
@@ -92,9 +98,7 @@ jobs:
 
       - name: Publish to npm
         if: steps.npm.outputs.already_published != 'true'
-        run: pnpm publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm publish --access public --no-git-checks --registry https://registry.npmjs.org
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
