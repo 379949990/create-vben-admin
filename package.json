@@ -1,20 +1,32 @@
 {
   "name": "create-vben",
   "version": "1.0.0",
-  "description": "Generate a standalone vben-admin scaffold from the upstream monorepo — pick one UI library, skip the rest.",
+  "description": "CLI scaffold generator for vue-vben-admin — extract one UI template (Ant Design Vue, Element Plus, Naive UI, TDesign) into a standalone Vue 3 + Vite project.",
   "type": "module",
   "license": "MIT",
   "author": "379949990",
   "keywords": [
+    "create-vben",
     "vben",
     "vben-admin",
     "vue-vben-admin",
+    "vben-admin",
     "scaffold",
+    "scaffolding",
     "cli",
+    "generator",
     "monorepo",
     "vue3",
+    "vue",
     "vite",
-    "typescript"
+    "typescript",
+    "admin",
+    "dashboard",
+    "naive-ui",
+    "ant-design-vue",
+    "element-plus",
+    "tdesign",
+    "pnpm"
   ],
   "bin": {
     "create-vben": "./dist/index.js"
