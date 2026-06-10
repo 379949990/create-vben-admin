@@ -12,6 +12,7 @@ import { assertWritableTargetDirectory } from '../utils/fs.js';
 import { planFlatGeneration } from './flatten.js';
 import { transformGeneratedPackageJsons } from './transform-package-json.js';
 import { writeGeneratedReadme } from './write-readme.js';
+import { assertVendorBuildArtifacts, runWorkspaceStub } from './vendor-stub.js';
 import { summarizeGenerationPlan, writeGenerationPlan } from './write-files.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -93,13 +94,37 @@ export async function createProject(options: ResolvedCliOptions): Promise<void> 
       stdio: 'inherit',
     });
     installSpinner.stop('Dependencies installed');
-  } catch {
+  } catch (error) {
     installSpinner.stop('pnpm install failed');
-    p.log.warn(
-      `Project was created at ${options.targetDir}, but pnpm install failed. Run "cd ${options.targetDir} && pnpm install" manually.`,
+    throw new Error(
+      [
+        `pnpm install failed in ${options.targetDir}.`,
+        'Project files were written but the scaffold is not ready.',
+        'Fix install errors above, then run:',
+        `  cd ${options.targetDir} && pnpm install`,
+      ].join('\n'),
+      { cause: error },
     );
-    p.outro(`Project created at ${options.targetDir}. Fix install, then run pnpm dev.`);
-    return;
+  }
+
+  const stubSpinner = p.spinner();
+  stubSpinner.start('Building workspace vendor packages (stub)…');
+
+  try {
+    await runWorkspaceStub(options.targetDir);
+    await assertVendorBuildArtifacts(options.targetDir);
+    stubSpinner.stop('Vendor packages built');
+  } catch (error) {
+    stubSpinner.stop('Vendor stub failed');
+    throw new Error(
+      [
+        `Workspace stub/build failed in ${options.targetDir}.`,
+        'Without built vendor packages (e.g. @vben/vite-config/dist), pnpm dev will not start.',
+        'After fixing errors above, run:',
+        `  cd ${options.targetDir} && pnpm -r run stub --if-present`,
+      ].join('\n'),
+      { cause: error },
+    );
   }
 
   p.outro(`Done! Run:\n  cd ${options.targetDir}\n  pnpm dev`);

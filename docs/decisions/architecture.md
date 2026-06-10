@@ -29,6 +29,7 @@
 4. planFlatOutput(closure) → FilePlan[]
 5. transformPackageJson(each) → catalog: → semver；保留 workspace:*
 6. writeFiles(targetDir, plan) → pnpm install
+7. runWorkspaceStub → assertVendorBuildArtifacts（失败则生成失败）
 ```
 
 ---
@@ -68,10 +69,12 @@ my-app/
 
 ---
 
-## 5. 生成后行为（Q5）
+## 5. 生成后行为（Q5 · P0）
 
-- 写出文件后 **自动执行** `pnpm install`（含 upstream `postinstall` stub）
-- 失败时保留已生成目录并提示用户手动安装
+1. 写出文件后 **自动执行** `pnpm install`
+2. **强制** `pnpm -r run stub --if-present` 构建 workspace vendor（`@vben/vite-config` 等）
+3. 校验关键产物存在（如 `internal/vite-config/dist/index.mjs`）；**任一失败则整次生成失败**（exit ≠ 0）
+4. 不再在 install/stub 失败后静默交付「不能 dev」的半成品项目
 
 ---
 

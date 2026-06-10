@@ -100,39 +100,41 @@ flowchart LR
 
 ## 3. 分步计划（CV1-\*）
 
-| 步骤       | 主题                  | 交付物                                                              | 验收                                        |
-| ---------- | --------------------- | ------------------------------------------------------------------- | ------------------------------------------- |
-| **CV1-01** | 仓库脚手架            | package.json · tsconfig · tsup · vitest · AGENTS · rules · 占位 CLI | `pnpm verify` 通过；`pnpm dev` 可进入交互   |
-| **CV1-02** | upstream 同步策略 ADR | `vben-source-sync.md` 定稿                                          | 缓存目录、ref 策略、网络失败行为已文档化    |
-| **CV1-03** | 拉取 upstream         | `fetch-upstream.ts` + 测试（mock fetch）                            | 指定 ref 解压到 cache；`--offline` 读 cache |
-| **CV1-04** | 解析 workspace        | `parse-workspace.ts` + fixture                                      | 从 fixture 读出 apps/packages 列表          |
-| **CV1-05** | 依赖图 + 输出形态 ADR | `architecture.md` 更新 · `resolve-deps.ts`                          | 给定 template，返回须拷贝的包集合           |
-| **CV1-06** | 扁平化与 transform    | `flatten.ts` · `transform-package-json.ts`                          | workspace 协议正确改写；有快照测试          |
-| **CV1-07** | 生成编排              | `create-project.ts` · `write-files.ts`                              | 非 dry-run 写出可 install 的项目            |
-| **CV1-08** | CLI 完善              | 错误处理 · `--force` · 日志                                         | 边界用例有测试或文档                        |
-| **CV1-09** | 集成测试              | `test/integration/*.test.ts` + 精简 fixture                         | 至少 1 个 template 端到端                   |
-| **CV1-10** | 生成物文档            | 模板 README 片段                                                    | 用户知悉 upstream ref 与差异                |
-| **CV1-11** | 可选能力              | `--mock` / `--git` 等待定                                           | 按 PRD Q\* 确认后做                         |
-| **CV1-12** | 发布准备              | changesets 或 manual version · CI                                   | `npm pack` 可安装；是否发 npm 待负责人确认  |
+| 步骤        | 主题                  | 交付物                                                              | 验收                                        |
+| ----------- | --------------------- | ------------------------------------------------------------------- | ------------------------------------------- |
+| **CV1-01**  | 仓库脚手架            | package.json · tsconfig · tsup · vitest · AGENTS · rules · 占位 CLI | `pnpm verify` 通过；`pnpm dev` 可进入交互   |
+| **CV1-02**  | upstream 同步策略 ADR | `vben-source-sync.md` 定稿                                          | 缓存目录、ref 策略、网络失败行为已文档化    |
+| **CV1-03**  | 拉取 upstream         | `fetch-upstream.ts` + 测试（mock fetch）                            | 指定 ref 解压到 cache；`--offline` 读 cache |
+| **CV1-04**  | 解析 workspace        | `parse-workspace.ts` + fixture                                      | 从 fixture 读出 apps/packages 列表          |
+| **CV1-05**  | 依赖图 + 输出形态 ADR | `architecture.md` 更新 · `resolve-deps.ts`                          | 给定 template，返回须拷贝的包集合           |
+| **CV1-06**  | 扁平化与 transform    | `flatten.ts` · `transform-package-json.ts`                          | workspace 协议正确改写；有快照测试          |
+| **CV1-07**  | 生成编排              | `create-project.ts` · `write-files.ts`                              | 非 dry-run 写出可 install 的项目            |
+| **CV1-07b** | vendor 预构建门禁     | `vendor-stub.ts` · install/stub 失败即失败                          | 生成后 `internal/vite-config/dist` 存在     |
+| **CV1-08**  | CLI 完善              | 错误处理 · `--force` · 日志                                         | 边界用例有测试或文档                        |
+| **CV1-09**  | 集成测试              | `test/integration/*.test.ts` + 精简 fixture                         | 至少 1 个 template 端到端                   |
+| **CV1-10**  | 生成物文档            | 模板 README 片段                                                    | 用户知悉 upstream ref 与差异                |
+| **CV1-11**  | 可选能力              | `--mock` / `--git` 等待定                                           | 按 PRD Q\* 确认后做                         |
+| **CV1-12**  | 发布准备              | changesets 或 manual version · CI                                   | `npm pack` 可安装；是否发 npm 待负责人确认  |
 
 ---
 
 ## 4. 进度表
 
-| 步骤   | 状态 | 备注                                      |
-| ------ | ---- | ----------------------------------------- |
-| CV1-01 | ✅   | 2026-06-09 脚手架与规范文档               |
-| CV1-02 | ✅   | 2026-06-09 Q2/Q6 定稿 vben-source-sync    |
-| CV1-03 | ✅   | 2026-06-09 fetch-upstream + 缓存          |
-| CV1-04 | ✅   | 2026-06-09 parse-workspace + fixture      |
-| CV1-05 | ✅   | 2026-06-09 Q1 扁平输出 + resolve-deps     |
-| CV1-06 | ✅   | 2026-06-09 flatten + transform            |
-| CV1-07 | ✅   | 2026-06-09 create-project + pnpm install  |
-| CV1-08 | ⬜   | 错误边界与 --force 测试补强               |
-| CV1-09 | ⬜   | 端到端集成测试（真实 ref）                |
-| CV1-10 | ✅   | 2026-06-09 生成 README 片段               |
-| CV1-11 | ⬜   | 不含 backend-mock（Q3 已确认，无需 flag） |
-| CV1-12 | ⬜   | npm 包名 create-vben 已确认；发布 CI 待定 |
+| 步骤    | 状态 | 备注                                      |
+| ------- | ---- | ----------------------------------------- |
+| CV1-01  | ✅   | 2026-06-09 脚手架与规范文档               |
+| CV1-02  | ✅   | 2026-06-09 Q2/Q6 定稿 vben-source-sync    |
+| CV1-03  | ✅   | 2026-06-09 fetch-upstream + 缓存          |
+| CV1-04  | ✅   | 2026-06-09 parse-workspace + fixture      |
+| CV1-05  | ✅   | 2026-06-09 Q1 扁平输出 + resolve-deps     |
+| CV1-06  | ✅   | 2026-06-09 flatten + transform            |
+| CV1-07  | ✅   | 2026-06-09 create-project + pnpm install  |
+| CV1-07b | ✅   | 2026-06-09 vendor stub 门禁 + dist 校验   |
+| CV1-08  | ⬜   | 根 devDeps 推导 + --force 测试补强        |
+| CV1-09  | ⬜   | 端到端集成测试（真实 ref）                |
+| CV1-10  | ✅   | 2026-06-09 生成 README 片段               |
+| CV1-11  | ⬜   | 不含 backend-mock（Q3 已确认，无需 flag） |
+| CV1-12  | ⬜   | npm 包名 create-vben 已确认；发布 CI 待定 |
 
 ---
 
@@ -163,14 +165,14 @@ pnpm dev -- .temp/generated/e2e-app --template web-naive --ref v5.7.0 --force
 
 ## 7. 下一步（§7.8 等价）
 
-**→ CV1-08 / CV1-09：** CLI 边界测试与真实 ref 端到端集成测试。
+**→ CV1-08：** 根 devDependencies 系统化推导 + CLI 边界测试。
 
 新开 Agent 时复制：
 
 ```
 项目：/Users/wb_hc/H-Zone/DEV/create-vben
 读：AGENTS.md → create-vben-core.mdc → 本文 CV1-08
-已决：Q1 扁平 · Q2 latest tag · Q3 无 mock · Q4 create-vben · Q5 auto install · Q6 token 后续
+已决：P0 vendor stub 门禁 · Q1 扁平 · Q2 latest tag
 ```
 
 ---
