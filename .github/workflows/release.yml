@@ -72,8 +72,11 @@ jobs:
 
       - name: Verify npm authentication
         run: |
+          {
+            echo "registry=https://registry.npmjs.org/"
+            echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
+          } > .npmrc
           npm whoami --registry=https://registry.npmjs.org
-          grep -q '_authToken' .npmrc
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
