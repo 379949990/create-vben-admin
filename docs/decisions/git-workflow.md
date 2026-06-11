@@ -1,7 +1,7 @@
-# Git 与版本分支 — create-vben
+# Git 与版本分支 — create-vben-admin
 
 > 遵循全局 Cursor 规则 **git-version-management**（`~/.cursor/rules/git-version-management.mdc`）  
-> 应用版本：`1.0.0`（`package.json`）
+> 应用版本：`1.0.1`（`package.json`）
 
 ## 版本开发分支命名
 
@@ -27,21 +27,21 @@
 
 ## 本仓库分支角色
 
-| 分支 / Tag              | 用途                                           |
-| ----------------------- | ---------------------------------------------- |
-| `main`                  | 对外发布基线；仅 **squash** 增长               |
-| `dev`                   | 集成目标；**仅 merge 后 push**（触发 CI）      |
-| **`v1.0.0`**            | 当前版本开发分支                               |
-| **`vX.Y.Z(-*)(_*)`**    | 自版本分支切出的下级 / 个人专题分支            |
-| Tag **`Version_1.0.0`** | 发版锚点（触发 npm + GitHub Release + squash） |
+| 分支 / Tag              | 用途                                               |
+| ----------------------- | -------------------------------------------------- |
+| `main`                  | 对外发布基线；仅 **squash** 增长                   |
+| `dev`                   | 集成目标；**仅 merge 后 push**（触发 CI）          |
+| **`v1.0.1`**            | 当前版本开发分支                                   |
+| **`vX.Y.Z(-*)(_*)`**    | 自版本分支切出的下级 / 个人专题分支                |
+| Tag **`Version_1.0.1`** | 当前发版锚点（触发 npm + GitHub Release + squash） |
 
 **合并流向：** `vX.Y.Z(-*)(_*)`（或下级专题分支）→ merge **`dev`** → **`git push origin dev`**（CI）→ Tag `Version_X.Y.Z` on **`dev`** → Release workflow（npm + squash **`main`**）
 
 ## 硬约束（Agent / 协作者）
 
 - **禁止** 在 `main` / `dev` 上直接 commit（`dev` 仅 fast-forward / merge 版本分支后的集成 push）
-- **日常开发** 仅在 **版本分支**（当前 **`v1.0.0`**）或自其切出的 **下级专题分支**（如 `v1.0.0_extract`）上进行
-- 集成：`git checkout dev && git merge v1.0.0 --no-edit && git push origin dev` → 触发 [CI](../../.github/workflows/ci.yml)
+- **日常开发** 仅在 **版本分支**（当前 **`v1.0.1`**）或自其切出的 **下级专题分支**（如 `v1.0.1_extract`）上进行
+- 集成：`git checkout dev && git merge v1.0.1 --no-edit && git push origin dev` → 触发 [CI](../../.github/workflows/ci.yml)
 - Conventional Commits · **一步一 commit**（对应 dev-guide 单步）
 - Agent **禁止** 未经确认 `git commit` / `push`；动手前须确认当前分支为 **版本分支**，非 `dev` / `main`
 - **`main` squash 由 Release workflow 自动完成**，发版前勿手工 merge dev → main
@@ -51,7 +51,7 @@
 ### 初始化仓库（已完成 CV1-01）
 
 ```bash
-cd /Users/wb_hc/H-Zone/DEV/create-vben
+cd /Users/wb_hc/H-Zone/DEV/create-vben-admin
 git init
 git checkout -b dev
 git checkout -b v1.0.0
@@ -62,10 +62,10 @@ chmod +x .githooks/commit-msg
 ### 自版本分支切出下级专题分支
 
 ```bash
-git checkout v1.0.0
-git checkout -b v1.0.0_extract
+git checkout v1.0.1
+git checkout -b v1.0.1_extract
 # … 在专题分支开发 …
-git checkout v1.0.0 && git merge v1.0.0_extract --no-edit
+git checkout v1.0.1 && git merge v1.0.1_extract --no-edit
 # 再按「集成到 dev」push dev 触发 CI
 ```
 
@@ -73,7 +73,7 @@ git checkout v1.0.0 && git merge v1.0.0_extract --no-edit
 
 ```bash
 git checkout dev && git pull origin dev
-git merge v1.0.0 --no-edit   # 仅 merge，不在 dev 上改代码
+git merge v1.0.1 --no-edit   # 仅 merge，不在 dev 上改代码
 git push origin dev          # 触发 CI（verify）
 ```
 
@@ -81,8 +81,8 @@ git push origin dev          # 触发 CI（verify）
 
 ```bash
 git checkout dev && git pull origin dev
-git tag -a Version_1.0.0 -m "Release 1.0.0"
-git push origin refs/tags/Version_1.0.0
+git tag -a Version_1.0.1 -m "Release 1.0.1"
+git push origin refs/tags/Version_1.0.1
 # Release workflow：npm publish → 自动 squash dev → main
 ```
 

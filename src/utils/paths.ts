@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { CLI_CACHE_DIR, VBEN_UPSTREAM } from '../core/constants.js';
 
 export function getCacheRoot(): string {
-  return process.env.CREATE_VBEN_CACHE ?? join(homedir(), CLI_CACHE_DIR);
+  return process.env.CREATE_VBEN_ADMIN_CACHE ?? join(homedir(), CLI_CACHE_DIR);
 }
 
 export function getUpstreamCacheDir(ref: string): string {

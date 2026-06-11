@@ -27,13 +27,13 @@ export async function fetchUpstreamSnapshot(options: FetchUpstreamOptions): Prom
 
   if (options.offline) {
     throw new Error(
-      `No cached upstream snapshot for ref "${ref}". Run without --offline once to populate ~/.create-vben-cache/.`,
+      `No cached upstream snapshot for ref "${ref}". Run without --offline once to populate ~/.create-vben-admin-cache/.`,
     );
   }
 
   await mkdir(cacheDir, { recursive: true });
 
-  const tempDir = join(tmpdir(), `create-vben-${Date.now()}`);
+  const tempDir = join(tmpdir(), `create-vben-admin-${Date.now()}`);
   const tarballPath = join(tempDir, 'upstream.tar.gz');
 
   await mkdir(tempDir, { recursive: true });

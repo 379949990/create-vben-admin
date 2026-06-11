@@ -1,6 +1,6 @@
 # {{packageName}}
 
-> 由 [create-vben-admin]({{createVbenRepo}}) 从 [vue-vben-admin]({{upstreamRepo}}) 提取生成的独立前端工程。
+> 由 [create-vben-admin]({{createVbenAdminRepo}}) 从 [vue-vben-admin]({{upstreamRepo}}) 提取生成的独立前端工程。
 
 [English README](./README.en.md)
 
@@ -10,7 +10,7 @@
 | ----------------- | --------------------------------------- |
 | UI 模板           | `{{templateId}}`（{{templateLabelZh}}） |
 | upstream ref      | `{{ref}}`                               |
-| create-vben-admin | `{{createVbenVersion}}`                 |
+| create-vben-admin | `{{createVbenAdminVersion}}`            |
 
 本仓库采用 **扁平布局**：业务代码在仓库根目录；构建所需的 upstream workspace 包保留在 `packages/` 与 `internal/` 中，一般无需修改。
 
@@ -48,8 +48,8 @@ pnpm dev
 
 - [Vben Admin 文档](https://doc.vben.pro/)
 - [vue-vben-admin]({{upstreamRepo}})
-- [create-vben-admin]({{createVbenRepo}})
+- [create-vben-admin]({{createVbenAdminRepo}})
 
 ## License
 
-MIT（应用代码遵循 upstream 与 create-vben 生成说明；详见各文件头注释。）
+MIT（应用代码遵循 upstream 与 create-vben-admin 生成说明；详见各文件头注释。）

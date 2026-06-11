@@ -21,7 +21,7 @@ import { assertVendorBuildArtifacts, runWorkspaceStub } from './vendor-stub.js';
 import { summarizeGenerationPlan, writeGenerationPlan } from './write-files.js';
 
 const templatesDir = getPackagePath('templates');
-const createVbenVersion = JSON.parse(readFileSync(getPackagePath('package.json'), 'utf8')) as {
+const createVbenAdminVersion = JSON.parse(readFileSync(getPackagePath('package.json'), 'utf8')) as {
   version: string;
 };
 
@@ -103,7 +103,7 @@ export async function createProject(options: ResolvedCliOptions): Promise<void> 
       packageName: options.packageName,
       templateId: options.template,
       ref: resolvedRef,
-      createVbenVersion: createVbenVersion.version,
+      createVbenAdminVersion: createVbenAdminVersion.version,
       includeMock: options.includeMock,
       devPort,
       openApiRelativePath,

@@ -1,6 +1,6 @@
 # npm 发布与 GitHub Release
 
-> **状态：** v1.0.0 · 包名 `create-vben-admin` · CI 自动发版 + 自动 squash `main`
+> **状态：** v1.0.1 · 包名 `create-vben-admin` · CI 自动发版 + 自动 squash `main`
 
 ---
 
@@ -9,7 +9,7 @@
 | 事件                                       | Workflow                                                               | 行为                                                                 |
 | ------------------------------------------ | ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | PR → `dev`、**push `dev`**、push `v*` 分支 | [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml)           | `pnpm verify`                                                        |
-| push tag `Version_*`（如 `Version_1.0.0`） | [`.github/workflows/release.yml`](../../.github/workflows/release.yml) | 校验 tag → verify → npm publish → GitHub Release → **squash `main`** |
+| push tag `Version_*`（如 `Version_1.0.1`） | [`.github/workflows/release.yml`](../../.github/workflows/release.yml) | 校验 tag → verify → npm publish → GitHub Release → **squash `main`** |
 
 **新 tag 判定：** 以 tag 指向的 commit SHA（`tag^{commit}`）为标识。同名 tag 删除后重打、或 `--force` 推送 tag，只要 commit 变就会重新触发；workflow 要求 tag **必须指向当前 `origin/dev` HEAD**。
 
@@ -22,7 +22,7 @@ Tag 推送后 Release workflow 会：
 5. 创建/更新 GitHub Release
 6. **`git merge --squash origin/dev` → `main` 并 push**（预设 squash 提交信息模板）
 
-> **说明：** 裸名 `create-vben` 在 npm 上已被他人占用且 unpublish，本仓库发布 **`create-vben-admin`**（账号 `fluoxetine_`）。
+> **说明：** 官方 npm 包名与 GitHub 仓库均为 **`create-vben-admin`**（[379949990/create-vben-admin](https://github.com/379949990/create-vben-admin) · 账号 `fluoxetine_`）。
 
 **`main` 不再手工 squash。** 发版前 `main` 可保持在上一发版基线；npm 发布成功后由 workflow 自动 squash。
 
@@ -47,27 +47,27 @@ Tag 推送后 Release workflow 会：
 ```bash
 # 1. 版本分支合并到 dev 并 push（触发 CI）
 git checkout dev && git pull origin dev
-git merge v1.0.0 --no-edit   # 在 v1.0.0 上开发，勿在 dev 直接改
+git merge v1.0.1 --no-edit   # 在 v1.0.1 上开发，勿在 dev 直接改
 git push origin dev
 
 # 2. 在 dev HEAD 打 tag（Version_ 前缀 + package.json 版本）
-git tag -a Version_1.0.0 -m "Release 1.0.0"
+git tag -a Version_1.0.1 -m "Release 1.0.1"
 
 # 3. 只 push tag（不要手工 squash main）
-git push origin refs/tags/Version_1.0.0
+git push origin refs/tags/Version_1.0.1
 ```
 
 **同名 tag 重发（如修正包名后重试）：**
 
 ```bash
 git checkout dev && git pull origin dev
-git tag -d Version_1.0.0
-git tag -a Version_1.0.0 -m "Release 1.0.0 (retry)"
-git push origin :refs/tags/Version_1.0.0
-git push origin refs/tags/Version_1.0.0
+git tag -d Version_1.0.1
+git tag -a Version_1.0.1 -m "Release 1.0.1 (retry)"
+git push origin :refs/tags/Version_1.0.1
+git push origin refs/tags/Version_1.0.1
 ```
 
-**注意：** 开发分支 `v1.0.0` 与发版 tag `Version_1.0.0` 不同名，避免 ref 冲突。push 分支用 `git push origin refs/heads/v1.0.0`，push tag 用 `git push origin refs/tags/Version_1.0.0`。
+**注意：** 开发分支 `v1.0.1` 与发版 tag `Version_1.0.1` 不同名，避免 ref 冲突。push 分支用 `git push origin refs/heads/v1.0.1`，push tag 用 `git push origin refs/tags/Version_1.0.1`。
 
 ---
 
@@ -104,7 +104,7 @@ pnpm publish --dry-run --access public
 ```bash
 pnpm build
 pnpm pack
-pnpm add -g ./create-vben-admin-1.0.0.tgz
+pnpm add -g ./create-vben-admin-1.0.1.tgz
 create-vben-admin --help
 ```
 

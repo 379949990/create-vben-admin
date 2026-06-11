@@ -1,7 +1,7 @@
 import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-/** Resolve create-vben package root (directory containing package.json). */
+/** Resolve create-vben-admin package root (directory containing package.json). */
 export function getPackageRoot(moduleUrl: string = import.meta.url): string {
   const moduleDir = dirname(fileURLToPath(moduleUrl));
 

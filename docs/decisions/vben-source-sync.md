@@ -7,7 +7,7 @@
 
 ## 1. 背景
 
-create-vben 的价值在于与 **upstream 指定结构** 同步，而非维护静态模板副本。须明确：如何拉取、缓存、pin 版本、离线复用。
+create-vben-admin 的价值在于与 **upstream 指定结构** 同步，而非维护静态模板副本。须明确：如何拉取、缓存、pin 版本、离线复用。
 
 ---
 
@@ -28,8 +28,8 @@ https://codeload.github.com/vbenjs/vue-vben-admin/tar.gz/{ref}
 
 | 项          | 值                                   |
 | ----------- | ------------------------------------ |
-| 默认目录    | `~/.create-vben-cache/`              |
-| 环境变量    | `CREATE_VBEN_CACHE` 覆盖根目录       |
+| 默认目录    | `~/.create-vben-admin-cache/`        |
+| 环境变量    | `CREATE_VBEN_ADMIN_CACHE` 覆盖根目录 |
 | 键          | `{owner}/{repo}/{sanitizedRef}/`     |
 | 命中        | 目录内存在 `pnpm-workspace.yaml`     |
 | `--offline` | 仅读缓存；缺失则失败并提示先在线拉取 |

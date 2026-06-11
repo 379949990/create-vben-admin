@@ -5,7 +5,7 @@ node_modules/
 dist/
 
 # cache
-.create-vben-cache/
+.create-vben-admin-cache/
 *.tsbuildinfo
 
 # test / fixture artifacts

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { CREATE_VBEN_META } from '../core/meta.js';
+import { CREATE_VBEN_ADMIN_META } from '../core/meta.js';
 import { getPackagePath } from '../core/package-root.js';
 import { type VbenTemplateId } from '../core/constants.js';
 
@@ -20,7 +20,7 @@ export async function writeGeneratedReadme(options: {
   packageName: string;
   templateId: VbenTemplateId;
   ref: string;
-  createVbenVersion: string;
+  createVbenAdminVersion: string;
   includeMock: boolean;
   devPort?: string;
   openApiRelativePath?: string;
@@ -40,8 +40,8 @@ export async function writeGeneratedReadme(options: {
     templateLabelZh: labels.zh,
     templateLabelEn: labels.en,
     ref: options.ref,
-    createVbenVersion: options.createVbenVersion,
-    createVbenRepo: CREATE_VBEN_META.repository,
+    createVbenAdminVersion: options.createVbenAdminVersion,
+    createVbenAdminRepo: CREATE_VBEN_ADMIN_META.repository,
     upstreamRepo: 'https://github.com/vbenjs/vue-vben-admin',
     devPort,
     devServerNoteZh: sections.devServerNoteZh,

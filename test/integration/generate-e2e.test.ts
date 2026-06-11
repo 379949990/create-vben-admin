@@ -28,7 +28,7 @@ afterEach(async () => {
 });
 
 async function createTargetDir(): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'create-vben-e2e-'));
+  const dir = await mkdtemp(join(tmpdir(), 'create-vben-admin-e2e-'));
   tempDirs.push(dir);
   return dir;
 }
@@ -76,7 +76,7 @@ async function generateFromFixture(options: {
     packageName: 'my-vben-app',
     templateId: 'web-naive',
     ref: 'fixture',
-    createVbenVersion: '1.0.0',
+    createVbenAdminVersion: '1.0.1',
     includeMock: options.includeMock,
     devPort: '5888',
     openApiRelativePath: openApiPath!.slice(options.targetDir.length + 1),

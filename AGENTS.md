@@ -1,23 +1,24 @@
-# AGENTS.md — create-vben
+# AGENTS.md — create-vben-admin
 
 > **受众：** Cursor Agent / 自动化。人类 onboarding 见 [`README.md`](README.md)。  
 > **权威规范：** [`.cursor/rules/create-vben-core.mdc`](.cursor/rules/create-vben-core.mdc) · 当前里程碑 [`docs/versions/v1.0.0/`](docs/versions/v1.0.0/)
 
-| 字段                 | 值                                                                     |
-| -------------------- | ---------------------------------------------------------------------- |
-| 包名                 | `create-vben-admin`（npm）                                             |
-| 类型                 | **Node.js CLI**（ESM · TypeScript · tsup）                             |
-| **上游真源**         | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)      |
-| **工具链**           | Node **>= 20.11** · pnpm · TypeScript 5.x · Vitest                     |
-| 应用版本             | `1.0.0`（`package.json`）                                              |
-| **集成分支**         | **`dev`**                                                              |
-| **当前工作分支**     | **`v1.0.0`**                                                           |
-| **发版 Tag 命名**    | **`Version_X.Y.Z`**（如 `Version_1.0.0`）                              |
-| **版本开发分支命名** | **`vX.Y.Z(-*)(_*)`**                                                   |
-| 锚点分支             | `main` · `dev`（**禁止**日常 commit）                                  |
-| Git 规范             | [`docs/decisions/git-workflow.md`](docs/decisions/git-workflow.md)     |
-| 已确认配置           | [`docs/decisions/project-config.md`](docs/decisions/project-config.md) |
-| 第一原则             | 最小正确 diff · 与 upstream 结构同步 · 不臆造 vben 目录/依赖           |
+| 字段                 | 值                                                                            |
+| -------------------- | ----------------------------------------------------------------------------- |
+| 包名                 | `create-vben-admin`（npm）                                                    |
+| GitHub               | [379949990/create-vben-admin](https://github.com/379949990/create-vben-admin) |
+| 类型                 | **Node.js CLI**（ESM · TypeScript · tsup）                                    |
+| **上游真源**         | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)             |
+| **工具链**           | Node **>= 20.11** · pnpm · TypeScript 5.x · Vitest                            |
+| 应用版本             | `1.0.1`（`package.json`）                                                     |
+| **集成分支**         | **`dev`**                                                                     |
+| **当前工作分支**     | **`v1.0.1`**                                                                  |
+| **发版 Tag 命名**    | **`Version_X.Y.Z`**（如 `Version_1.0.1`）                                     |
+| **版本开发分支命名** | **`vX.Y.Z(-*)(_*)`**                                                          |
+| 锚点分支             | `main` · `dev`（**禁止**日常 commit）                                         |
+| Git 规范             | [`docs/decisions/git-workflow.md`](docs/decisions/git-workflow.md)            |
+| 已确认配置           | [`docs/decisions/project-config.md`](docs/decisions/project-config.md)        |
+| 第一原则             | 最小正确 diff · 与 upstream 结构同步 · 不臆造 vben 目录/依赖                  |
 
 ---
 
@@ -29,7 +30,7 @@
 | --------------- | ---------------------------------------------------------------------------------------------- |
 | **询问**        | upstream 目录变更、模板列表、发布策略、npm 包名等 **未确认必须先问**                           |
 | **设计/规划**   | 对照 [`docs/versions/v1.0.0/dev-guide.md`](docs/versions/v1.0.0/dev-guide.md) CV1-\* 步骤      |
-| **分步开发**    | 最小 diff；一步一主题；**仅在版本分支**（如 **`v1.0.0`**）开发，**禁止**在 `dev`/`main` 改代码 |
+| **分步开发**    | 最小 diff；一步一主题；**仅在版本分支**（如 **`v1.0.1`**）开发，**禁止**在 `dev`/`main` 改代码 |
 | **集成**        | merge 版本分支 → **`dev`** → **`git push origin dev`** 触发 CI                                 |
 | **验证/修复**   | `pnpm format:check` · `pnpm typecheck` · `pnpm lint` · `pnpm test` · `pnpm build`              |
 | **提交**        | **仅负责人验证后** commit；一步一 commit；**禁止** Agent 自行提交                              |
@@ -40,7 +41,7 @@
 ## 1. Agent 启动（~60s）
 
 1. **读：** 本文 → Core 规范 → dev-guide §0–§4、§7（下一步）。
-2. **确认分支：** `git branch --show-current` 须为 **版本分支**（当前 **`v1.0.0`** 或下级 `v1.0.0_*`），**非** `dev` / `main`。
+2. **确认分支：** `git branch --show-current` 须为 **版本分支**（当前 **`v1.0.1`** 或下级 `v1.0.1_*`），**非** `dev` / `main`。
 3. **跑：** `pnpm install` → `pnpm verify`。
 4. **改：** 涉及 upstream 结构时 **先** 读 [`docs/decisions/vben-source-sync.md`](docs/decisions/vben-source-sync.md) 与官方 [目录说明](https://doc.vben.pro/guide/project/dir.html)。
 5. **交：** verify 全通过；更新 dev-guide 进度表。
@@ -77,7 +78,7 @@ templates/                      # 生成后补丁（.gitignore、README 片段�
 
 以下习惯从 Flutter 项目 **原样继承**，仅技术栈不同：
 
-| 习惯                                          | create-vben 落地                                    |
+| 习惯                                          | create-vben-admin 落地                              |
 | --------------------------------------------- | --------------------------------------------------- |
 | 询问 → 规划 → 分步 → 验证                     | dev-guide CV1-\* 步骤 + 进度表                      |
 | 最小 diff、一步一 commit                      | G4 · Agent 不自行 commit                            |
@@ -98,7 +99,7 @@ templates/                      # 生成后补丁（.gitignore、README 片段�
 
 | 规则        | 说明                                                                                         |
 | ----------- | -------------------------------------------------------------------------------------------- |
-| 日常 commit | 在 **版本分支**（当前：**`v1.0.0`** 或下级 `v1.0.0_*`）；**禁止**在 `dev`/`main` 直接 commit |
+| 日常 commit | 在 **版本分支**（当前：**`v1.0.1`** 或下级 `v1.0.1_*`）；**禁止**在 `dev`/`main` 直接 commit |
 | 触发 CI     | merge 版本分支 → **`dev`** 后 **`git push origin dev`**                                      |
 | 禁止        | 向 **`main`** / **`dev`** 直接提交                                                           |
 | 合并        | 版本开发分支 → **`dev`** → Tag → squash → **`main`**                                         |
@@ -131,16 +132,17 @@ templates/                      # 生成后补丁（.gitignore、README 片段�
 
 **→ v1.0.0 首个可用 CLI** — [`docs/versions/v1.0.0/dev-guide.md`](docs/versions/v1.0.0/dev-guide.md)（CV1-01 … CV1-12 · **下一步 §7**）。
 
-产品说明：[`docs/versions/v1.0.0/product/PRD_create-vben.md`](docs/versions/v1.0.0/product/PRD_create-vben.md)
+产品说明：[`docs/versions/v1.0.0/product/PRD_create-vben-admin.md`](docs/versions/v1.0.0/product/PRD_create-vben-admin.md)
 
 ---
 
 ## 8. 会话提示（可复制）
 
 ```
-项目：create-vben（Node CLI · 从 vue-vben-admin 提取单模板脚手架）。
-分支：v1.0.0（仅在此开发）→ merge dev → push dev（CI）→ tag Version_1.0.0（Release）。
-当前：CV1-01 脚手架就绪；下一步 CV1-02 upstream 同步策略。
+项目：create-vben-admin（Node CLI · 从 vue-vben-admin 提取单模板脚手架）。
+GitHub：379949990/create-vben-admin · npm：create-vben-admin
+分支：v1.0.1（仅在此开发）→ merge dev → push dev（CI）→ tag Version_1.0.1（Release）。
+当前：CV1-01 … CV1-12 已完成；下一步发版（见 dev-guide §7）。
 上游：https://github.com/vbenjs/vue-vben-admin
 ```
 
