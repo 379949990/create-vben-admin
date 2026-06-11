@@ -143,8 +143,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git checkout -B main origin/main
-          git merge --squash origin/dev
+          # Use soft reset instead of merge --squash: after a prior release squash,
+          # main and dev share no merge base for the same hunks and merge --squash conflicts.
+          git checkout -B main origin/dev
+          git reset --soft origin/main
           git commit \
             -m "release(${VERSION}): publish ${PKG} CLI" \
             -m "Tag: ${TAG} @ ${TAG_COMMIT}" \
