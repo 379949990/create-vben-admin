@@ -1,4 +1,4 @@
-# 已确认配置 — create-vben
+# 已确认配置 — create-vben-admin
 
 > 负责人确认后写入；未列项 = **尚未确认**，须先询问。
 
@@ -7,8 +7,8 @@
 | npm 包名 / 发布      | `create-vben-admin` · GitHub Actions tag 发版 | 2026-06-10 |
 | CLI bin              | `create-vben-admin`                           | 2026-06-10 |
 | **集成分支**         | **`dev`**（merge 后 push 触发 CI）            | 2026-06-10 |
-| **当前工作分支**     | **`v1.0.0`**（仅版本分支开发）                | 2026-06-10 |
-| **发版 Tag 命名**    | **`Version_X.Y.Z`**（如 `Version_1.0.0`）     | 2026-06-10 |
+| **当前工作分支**     | **`v1.0.1`**（仅版本分支开发）                | 2026-06-10 |
+| **发版 Tag 命名**    | **`Version_X.Y.Z`**（如 `Version_1.0.1`）     | 2026-06-10 |
 | **版本开发分支命名** | **`vX.Y.Z(-*)(_*)`**                          | 2026-06-09 |
 | upstream             | `vbenjs/vue-vben-admin`                       | 2026-06-09 |
 | Node engines         | `>=20.11.0`                                   | 2026-06-09 |

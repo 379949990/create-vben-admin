@@ -66,7 +66,7 @@ describe('CLI path and directory guards', () => {
   it('rejects non-empty target without --force', async () => {
     const { mkdtemp } = await import('node:fs/promises');
     const { tmpdir } = await import('node:os');
-    const dir = await mkdtemp(join(tmpdir(), 'create-vben-boundary-'));
+    const dir = await mkdtemp(join(tmpdir(), 'create-vben-admin-boundary-'));
     await writeFile(join(dir, 'keep.txt'), 'x', 'utf8');
 
     await expect(assertWritableTargetDirectory(dir, false)).rejects.toThrow(/not empty/);
@@ -77,7 +77,7 @@ describe('CLI path and directory guards', () => {
   it('allows non-empty target when --force is set', async () => {
     const { mkdtemp } = await import('node:fs/promises');
     const { tmpdir } = await import('node:os');
-    const dir = await mkdtemp(join(tmpdir(), 'create-vben-boundary-'));
+    const dir = await mkdtemp(join(tmpdir(), 'create-vben-admin-boundary-'));
     await mkdir(join(dir, 'nested'), { recursive: true });
 
     await expect(assertWritableTargetDirectory(dir, true)).resolves.toBeUndefined();

@@ -1,9 +1,9 @@
 ---
-description: create-vben 当前里程碑架构摘要（CLI 提取管线）
+description: create-vben-admin 当前里程碑架构摘要（CLI 提取管线）
 alwaysApply: true
 ---
 
-# 当前里程碑 — v1.0.0 create-vben CLI
+# 当前里程碑 — v1.0.0 create-vben-admin CLI
 
 **共享规范：** [create-vben-core.mdc](./create-vben-core.mdc)
 
@@ -12,14 +12,14 @@ alwaysApply: true
 | 文档 | 用途 |
 |------|------|
 | [`docs/versions/v1.0.0/dev-guide.md`](../../docs/versions/v1.0.0/dev-guide.md) | **分步计划与进度表（CV1-*）** |
-| [`docs/versions/v1.0.0/product/PRD_create-vben.md`](../../docs/versions/v1.0.0/product/PRD_create-vben.md) | 产品行为真源 |
+| [`docs/versions/v1.0.0/product/PRD_create-vben-admin.md`](../../docs/versions/v1.0.0/product/PRD_create-vben-admin.md) | 产品行为真源 |
 | [`docs/decisions/vben-source-sync.md`](../../docs/decisions/vben-source-sync.md) | upstream 拉取与缓存 |
 | [`docs/decisions/architecture.md`](../../docs/decisions/architecture.md) | 提取管线设计 |
 | [vben 官方 — 目录说明](https://doc.vben.pro/guide/project/dir.html) | upstream 结构真源（只读参考） |
 
 ## 分支
 
-- **工作分支：** **`v1.0.0`**（仅版本分支开发；下级如 `v1.0.0_*`）
+- **工作分支：** **`v1.0.1`**（仅版本分支开发；下级如 `v1.0.1_*`）
 - **集成：** merge → **`dev`** → **`push dev`** 触发 CI
 - **发版 Tag：** **`Version_X.Y.Z`**
 - **集成目标：** **`dev`**
@@ -28,8 +28,8 @@ alwaysApply: true
 
 - 从 **vue-vben-admin** 提取 **单一** `apps/web-*` 模板及 transitive workspace 依赖
 - 输出 **独立单包/扁平 monorepo-lite** 项目（具体形态见 architecture ADR，CV1-05 定稿）
-- CLI：`npx create-vben` / 全局安装 · 交互 + 非交互
-- 单元测试 + 小型 fixture；**不含** npm 公开发布（可留 CV1-12）
+- CLI：`npx create-vben-admin` / 全局安装 · 交互 + 非交互
+- 单元测试 + 小型 fixture；npm 已通过 `Version_*` tag 自动发布（见 [`npm-publish.md`](../../docs/decisions/npm-publish.md)）
 
 ## 维护命令
 

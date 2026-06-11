@@ -1,6 +1,6 @@
-# create-vben
+# create-vben-admin
 
-> **create-vben** 是从 [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin) Monorepo **按需提取单一 UI 模板** 的 npm CLI 脚手架工具，生成可独立安装、独立维护的 Vue 3 + Vite 后台管理项目。
+> **create-vben-admin** 是从 [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin) Monorepo **按需提取单一 UI 模板** 的 npm CLI 脚手架工具，生成可独立安装、独立维护的 Vue 3 + Vite 后台管理项目。
 
 **English:** [README.en.md](./README.en.md)
 
@@ -31,7 +31,7 @@
 
 [vben-admin](https://www.vben.pro)（**vue-vben-admin**）以 Monorepo 维护多套 UI 模板（`apps/web-*`）与大量共享包（`packages/`、`internal/`）。若你只需 **一种 UI 库** 的起步工程，不必 clone 整个 upstream 仓库。
 
-**create-vben** 是一条命令的 **vben 脚手架生成器**：
+**create-vben-admin** 是一条命令的 **vben 脚手架生成器**：
 
 1. 从 GitHub 拉取指定 upstream ref（默认最新 release tag）
 2. 解析 pnpm workspace 依赖闭包
@@ -40,7 +40,7 @@
 5. 自动执行 `pnpm install` 与 vendor 预构建
 
 ```
-upstream Monorepo                    create-vben 生成物
+upstream Monorepo                    create-vben-admin 生成物
 ─────────────────                    ─────────────────
 apps/web-naive  ──提取──►            my-app/          ← 业务代码在根目录
 packages/*      ──闭包──►            packages/        ← 构建所需 vendor
@@ -110,20 +110,20 @@ pnpm dev
 
 ## 默认行为
 
-| 项           | 说明                                                           |
-| ------------ | -------------------------------------------------------------- |
-| 输出布局     | 单 package 扁平（app 在根，`packages/` / `internal/` 保留）    |
-| upstream ref | 最新 release tag（`--ref` 可覆盖）                             |
-| backend-mock | **默认不包含**；`--mock` 或交互确认时包含                      |
-| OpenAPI      | **始终**从 upstream 生成 `docs/mock-api.openapi.json` 接口参考 |
-| 生成后       | 自动 `pnpm install` + workspace stub（失败则整次生成失败）     |
-| 缓存目录     | `~/.create-vben-cache/`（环境变量 `CREATE_VBEN_CACHE` 可覆盖） |
+| 项           | 说明                                                                       |
+| ------------ | -------------------------------------------------------------------------- |
+| 输出布局     | 单 package 扁平（app 在根，`packages/` / `internal/` 保留）                |
+| upstream ref | 最新 release tag（`--ref` 可覆盖）                                         |
+| backend-mock | **默认不包含**；`--mock` 或交互确认时包含                                  |
+| OpenAPI      | **始终**从 upstream 生成 `docs/mock-api.openapi.json` 接口参考             |
+| 生成后       | 自动 `pnpm install` + workspace stub（失败则整次生成失败）                 |
+| 缓存目录     | `~/.create-vben-admin-cache/`（环境变量 `CREATE_VBEN_ADMIN_CACHE` 可覆盖） |
 
 ## 常见问题 FAQ
 
-### create-vben 和直接 clone vue-vben-admin 有什么区别？
+### create-vben-admin 和直接 clone vue-vben-admin 有什么区别？
 
-clone 会得到 **完整 Monorepo**（所有 UI 模板与工具链）；create-vben 只提取 **一个** `apps/web-*` 及其 workspace 依赖，输出更小的独立项目。
+clone 会得到 **完整 Monorepo**（所有 UI 模板与工具链）；create-vben-admin 只提取 **一个** `apps/web-*` 及其 workspace 依赖，输出更小的独立项目。
 
 ### 支持哪些包管理器安装本 CLI？
 
@@ -143,11 +143,11 @@ clone 会得到 **完整 Monorepo**（所有 UI 模板与工具链）；create-v
 
 ### 生成失败 / `pnpm dev` 起不来怎么办？
 
-请用最新版 CLI 重新 `--force` 生成。旧生成物若缺少 `@vben/vite-config/dist` 等 vendor 构建产物，需重新跑完 create-vben 的 install + stub 流程。
+请用最新版 CLI 重新 `--force` 生成。旧生成物若缺少 `@vben/vite-config/dist` 等 vendor 构建产物，需重新跑完 create-vben-admin 的 install + stub 流程。
 
 ### 这是官方 vben 发行版吗？
 
-**不是。** 生成物 README 会注明 upstream ref 与 create-vben 版本；这是社区维护的提取工具，非 vbenjs 官方 npm 包。
+**不是。** 生成物 README 会注明 upstream ref 与 create-vben-admin 版本；这是社区维护的提取工具，非 vbenjs 官方 npm 包。
 
 ## 本仓库开发
 
@@ -171,7 +171,7 @@ clone 会得到 **完整 Monorepo**（所有 UI 模板与工具链）；create-v
 
 **链接**
 
-- 仓库：[github.com/379949990/create-vben](https://github.com/379949990/create-vben)
+- 仓库：[github.com/379949990/create-vben-admin](https://github.com/379949990/create-vben-admin)
 - upstream：[vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)
 - Vben 官方文档：[doc.vben.pro](https://doc.vben.pro/)
 

@@ -1,19 +1,19 @@
-# v1.0.0 开发指南 — create-vben CLI
+# v1.0.0 开发指南 — create-vben-admin CLI
 
 > **文档性质：** 当前里程碑 **强制开发与验收规范**。  
 > **里程碑：** **v1.0.0** — 首个可从 upstream 生成单模板脚手架的 CLI。  
 > **共享规范：** [`.cursor/rules/create-vben-core.mdc`](../../../.cursor/rules/create-vben-core.mdc)。  
 > **Agent：** [`AGENTS.md`](../../../AGENTS.md)
 
-| 字段         | 值                                                                |
-| ------------ | ----------------------------------------------------------------- |
-| 版本         | 1.0                                                               |
-| **工作分支** | **`v1.0.0`**                                                      |
-| **发版 Tag** | **`Version_1.0.0`**（格式 `Version_X.Y.Z`）                       |
-| **集成分支** | **`dev`**                                                         |
-| 产品 PRD     | [`product/PRD_create-vben.md`](product/PRD_create-vben.md)        |
-| upstream     | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin) |
-| Agent        | [`AGENTS.md`](../../../AGENTS.md)                                 |
+| 字段         | 值                                                                     |
+| ------------ | ---------------------------------------------------------------------- |
+| 版本         | 1.0                                                                    |
+| **工作分支** | **`v1.0.1`**                                                           |
+| **发版 Tag** | **`Version_1.0.1`**（格式 `Version_X.Y.Z`）                            |
+| **集成分支** | **`dev`**                                                              |
+| 产品 PRD     | [`product/PRD_create-vben-admin.md`](product/PRD_create-vben-admin.md) |
+| upstream     | [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)      |
+| Agent        | [`AGENTS.md`](../../../AGENTS.md)                                      |
 
 ---
 
@@ -41,7 +41,7 @@ vue-vben-admin 以 Monorepo 维护多套 UI 模板（`apps/web-antd` 等）与�
 
 ### 1.2 方案
 
-**create-vben** CLI：
+**create-vben-admin** CLI：
 
 1. 从 GitHub 获取指定 **ref** 的 upstream 快照
 2. 解析 **pnpm workspace** 依赖图
@@ -52,9 +52,9 @@ vue-vben-admin 以 Monorepo 维护多套 UI 模板（`apps/web-antd` 等）与�
 ### 1.3 使用方式（验收标准）
 
 ```bash
-npx create-vben my-app
+npx create-vben-admin my-app
 # 或
-npx create-vben my-app --template web-antd --ref v5.7.0
+npx create-vben-admin my-app --template web-antd --ref v5.7.0
 cd my-app && pnpm install && pnpm dev
 ```
 
@@ -141,14 +141,14 @@ flowchart LR
 
 ## 5. 待确认项（Agent 勿臆造）
 
-| #   | 项                                                              | 影响步骤 | 状态 |
-| --- | --------------------------------------------------------------- | -------- | ---- |
-| Q1  | 生成物结构：**单 package 扁平**                                 | CV1-05   | ✅   |
-| Q2  | 默认 upstream ref：**最新 release tag**                         | CV1-02   | ✅   |
-| Q3  | 是否默认包含 `backend-mock`：**否**（生成时可选 `--mock`）      | CV1-11   | ✅   |
-| Q4  | npm 发布：**create-vben-admin**（裸名 `create-vben` 已被占用）  | CV1-12   | ✅   |
-| Q5  | 生成后 **自动 pnpm install**                                    | CV1-07   | ✅   |
-| Q6  | GitHub token：**v1.0.0 默认不用**；后续支持用户配置（长期计划） | CV1-03   | ✅   |
+| #   | 项                                                                       | 影响步骤 | 状态 |
+| --- | ------------------------------------------------------------------------ | -------- | ---- |
+| Q1  | 生成物结构：**单 package 扁平**                                          | CV1-05   | ✅   |
+| Q2  | 默认 upstream ref：**最新 release tag**                                  | CV1-02   | ✅   |
+| Q3  | 是否默认包含 `backend-mock`：**否**（生成时可选 `--mock`）               | CV1-11   | ✅   |
+| Q4  | npm 发布：**create-vben-admin**（GitHub：`379949990/create-vben-admin`） | CV1-12   | ✅   |
+| Q5  | 生成后 **自动 pnpm install**                                             | CV1-07   | ✅   |
+| Q6  | GitHub token：**v1.0.0 默认不用**；后续支持用户配置（长期计划）          | CV1-03   | ✅   |
 
 ---
 
@@ -166,7 +166,7 @@ pnpm dev -- .temp/generated/e2e-app --template web-naive --ref v5.7.0 --force
 
 ## 7. 下一步（§7.8 等价）
 
-**→ 发版：** 合并 `v1.0.0` → `dev` → 打 tag `Version_1.0.0` 并 push → CI 发布 npm + squash `main`。见 [`npm-publish.md`](../../decisions/npm-publish.md)。
+**→ 发版：** 合并 `v1.0.1` → `dev` → 打 tag `Version_1.0.1` 并 push → CI 发布 npm + squash `main`。见 [`npm-publish.md`](../../decisions/npm-publish.md)。
 
 ---
 

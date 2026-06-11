@@ -49,7 +49,7 @@ my-app/
 ├── internal/...          # vite-config / tsconfig / tailwind-config 等
 ├── pnpm-workspace.yaml   # 自 upstream 复制（含 catalog）
 ├── .npmrc                # 若 upstream 存在则复制
-└── README.md             # create-vben 生成说明
+└── README.md             # create-vben-admin 生成说明
 ```
 
 **说明：**

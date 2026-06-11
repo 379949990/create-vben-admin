@@ -1,9 +1,9 @@
 ---
-description: create-vben 项目级规范（架构、工程门禁、Git、开发流程）
+description: create-vben-admin 项目级规范（架构、工程门禁、Git、开发流程）
 alwaysApply: true
 ---
 
-# create-vben — 项目 Core 规范
+# create-vben-admin — 项目 Core 规范
 
 > **里程碑分步计划**见 [`docs/versions/`](../../docs/versions/)（当前 [`v1.0.0/dev-guide.md`](../../docs/versions/v1.0.0/dev-guide.md)）；**Agent 入口**见 [`AGENTS.md`](../../AGENTS.md)。
 
@@ -21,7 +21,7 @@ alwaysApply: true
 
 ## 项目与技术栈
 
-- 包名：`create-vben` · **Node ESM CLI** · TypeScript · tsup
+- 包名：`create-vben-admin` · **Node ESM CLI** · TypeScript · tsup
 - 上游真源：**[vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)** — 提取逻辑须与其 **main / tag** 同步
 - Node **>= 20.11**；本仓库包管理 **pnpm**；生成物默认 **pnpm**（与 upstream 一致）
 - 测试：**Vitest**；lint：**ESLint flat** + **Prettier**
@@ -41,7 +41,7 @@ alwaysApply: true
 
 | # | 约束 |
 |---|------|
-| C1 | 支持 `npx create-vben` 与全局 `create-vben`；`bin` 指向构建后 `dist/index.js` |
+| C1 | 支持 `npx create-vben-admin` 与全局 `create-vben-admin`；`bin` 指向构建后 `dist/index.js` |
 | C2 | 非交互：`--template` · `--ref` · `--force` · `--dry-run` · `--offline` |
 | C3 | 交互默认 **@clack/prompts**；取消须 exit 0 且友好提示 |
 | C4 | 生成物 **不含** upstream 未选中的其他 `apps/web-*` |

@@ -1,4 +1,4 @@
-# 开发习惯与规范摘要 — 从 enjoy-ai-oversea-app 到 create-vben
+# 开发习惯与规范摘要 — 从 enjoy-ai-oversea-app 到 create-vben-admin
 
 > 本文档供 **负责人** 与 **新 Agent 会话** 快速对齐习惯；权威细则仍以 `AGENTS.md` 与 `.cursor/rules/` 为准。
 
@@ -6,7 +6,7 @@
 
 ## 1. 你一贯的开发习惯（已映射）
 
-| 习惯                     | 说明                                   | create-vben 落地                          |
+| 习惯                     | 说明                                   | create-vben-admin 落地                    |
 | ------------------------ | -------------------------------------- | ----------------------------------------- |
 | **先问再做**             | PRD/API/未确认行为不臆造               | dev-guide §5 Q1–Q6；upstream 结构先查官方 |
 | **五段工作流**           | 询问 → 设计 → 分步 → 验证 → 下一步     | Core rule + dev-guide §0                  |
@@ -32,7 +32,7 @@
 
 ---
 
-## 3. create-vben 特有要求
+## 3. create-vben-admin 特有要求
 
 1. **upstream 是真源** — 提取逻辑跟随 [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)，不维护平行模板副本。
 2. **解析优于硬编码** — 依赖 `pnpm-workspace.yaml` + package.json 图，而非写死文件列表。
@@ -43,7 +43,7 @@
 
 ## 4. 新 Agent 窗口建议开场
 
-1. 在 Cursor 打开文件夹：`/Users/wb_hc/H-Zone/DEV/create-vben`
+1. 在 Cursor 打开文件夹：`/Users/wb_hc/H-Zone/DEV/create-vben-admin`
 2. 粘贴 AGENTS.md §8 会话提示
 3. 明确当前步骤（如 CV1-02）与待确认 Q\*
 4. 运行 `pnpm install && pnpm verify` 确认基线绿
@@ -52,7 +52,7 @@
 
 ## 5. 后续可选增强
 
-- [ ] 专用 Cursor skill：`~/.cursor/skills/create-vben-extract/SKILL.md`
+- [ ] 专用 Cursor skill：`~/.cursor/skills/create-vben-admin-extract/SKILL.md`
 - [ ] CI：GitHub Actions `verify` on PR
 - [ ] changesets 发版
 - [ ] 与 vben 官方版本矩阵文档链接

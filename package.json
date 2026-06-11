@@ -1,6 +1,6 @@
 {
   "name": "create-vben-admin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI scaffold generator for vue-vben-admin — extract one UI template (Ant Design Vue, Element Plus, Naive UI, TDesign) into a standalone Vue 3 + Vite project.",
   "type": "module",
   "license": "MIT",
@@ -81,10 +81,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/379949990/create-vben"
+    "url": "https://github.com/379949990/create-vben-admin"
   },
   "bugs": {
-    "url": "https://github.com/379949990/create-vben/issues"
+    "url": "https://github.com/379949990/create-vben-admin/issues"
   },
-  "homepage": "https://github.com/379949990/create-vben#readme"
+  "homepage": "https://github.com/379949990/create-vben-admin#readme"
 }

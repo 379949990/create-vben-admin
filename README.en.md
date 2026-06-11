@@ -1,6 +1,6 @@
-# create-vben
+# create-vben-admin
 
-> **create-vben** is an npm CLI that extracts a **single UI template** from the [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin) monorepo and scaffolds a standalone Vue 3 + Vite admin project you can install and maintain locally.
+> **create-vben-admin** is an npm CLI that extracts a **single UI template** from the [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin) monorepo and scaffolds a standalone Vue 3 + Vite admin project you can install and maintain locally.
 
 **中文：** [README.md](./README.md)
 
@@ -31,7 +31,7 @@
 
 [vben-admin](https://www.vben.pro) ships as a monorepo with multiple `apps/web-*` templates and shared `packages/` / `internal/` workspaces. If you only need **one UI stack**, you do not have to clone the entire upstream tree.
 
-**create-vben** is a **vben admin scaffold generator**:
+**create-vben-admin** is a **vben admin scaffold generator**:
 
 1. Fetch upstream at a git ref (default: latest GitHub release tag)
 2. Resolve the pnpm workspace dependency closure
@@ -109,13 +109,13 @@ Dev port comes from `.env.development` → `VITE_PORT` (upstream default **5888*
 | backend-mock   | **Excluded by default**; opt in with `--mock` or interactive prompt    |
 | OpenAPI        | **Always** generates `docs/mock-api.openapi.json` from upstream routes |
 | After generate | Auto `pnpm install` + workspace stub (generation fails if stub fails)  |
-| Cache          | `~/.create-vben-cache/` (`CREATE_VBEN_CACHE` to override)              |
+| Cache          | `~/.create-vben-admin-cache/` (`CREATE_VBEN_ADMIN_CACHE` to override)  |
 
 ## FAQ
 
 ### How is this different from cloning vue-vben-admin?
 
-Cloning gives you the **full monorepo**. create-vben extracts **one** `apps/web-*` template plus required workspace packages into a smaller standalone project.
+Cloning gives you the **full monorepo**. create-vben-admin extracts **one** `apps/web-*` template plus required workspace packages into a smaller standalone project.
 
 ### Which package managers can install the CLI?
 
@@ -135,7 +135,7 @@ Use `--ref`, e.g. `--ref v5.7.0` or a commit SHA. Default is the latest GitHub *
 
 ### Is this an official vben npm package?
 
-**No.** Generated README states the upstream ref and create-vben version. This is a community extraction tool, not published by vbenjs.
+**No.** Generated README states the upstream ref and create-vben-admin version. This is a community extraction tool, not published by vbenjs.
 
 ## Develop this repo
 
@@ -150,7 +150,7 @@ Manual test output: **`.temp/generated/`** (gitignored).
 
 ## Links
 
-- Repo: [github.com/379949990/create-vben](https://github.com/379949990/create-vben)
+- Repo: [github.com/379949990/create-vben-admin](https://github.com/379949990/create-vben-admin)
 - Upstream: [vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)
 - Vben docs: [doc.vben.pro](https://doc.vben.pro/)
 - Publish guide: [`docs/decisions/npm-publish.md`](docs/decisions/npm-publish.md)

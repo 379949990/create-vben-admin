@@ -1,4 +1,4 @@
-# PRD — create-vben CLI
+# PRD — create-vben-admin CLI
 
 > **版本：** 0.1（草案）  
 > **状态：** 供里程碑 v1.0.0 开发与验收参考；细节可在 dev-guide 步骤中细化。
@@ -15,7 +15,7 @@
 
 ### 1.2 产品目标
 
-提供 **create-vben** CLI，使用户通过一条命令获得：
+提供 **create-vben-admin** CLI，使用户通过一条命令获得：
 
 - 与 upstream **指定版本** 结构一致的、**仅含所选模板** 的项目骨架
 - 可本地 `pnpm install` 并启动开发服务器
@@ -33,7 +33,7 @@
 
 | ID    | 作为       | 我想要                                 | 以便                 |
 | ----- | ---------- | -------------------------------------- | -------------------- |
-| US-01 | 前端开发者 | `npx create-vben my-app`               | 快速创建后台项目     |
+| US-01 | 前端开发者 | `npx create-vben-admin my-app`         | 快速创建后台项目     |
 | US-02 | 用户       | 选择 UI 库（Ant Design / Element / …） | 只下载相关代码       |
 | US-03 | 用户       | 指定 `--ref v5.7.0`                    | 锁定与文档一致的版本 |
 | US-04 | 用户       | `--dry-run` 查看将生成的包列表         | 评估体积与结构       |
@@ -45,9 +45,9 @@
 
 ### 3.1 安装与入口
 
-- npm 包名：**create-vben**（无 scope）
-- `bin`: `create-vben`
-- 支持：`npm i -g create-vben`、`npx create-vben`
+- npm 包名：**create-vben-admin**
+- `bin`: `create-vben-admin`
+- 支持：`npm i -g create-vben-admin`、`npx create-vben-admin`、`pnpm dlx create-vben-admin`
 
 ### 3.2 交互流程
 
@@ -73,7 +73,7 @@
 - 包含运行所选 app 所需的 **全部 workspace 依赖包**
 - `package.json` 依赖可安装（无 dangling `workspace:*`）
 - 保留 upstream 许可证与必要版权声明（MIT）
-- 生成 README 注明：**由 create-vben 从 vue-vben-admin @ ref 生成**
+- 生成 README 注明：**由 create-vben-admin 从 vue-vben-admin @ ref 生成**
 
 ---
 

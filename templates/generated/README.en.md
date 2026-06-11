@@ -1,6 +1,6 @@
 # {{packageName}}
 
-> Standalone frontend scaffold extracted from [vue-vben-admin]({{upstreamRepo}}) via [create-vben-admin]({{createVbenRepo}}).
+> Standalone frontend scaffold extracted from [vue-vben-admin]({{upstreamRepo}}) via [create-vben-admin]({{createVbenAdminRepo}}).
 
 [中文 README](./README.md)
 
@@ -10,7 +10,7 @@
 | ----------------- | -------------------------------------- |
 | UI template       | `{{templateId}}` ({{templateLabelEn}}) |
 | upstream ref      | `{{ref}}`                              |
-| create-vben-admin | `{{createVbenVersion}}`                |
+| create-vben-admin | `{{createVbenAdminVersion}}`           |
 
 This repo uses a **flat layout**: application code lives at the repository root; required upstream workspace packages are kept under `packages/` and `internal/` and usually do not need edits.
 
@@ -48,8 +48,8 @@ pnpm dev
 
 - [Vben Admin docs](https://doc.vben.pro/)
 - [vue-vben-admin]({{upstreamRepo}})
-- [create-vben-admin]({{createVbenRepo}})
+- [create-vben-admin]({{createVbenAdminRepo}})
 
 ## License
 
-MIT (application code follows upstream and create-vben generation notes; see file headers where applicable.)
+MIT (application code follows upstream and create-vben-admin generation notes; see file headers where applicable.)

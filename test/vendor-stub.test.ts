@@ -17,7 +17,7 @@ afterEach(async () => {
 async function createTempProjectRoot(): Promise<string> {
   const { mkdtemp } = await import('node:fs/promises');
   const { tmpdir } = await import('node:os');
-  const dir = await mkdtemp(join(tmpdir(), 'create-vben-vendor-'));
+  const dir = await mkdtemp(join(tmpdir(), 'create-vben-admin-vendor-'));
   tempRoots.push(dir);
   return dir;
 }
