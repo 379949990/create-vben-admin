@@ -20,7 +20,7 @@ Tag 推送后 Release workflow 会：
 3. `pnpm pack` 生成 `create-vben-admin-<version>.tgz`（附到 Release 资产）
 4. `pnpm publish` 到 [npmjs.com/package/create-vben-admin](https://www.npmjs.com/package/create-vben-admin)（若该版本已在 npm 则跳过，便于重跑 workflow）
 5. 创建/更新 GitHub Release
-6. **`git merge --squash origin/dev` → `main` 并 push**（预设 squash 提交信息模板）
+6. **`git checkout main origin/dev && git reset --soft origin/main && git commit`** → push `main`（预设 squash 提交信息；避免 `merge --squash` 与历史 squash 冲突）
 
 > **说明：** 官方 npm 包名与 GitHub 仓库均为 **`create-vben-admin`**（[379949990/create-vben-admin](https://github.com/379949990/create-vben-admin) · 账号 `fluoxetine_`）。
 
